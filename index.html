@@ -1,1 +1,261 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RE. Website</title>
+  <meta name="description" content="Portfolio – Create. with Robin Karl Wilhelm" />
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5HHX2SJ4');</script>
+  <!-- End Google Tag Manager -->
+
+  <style>
+    *{box-sizing:border-box} html,body{height:100%}
+    html{scroll-behavior:smooth; scroll-padding-top:80px;}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;background:#000;display:flex;flex-direction:column}
+    :root{ --hero-image: url("hero.webp"); }
+    a { color: inherit; }
+
+    .site-header{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);border-bottom:1px solid rgba(255,255,255,.08)}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    .nav{display:flex;align-items:center;gap:24px;min-height:72px}
+    .brand{font-weight:900;letter-spacing:.6px}
+    .nav__links{list-style:none;display:flex;gap:28px;margin:0;padding:0;font-weight:800;letter-spacing:.4px}
+    .nav__links a{color:#fff;text-decoration:none;opacity:.9}
+    .nav__links a:hover{opacity:1}
+    .nav__links a.is-active{opacity:1; text-decoration:underline; text-underline-offset:6px}
+    .nav__right{margin-left:auto;display:flex;align-items:center;gap:16px}
+    .search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.2);padding:6px 14px;border-radius:22px}
+    .search__input{background:transparent;border:0;outline:0;color:#fff;width:140px}
+    .search__input::placeholder{color:#eee;opacity:.9}
+    .search__icon{border:0;background:transparent;color:#fff;font-size:16px;cursor:pointer}
+    .github-link{padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.14);color:#fff;text-decoration:none;font-weight:700}
+    .github-link:hover{background:rgba(255,255,255,.22)}
+    .burger{display:none;margin-left:8px;background:rgba(255,255,255,.14);border:0;color:#fff;padding:8px 12px;border-radius:8px;font-size:18px;cursor:pointer}
+
+    .hero{position:relative;display:grid;place-items:start;min-height:84vh;background-image:var(--hero-image);background-size:cover;background-position:center}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.55))}
+    .hero__content{position:relative;z-index:1;max-width:720px;padding:96px 50px}
+    .hero__title{font-size:clamp(42px,7vw,84px);line-height:1.05;font-weight:900;letter-spacing:.5px;margin:0}
+    .dot{color:#e74c3c}
+    .hero__subtitle{margin:10px 0 18px;font-size:clamp(16px,2.2vw,24px);font-weight:800;opacity:.95}
+    .hero__text{margin:0 0 28px;line-height:1.6;color:#f5f5f5;max-width:60ch}
+    .btn{display:inline-block;background:#7d7d7d;color:#fff;text-decoration:none;padding:12px 26px;border-radius:6px;font-weight:800;letter-spacing:.5px}
+    .btn:hover{background:#5f5f5f}
+
+    section{padding:80px 0;border-top:1px solid rgba(255,255,255,.08)}
+    section .section-inner{max-width:1100px;margin:0 auto;padding:0 24px}
+    .section-title{font-size:clamp(28px,3.4vw,46px);margin:0 0 12px;font-weight:900;letter-spacing:.4px}
+    .section-lead{opacity:.9;max-width:68ch;line-height:1.6;margin:0 0 28px}
+    .grid{display:grid;gap:24px;grid-template-columns:repeat(12,1fr)}
+    .card{grid-column:span 6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px}
+    .card h3{margin:4px 0 8px}
+    .muted{opacity:.85}
+
+    .site-footer{background:rgba(0,0,0,.35)}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:64px}
+    .follow{opacity:.95;font-weight:600}
+    .social{display:flex;gap:16px}
+    .social__icon{display:inline-flex;opacity:.95}
+    .social__icon:hover{opacity:1}
+
+    @media (max-width:1024px){ .card{grid-column:span 12} }
+    @media (max-width:900px){
+      .nav__links{display:none}
+      .burger{display:inline-flex}
+      .nav.nav--open .nav__links{
+        display:flex;flex-direction:column;position:absolute;left:0;right:0;top:72px;
+        background:rgba(0,0,0,.95);padding:16px 24px;z-index:30
+      }
+      .search__input{width:100px}
+      .hero__content{padding:72px 24px}
+      .footer-inner{flex-direction:column;align-items:flex-start;padding:12px 24px}
+    }
+  </style>
+</head>
+
+<body id="home">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HHX2SJ4" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="index.html#home" style="text-decoration:none">
+          <strong>CREATE<span class="dot">.</span></strong>
+        </a>
+        <ul class="nav__links" id="navLinks">
+          <li><a class="is-active" href="index.html#home" data-target="home">GROWTH</a></li>
+          <li><a href="#photos" data-target="photos">PHOTOS</a></li>
+          <li><a href="#film" data-target="film">FILM</a></li>
+          <li><a href="#animation" data-target="animation">ANIMATION</a></li>
+          <li><a href="#design" data-target="design">DESIGN</a></li>
+        </ul>
+
+        <div class="nav__right">
+          <form class="search" role="search" aria-label="Sök" onsubmit="return false;">
+            <button type="submit" class="search__icon" aria-label="Sök">🔍</button>
+            <input class="search__input" type="search" placeholder="SEARCH" aria-label="Sök text" />
+          </form>
+          <a class="github-link" href="https://robinenqvist.github.io/" target="_blank" rel="noopener">GitHub</a>
+          <button class="burger" aria-label="Öppna meny" aria-expanded="false" aria-controls="navMenu">☰</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="navMenu" aria-label="Intro">
+    <div class="container">
+      <div class="hero__content">
+        <h1 class="hero__title">GROW<span class="dot">.</span></h1>
+        <h2 class="hero__subtitle">WITH ROBIN KARL WILHELM</h2>
+        <p class="hero__text">
+          Hej! – välkommen till min hemsida. Scrolla eller klicka på knapparna ovan för att utforska PHOTOS, FILM, ANIMATION och DESIGN.
+        </p>
+        <a class="btn" href="#photos">EXPLORE</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="photos" aria-label="Photos">
+    <div class="section-inner">
+      <h2 class="section-title">PHOTOS</h2>
+      <p class="section-lead">Ett urval av stillbilder, porträtt och dokumentära serier.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Serie 01</h3>
+          <p class="muted">Kort beskrivning. <em>(Byt mot riktiga thumbnails/länkar)</em></p>
+        </article>
+        <article class="card">
+          <h3>Serie 02</h3>
+          <p class="muted">Kort beskrivning.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="film" aria-label="Film">
+    <div class="section-inner">
+      <h2 class="section-title">Film</h2>
+      <p class="section-lead">Korta filmer, musikvideos och behind-the-scenes.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Projekt A</h3>
+          <p class="muted">Lägg in en inbäddad video eller extern länk.</p>
+        </article>
+        <article class="card">
+          <h3>Projekt B</h3>
+          <p class="muted">Beskrivning/inbäddning.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="animation" aria-label="Animation">
+    <div class="section-inner">
+      <h2 class="section-title">Animation</h2>
+      <p class="section-lead">2D/3D-klipp, motion graphics och titelsekvenser.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Motion Pack</h3>
+          <p class="muted">GIF/WebM/MP4 exempel.</p>
+        </article>
+        <article class="card">
+          <h3>3D Tests</h3>
+          <p class="muted">Beskrivning.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="design" aria-label="Design">
+    <div class="section-inner">
+      <h2 class="section-title">Design</h2>
+      <p class="section-lead">Identiteter, posters, UI-kit och prototyper.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Brand Concept</h3>
+          <p class="muted">Moodboards, logotyper, typografi.</p>
+        </article>
+        <article class="card">
+          <h3>UI Kit</h3>
+          <p class="muted">Komponenter, knappar, formspråk.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="follow">@FOLLOW ME</span>
+      <div class="social">
+        <a class="social__icon" href="#" aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm6-3a1 1 0 1 1-1 1 1 0 0 1 1-1Z"/>
+          </svg>
+        </a>
+        <a class="social__icon" href="#" aria-label="Twitter/X" title="Twitter/X">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            <path d="M20.5 3.5 13.9 12l7.1 8.5h-3.1L12 13.9 6.7 20.5H3.5L10.4 12 3.5 3.5h3.1L12 10.1 17.3 3.5h3.2z"/>
+          </svg>
+        </a>
+        <a class="social__icon" href="#" aria-label="Facebook" title="Facebook">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            <path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.3V12h2.3V9.7c0-2.3 1.4-3.6 3.5-3.6 1 0 2 .2 2 .2v2.2h-1.1c-1.1 0-1.5.7-1.5 1.4V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Highlight to GA4 via GTM -->
+  <script>
+    (function () {
+      function pushTextHighlight() {
+        var selection = (window.getSelection && window.getSelection().toString()) || '';
+        selection = selection.trim();
+        if (!selection) return;
+        if (/@|\d{6,}/.test(selection)) return;
+        var value = selection.slice(0, 100);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'text_highlight', highlighted_text: value });
+        console.debug('GTM text_highlight →', value);
+      }
+      document.addEventListener('mouseup', pushTextHighlight, false);
+      document.addEventListener('touchend', function(){ setTimeout(pushTextHighlight, 50); }, false);
+    })();
+  </script>
+
+  <script>
+    // Enkel mobilmeny + active links
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('.nav');
+    burger?.addEventListener('click', () => {
+      nav.classList.toggle('nav--open');
+      const expanded = burger.getAttribute('aria-expanded') === 'true';
+      burger.setAttribute('aria-expanded', String(!expanded));
+    });
+
+    const sections = document.querySelectorAll('section[id], body#home');
+    const links = document.querySelectorAll('.nav__links a');
+    const setActive = (id) => { links.forEach(a => a.classList.toggle('is-active', a.getAttribute('data-target') === id)); };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if(entry.isIntersecting){ setActive(entry.target.id || 'home'); }});
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(sec => observer.observe(sec));
+    document.getElementById('navLinks')?.addEventListener('click', (e) => {
+      if(e.target.matches('a')){
+        nav.classList.remove('nav--open');
+        burger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+</body>
+</html>
 
