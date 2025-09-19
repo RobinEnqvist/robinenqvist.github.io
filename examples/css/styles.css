@@ -1,4 +1,28 @@
+main {
+    min-height: 100%;
+    height: auto;
+    width: 98%;
+    margin: 0;
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    margin: 0 2%;
+}
 
+main>* {
+    flex: 1 1 50%;
+}
+
+
+@media (max-width: 1080px) {
+    main {
+        flex-direction: column;
+    }
+
+    main>* {
+        flex: 1 1 100%;
+    }
+}
 
 header {
     margin-bottom: 30px;
@@ -47,4 +71,12 @@ button {
 footer {
     margin-top: 50px;
     text-align: center;
+}
+
+.container {
+    width: 100%;
+}
+
+.container iframe {
+    background: #444;
 }
