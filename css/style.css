@@ -219,32 +219,43 @@ img {
 
 /* DOT POPUP */
 .dot-popup__backdrop {
-  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
   z-index: 300;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+}
+
+.dot-popup__backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
 }
 
 .dot-popup {
-  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.9);
   z-index: 301;
   background: #1a1a1a;
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
-  max-width: 360px;
-  width: 90vw;
+  width: 25vw;
+  min-width: 260px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
-.dot-popup.is-open,
-.dot-popup.is-open ~ .dot-popup__backdrop,
-.dot-popup__backdrop.is-open {
-  display: block;
+.dot-popup.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .dot-popup img {
@@ -256,13 +267,13 @@ img {
 .dot-popup__close {
   position: absolute;
   top: 10px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.55);
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
   border: none;
   color: #fff;
-  font-size: 16px;
-  width: 28px;
-  height: 28px;
+  font-size: 14px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
