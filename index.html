@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RE. TEST Website</title>
-  <meta name="description" content="Portfolio – Create. with Robin KARL Wilhelm" />
+  <title>GROW. – Robin Karl Wilhelm</title>
+  <meta name="description" content="I create growth through strategy, content and design – Robin Karl Wilhelm" />
 
   <!-- Google Tag Manager -->
   <script>(function (w, d, s, l, i) {
@@ -18,9 +18,10 @@
     })(window, document, 'script', 'dataLayer', 'GTM-5HHX2SJ4');</script>
   <!-- End Google Tag Manager -->
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-<script src="js/analytics.js"></script> 
+  <script src="js/analytics.js"></script>
 </head>
 
 <body id="home">
@@ -29,112 +30,130 @@
       style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
+  <!-- HEADER / NAV -->
   <header class="site-header">
-    <div class="container">
-      <nav class="nav">
-        <a class="brand" href="index.html#home" style="text-decoration:none">
-          <strong>CREATE<span class="dot">.</span></strong>
-        </a>
-        <ul class="nav__links" id="navLinks">
-          <li><a class="is-active" href="index.html#home" data-target="home">GROWTH</a></li>
-          <li><a href="#animation" data-target="animation">ANIMATION</a></li>
-          <li><a href="#design" data-target="design">DESIGN</a></li>
-          <li><a href="/examples" target="_blank">EXAMPLES</a></li>
-          <li><a href="#boredom-buster" data-target="boredom-buster">BORED?</a></li>
-          <li><a href="#location-tracker" data-target="location-tracker">LOCATOR</a></li>
-        </ul>
-
-        <div class="nav__right">
-          <form class="search" role="search" aria-label="Sök" onsubmit="return false;">
-            <button type="submit" class="search__icon" aria-label="Sök">🔍</button>
-            <input class="search__input" type="search" placeholder="SEARCH" aria-label="Sök text" />
-          </form>
-          <a class="github-link" href="https://robinenqvist.github.io/" target="_blank" rel="noopener">GitHub</a>
-          <button class="burger" aria-label="Öppna meny" aria-expanded="false" aria-controls="navMenu">☰</button>
-        </div>
-      </nav>
-    </div>
+    <nav class="nav">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#create">CREATE</a></li>
+        <li><a href="#grow">GROW</a></li>
+        <li><a href="#story">STORY</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <section class="hero" id="navMenu" aria-label="Intro">
+  <!-- MOBILE MENU OVERLAY -->
+  <div class="nav-mobile" id="navMobile" aria-hidden="true">
+    <button class="nav-mobile__close" id="navClose" aria-label="Close menu">✕</button>
+    <ul>
+      <li><a href="#create" class="nav-mobile__link">CREATE</a></li>
+      <li><a href="#grow" class="nav-mobile__link">GROW</a></li>
+      <li><a href="#story" class="nav-mobile__link">STORY</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home-section">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <h1 class="hero__title">GROW<span class="dot">.</span></h1>
+      <p class="hero__sub">With Robin Karl Wilhelm</p>
+    </div>
+  </section>
+
+  <!-- ABOUT / TAGLINE -->
+  <section class="about" id="grow">
     <div class="container">
-      <div class="hero__content">
-        <h1 class="hero__title">GROW<span class="dot">.</span></h1>
-        <h2 class="hero__subtitle">WITH ROBIN KARL WILHELM</h2>
-        <p class="hero__text">
-          Hej! – välkommen till min hemsida som inte finns. Scrolla eller klicka på knapparna ovan för att utforska ANIMATION och DESIGN.
-        </p>
+      <h2 class="about__heading">I create growth trough strategy,<br>content and design.</h2>
+      <p class="about__body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+    </div>
+  </section>
+
+  <!-- SERVICES – 3 CARDS -->
+  <section class="services" id="create">
+    <div class="container">
+      <div class="services-grid">
+
+        <div class="service-card">
+          <div class="service-card__img">
+            <img src="images/rkw-background.jpg" alt="Create" />
+          </div>
+          <h3 class="service-card__label">CREATE</h3>
+          <p class="service-card__text">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__img">
+            <img src="images/rkw-background.jpg" alt="Design" />
+          </div>
+          <h3 class="service-card__label">DESIGN</h3>
+          <p class="service-card__text">Amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__img">
+            <img src="images/rkw-background.jpg" alt="Growth" />
+          </div>
+          <h3 class="service-card__label">GROW/TH</h3>
+          <p class="service-card__text">Consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <section id="animation" aria-label="Animation">
-    <div class="section-inner">
-      <h2 class="section-title">Animation</h2>
-      <p class="section-lead">2D/3D-klipp, motion graphics och titelsekvenser.</p>
-      <div class="grid">
-        <article class="card">
-          <h3>Motion Pack</h3>
-          <p class="muted">GIF/WebM/MP4 exempel.</p>
-        </article>
-        <article class="card">
-          <h3>3D Tests</h3>
-          <p class="muted">Beskrivning.</p>
-        </article>
-      </div>
+  <!-- FEATURE 1: image left, text right -->
+  <section class="feature">
+    <div class="feature__img">
+      <img src="images/rkw-background.jpg" alt="Growth through connection" />
+    </div>
+    <div class="feature__text">
+      <h2>GROWTH TROUGH CONNECTION</h2>
+      <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.</p>
     </div>
   </section>
 
-  <section id="design" aria-label="Design">
-    <div class="section-inner">
-      <h2 class="section-title">Design</h2>
-      <p class="section-lead">Identiteter, posters, UI-kit och prototyper.</p>
-      <div class="grid">
-        <article class="card">
-          <h3>Brand Concept</h3>
-          <p class="muted">Moodboards, logotyper, typografi.</p>
-        </article>
-        <article class="card">
-          <h3>UI Kit</h3>
-          <p class="muted">Komponenter, knappar, formspråk.</p>
-        </article>
-      </div>
+  <!-- FEATURE 2: text left, image right -->
+  <section class="feature feature--reverse" id="story">
+    <div class="feature__text">
+      <h2>CREATING TROUGH THE SLOP</h2>
+      <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.</p>
+    </div>
+    <div class="feature__img">
+      <img src="images/rkw-background.jpg" alt="Creating through the slope" />
     </div>
   </section>
 
-  <section id="boredom-buster" aria-label="Boredom Buster">
-    <div class="section-inner">
-      <h2 class="section-title">BOREDOM BUSTER<span class="dot">.</span></h2>
-      <p class="section-lead">Can't decide what to do? Let the Bored API suggest something for you.</p>
-      <div class="bored-container">
-        <button id="bored-button" class="btn">GIVE ME SOMETHING TO DO</button>
-        <div id="bored-result" class="card" style="margin-top: 24px; display: none;">
-          <h3 id="bored-activity"></h3>
-          <p id="bored-details" class="muted"></p>
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta__inner">
+        <p class="cta__text">Access my network of creatives advancing in growth</p>
+        <div class="cta__actions">
+          <a class="btn btn--primary" href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">Join Today</a>
+          <a class="btn btn--outline" href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">Contact me</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="location-tracker" aria-label="Location Tracker">
-    <div class="section-inner">
-      <h2 class="section-title">LOCATION TRACKER<span class="dot">.</span></h2>
-      <p class="section-lead">Curious about your digital footprint? See where in the world your IP address places you.</p>
-      <div class="locator-container">
-        <button id="locate-button" class="btn">FIND ME</button>
-        <div id="location-info" class="card" style="margin-top: 24px; display: none;">
-          <p><strong>IP Address:</strong> <span id="user-ip"></span></p>
-          <p><strong>Location:</strong> <span id="user-location"></span></p>
-          <div id="map" style="height: 400px; margin-top: 20px; border-radius: 12px;"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span class="follow"><a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank">@FOLLOW
-          ME</a></span>
+      <div class="footer-logo">
+        <span>RKW</span>
+        <span>GROWT</span>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#grow">ABOUT</a>
+        <a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">SOCIALS</a>
+        <a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">LINKEDIN</a>
+      </nav>
+      <div class="footer-copy">© RKW</div>
     </div>
   </footer>
 
@@ -156,10 +175,7 @@
     })();
   </script>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="js/main.js" type="text/javascript"></script>
-
-
+  <script src="js/main.js"></script>
 </body>
 
 </html>
