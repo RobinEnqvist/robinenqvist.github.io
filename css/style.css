@@ -208,21 +208,12 @@ img {
   color: var(--accent);
 }
 
-.dot--btn {
-  background: none;
-  border: none;
-  font: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  color: var(--accent);
+.dot[role="button"] {
   cursor: pointer;
-  padding: 0;
-  line-height: inherit;
-  letter-spacing: inherit;
   transition: opacity 0.15s;
 }
 
-.dot--btn:hover {
+.dot[role="button"]:hover {
   opacity: 0.75;
 }
 

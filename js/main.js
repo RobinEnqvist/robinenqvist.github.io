@@ -49,5 +49,6 @@ function closePopup() {
 }
 
 dotBtn?.addEventListener('click', openPopup);
+dotBtn?.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openPopup(); });
 dotClose?.addEventListener('click', closePopup);
 dotBackdrop?.addEventListener('click', closePopup);
