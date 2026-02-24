@@ -8,7 +8,7 @@
 }
 
 :root {
-  --bg: #0d0d0d;
+  --bg: #000000;
   --text: #ffffff;
   --accent: #e74c3c;
   --muted: rgba(255, 255, 255, 0.6);
