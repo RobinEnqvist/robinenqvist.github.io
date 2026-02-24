@@ -60,7 +60,7 @@
   <section class="hero" id="home-section">
     <div class="hero__bg"></div>
     <div class="hero__content">
-      <h1 class="hero__title">GROW<span class="dot">.</span></h1>
+      <h1 class="hero__title">GROW<button class="dot dot--btn" id="dotBtn" aria-label="Open easter egg">.</button></h1>
       <p class="hero__sub">With Robin Karl Wilhelm</p>
     </div>
   </section>
@@ -174,6 +174,13 @@
       document.addEventListener('touchend', function () { setTimeout(pushTextHighlight, 50); }, false);
     })();
   </script>
+
+  <!-- DOT POPUP -->
+  <div class="dot-popup" id="dotPopup" aria-hidden="true">
+    <button class="dot-popup__close" id="dotClose" aria-label="Close">✕</button>
+    <img src="wronglink-gif/bad-link-dummy.gif" alt="Wrong link" />
+  </div>
+  <div class="dot-popup__backdrop" id="dotBackdrop"></div>
 
   <script src="js/main.js"></script>
 </body>

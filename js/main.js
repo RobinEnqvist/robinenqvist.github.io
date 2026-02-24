@@ -27,5 +27,27 @@ mobileLinks.forEach(link => {
 
 // Close on Escape key
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeNav();
+  if (e.key === 'Escape') { closeNav(); closePopup(); }
 });
+
+// Dot popup
+const dotBtn = document.getElementById('dotBtn');
+const dotPopup = document.getElementById('dotPopup');
+const dotBackdrop = document.getElementById('dotBackdrop');
+const dotClose = document.getElementById('dotClose');
+
+function openPopup() {
+  dotPopup.classList.add('is-open');
+  dotBackdrop.classList.add('is-open');
+  dotPopup.setAttribute('aria-hidden', 'false');
+}
+
+function closePopup() {
+  dotPopup.classList.remove('is-open');
+  dotBackdrop.classList.remove('is-open');
+  dotPopup.setAttribute('aria-hidden', 'true');
+}
+
+dotBtn?.addEventListener('click', openPopup);
+dotClose?.addEventListener('click', closePopup);
+dotBackdrop?.addEventListener('click', closePopup);
