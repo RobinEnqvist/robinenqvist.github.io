@@ -418,6 +418,132 @@ img {
 }
 
 /* ============================================================
+   LEAD MAGNET
+   ============================================================ */
+.lead-magnet {
+  padding: 100px 0;
+  border-top: 1px solid var(--border);
+  background: #0a0a0a;
+}
+
+.lead-magnet__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.lead-magnet__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.lead-magnet__title {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+
+.lead-magnet__sub {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.lead-magnet__desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 44ch;
+}
+
+.lead-magnet__form-wrap {
+  background: #111111;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 40px;
+}
+
+.lead-magnet__form-heading {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 0.3px;
+}
+
+.lead-magnet__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lead-magnet__input {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.lead-magnet__input::placeholder {
+  color: var(--muted);
+}
+
+.lead-magnet__input:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.lead-magnet__submit {
+  width: 100%;
+  padding: 13px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.lead-magnet__success {
+  display: none;
+}
+
+.lead-magnet__success.is-visible {
+  display: block;
+}
+
+.lead-magnet__success-text {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.lead-magnet__download {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 13px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.lead-magnet__privacy {
+  margin-top: 14px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.3px;
+}
+
+/* ============================================================
    CTA
    ============================================================ */
 .cta {
@@ -551,6 +677,11 @@ img {
 
   .feature__text {
     padding: 48px 32px;
+  }
+
+  .lead-magnet__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
   }
 
   .cta__inner {
