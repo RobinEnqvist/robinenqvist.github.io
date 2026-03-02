@@ -52,6 +52,8 @@ function openPopup() {
   dotPopup.classList.add('is-open');
   dotBackdrop.classList.add('is-open');
   dotPopup.setAttribute('aria-hidden', 'false');
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'dot_popup_open' });
 }
 
 function closePopup() {
