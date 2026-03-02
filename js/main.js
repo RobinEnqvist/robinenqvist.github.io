@@ -99,6 +99,16 @@ dotBackdrop?.addEventListener('click', closePopup);
   }
 })();
 
+// Name day (Swedish)
+(function () {
+  const el = document.getElementById('nameDayEl');
+  if (!el) return;
+  fetch('https://nameday.abalin.net/api/V1/today?timezone=Europe/Stockholm')
+    .then(r => r.json())
+    .then(data => { el.textContent = data.nameday.se || '—'; })
+    .catch(() => { el.textContent = '—'; });
+})();
+
 // Lead magnet – email capture
 (function () {
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2JxC5paFWhOneZWoOsmCo6UiRR-1ewL_Tsssw3OdfEVZosHmFxJ-KldSLZ8C7Mb0/exec';
