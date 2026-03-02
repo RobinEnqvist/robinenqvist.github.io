@@ -103,9 +103,9 @@ dotBackdrop?.addEventListener('click', closePopup);
 (function () {
   const el = document.getElementById('nameDayEl');
   if (!el) return;
-  fetch('https://nameday.abalin.net/api/V1/today?timezone=Europe/Stockholm')
+  fetch('https://nameday.abalin.net/api/V2/today?country=se')
     .then(r => r.json())
-    .then(data => { el.textContent = data.nameday.se || '—'; })
+    .then(data => { el.textContent = data.data.se || '—'; })
     .catch(() => { el.textContent = '—'; });
 })();
 
