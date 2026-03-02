@@ -53,6 +53,40 @@ dotBtn?.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === 
 dotClose?.addEventListener('click', closePopup);
 dotBackdrop?.addEventListener('click', closePopup);
 
+// Location distance
+(function () {
+  const OFFICE_LAT = 59.3390;
+  const OFFICE_LNG = 18.0726;
+
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  const distanceEl = document.getElementById('locationDistance');
+  if (!distanceEl) return;
+
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const km = haversineKm(coords.latitude, coords.longitude, OFFICE_LAT, OFFICE_LNG);
+        const label = km < 1
+          ? `${Math.round(km * 1000)} m from here`
+          : `${Math.round(km).toLocaleString()} km from here`;
+        distanceEl.textContent = `You are ${label}.`;
+      },
+      () => { distanceEl.textContent = 'Stockholm, Sweden'; }
+    );
+  } else {
+    distanceEl.textContent = 'Stockholm, Sweden';
+  }
+})();
+
 // Lead magnet – email capture
 (function () {
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2JxC5paFWhOneZWoOsmCo6UiRR-1ewL_Tsssw3OdfEVZosHmFxJ-KldSLZ8C7Mb0/exec';

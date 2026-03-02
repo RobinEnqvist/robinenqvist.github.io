@@ -48,6 +48,7 @@
       <li><a href="#create" class="nav-mobile__link">CREATE</a></li>
       <li><a href="#grow" class="nav-mobile__link">GROW</a></li>
       <li><a href="#story" class="nav-mobile__link">STORY</a></li>
+      <li><a href="#extensions" class="nav-mobile__link">EXTENSIONS</a></li>
     </ul>
   </div>
 
@@ -169,6 +170,41 @@
     </div>
   </section>
 
+  <!-- EXTENSIONS -->
+  <section class="extensions" id="extensions">
+    <div class="container">
+      <div class="extensions__inner">
+
+        <div class="extensions__info">
+          <span class="extensions__label">EXTENSIONS</span>
+          <h2 class="extensions__title">TIME TRACKER</h2>
+          <p class="extensions__sub">See exactly where your time goes online.</p>
+          <p class="extensions__desc">A lightweight Chrome extension that silently tracks how long you spend on each website and visualises it in a clean, minimal popup. No accounts, no cloud — your data stays in your browser.</p>
+          <a class="btn btn--primary extensions__download" href="/time-tracker-extension/time-tracker.zip" download="time-tracker.zip">Download for Chrome</a>
+        </div>
+
+        <div class="extensions__install">
+          <p class="extensions__install-heading">HOW TO INSTALL</p>
+          <ol class="install-steps">
+            <li class="install-steps__item">
+              <span class="install-steps__num">01</span>
+              <span class="install-steps__text">Download and unzip the file above</span>
+            </li>
+            <li class="install-steps__item">
+              <span class="install-steps__num">02</span>
+              <span class="install-steps__text">Go to <code>chrome://extensions</code> and enable <strong>Developer mode</strong> (top-right toggle)</span>
+            </li>
+            <li class="install-steps__item">
+              <span class="install-steps__num">03</span>
+              <span class="install-steps__text">Click <strong>Load unpacked</strong> and select the unzipped folder</span>
+            </li>
+          </ol>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="cta">
     <div class="container">
@@ -178,6 +214,34 @@
           <a class="btn btn--primary" href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">Join Today</a>
           <a class="btn btn--outline" href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">Contact me</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="location">
+    <div class="container">
+      <div class="location__inner">
+
+        <div class="location__info">
+          <span class="location__label">LOCATION</span>
+          <p class="location__address">Birger Jarlsgatan 57 C<br>113 56 Stockholm</p>
+          <p class="location__distance" id="locationDistance">Locating you…</p>
+          <a class="location__directions"
+             href="https://maps.google.com/?q=Birger+Jarlsgatan+57+C,+113+56+Stockholm"
+             target="_blank" rel="noopener">Get directions →</a>
+        </div>
+
+        <div class="location__map">
+          <iframe
+            src="https://www.google.com/maps/embed/v1/place?key=YOUR_MAPS_API_KEY&q=Birger+Jarlsgatan+57+C,+113+56+Stockholm,+Sweden&zoom=15"
+            width="100%" height="320" style="border:0;"
+            allowfullscreen loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Office location map">
+          </iframe>
+        </div>
+
       </div>
     </div>
   </section>
