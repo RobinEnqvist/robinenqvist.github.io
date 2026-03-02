@@ -23,6 +23,18 @@ navClose?.addEventListener('click', closeNav);
 
 mobileLinks.forEach(link => {
   link.addEventListener('click', closeNav);
+  link.addEventListener('click', () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'nav_click', link: link.textContent.trim() });
+  });
+});
+
+// Analytics – red button clicks
+document.querySelectorAll('.btn--primary').forEach(btn => {
+  btn.addEventListener('click', () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'cta_click', button: btn.textContent.trim() });
+  });
 });
 
 // Close on Escape key
