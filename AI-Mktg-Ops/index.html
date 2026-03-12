@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Marketing OS — Growth Marketing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:        #0D0D0B;
+    --surface:   #141410;
+    --surface2:  #1A1A16;
+    --surface3:  #222218;
+    --ink:       #F0EDE8;
+    --ink2:      #8A8070;
+    --amber:     #C8860A;
+    --amber-lt:  #F5C842;
+    --amber-dim: rgba(200,134,10,0.12);
+    --amber-glow:rgba(245,200,66,0.08);
+    --green:     #3FB950;
+    --border:    #2A2820;
+    --border2:   #333028;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; min-height:100vh; }
+
+  /* ── API KEY BAR ── */
+  .key-bar {
+    background: #0A0A0F;
+    border-bottom: 1px solid rgba(245,200,66,0.1);
+    padding: 8px 32px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .key-bar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--amber); white-space: nowrap; flex-shrink: 0;
+  }
+  .key-bar input {
+    flex: 1; max-width: 460px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(245,200,66,0.15); border-radius: 4px;
+    padding: 6px 12px; color: #888;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; outline: none;
+    transition: all 0.2s;
+  }
+  .key-bar input:focus { border-color: rgba(245,200,66,0.4); color: var(--ink); }
+  .key-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: #444; white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .key-status.ok { color: var(--green); }
+  .key-help {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: #333; margin-left: auto;
+    letter-spacing: 0.5px;
+  }
+  .key-help a { color: #444; text-decoration: none; }
+  .key-help a:hover { color: var(--amber); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 64px 56px;
+    border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(200,134,10,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+  }
+  .hero-badge {
+    background: var(--amber); color: var(--bg);
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+    letter-spacing: 2px; padding: 4px 10px; border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .hero-eyebrow-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink2); letter-spacing: 1px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -1px; margin-bottom: 16px;
+  }
+  .hero-title .line2 { color: var(--amber); font-style: italic; }
+  .hero-sub {
+    font-size: 16px; color: var(--ink2); max-width: 580px;
+    line-height: 1.65; font-weight: 300; margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: flex; gap: 40px; flex-wrap: wrap;
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; color: var(--amber-lt);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--ink2); letter-spacing: 1.5px;
+    text-transform: uppercase; margin-top: 4px;
+  }
+
+  /* ── MAIN GRID ── */
+  .main { padding: 48px 64px 80px; }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--ink2); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border2);
+  }
+
+  /* ── AGENT CARDS ── */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px; margin-bottom: 56px;
+  }
+
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 10px; padding: 28px 24px;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: all 0.2s; position: relative;
+    overflow: hidden;
+  }
+  .agent-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--card-accent, var(--amber));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .agent-card:hover { background: var(--surface2); border-color: var(--border); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .agent-card:hover::before { transform: scaleX(1); }
+
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--ink2); letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .card-icon {
+    width: 40px; height: 40px;
+    background: var(--amber-dim); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 14px;
+    border: 1px solid rgba(200,134,10,0.15);
+  }
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 6px; line-height: 1.2;
+  }
+  .card-desc {
+    font-size: 13px; color: var(--ink2);
+    line-height: 1.6; font-weight: 300; flex: 1;
+    margin-bottom: 20px;
+  }
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--amber);
+    letter-spacing: 1px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-cta-arrow { transition: transform 0.2s; }
+  .agent-card:hover .card-cta-arrow { transform: translateX(4px); }
+  .card-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; padding: 3px 8px; border-radius: 3px;
+    border: 1px solid var(--border2); color: var(--ink2);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── DOCS SECTION ── */
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px; margin-bottom: 56px;
+  }
+  .doc-card {
+    background: var(--surface);
+    border: 1px solid var(--border2); border-radius: 8px;
+    padding: 18px 20px; text-decoration: none; color: inherit;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: all 0.2s;
+  }
+  .doc-card:hover { background: var(--surface2); border-color: var(--border); }
+  .doc-icon {
+    font-size: 20px; flex-shrink: 0; margin-top: 2px; opacity: 0.7;
+  }
+  .doc-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+  .doc-sub { font-size: 11px; color: var(--ink2); line-height: 1.4; }
+
+  /* ── ECOSYSTEM CARD ── */
+  .eco-card {
+    background: var(--surface);
+    border: 1px solid var(--border2); border-radius: 10px;
+    padding: 28px; display: flex; align-items: center;
+    justify-content: space-between; gap: 24px;
+    text-decoration: none; color: inherit;
+    transition: all 0.2s; margin-bottom: 56px;
+  }
+  .eco-card:hover { background: var(--surface2); border-color: var(--border); }
+  .eco-left { display: flex; align-items: center; gap: 18px; }
+  .eco-icon {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--amber-dim), transparent);
+    border: 1px solid rgba(200,134,10,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .eco-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; margin-bottom:4px; }
+  .eco-desc { font-size:13px; color:var(--ink2); font-weight:300; }
+  .eco-cta {
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    color:var(--amber); letter-spacing:1px; text-transform:uppercase;
+    display:flex; align-items:center; gap:6px; white-space:nowrap;
+    flex-shrink:0;
+  }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-section { margin-bottom: 56px; }
+  .flow-track {
+    display: flex; align-items: stretch; gap: 0;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 10px; overflow: hidden;
+  }
+  .flow-node {
+    flex: 1; padding: 20px 18px; position: relative;
+    border-right: 1px solid var(--border2);
+  }
+  .flow-node:last-child { border-right: none; }
+  .flow-node-num {
+    font-family:'JetBrains Mono',monospace; font-size:9px;
+    color:var(--amber); letter-spacing:1px; margin-bottom:6px;
+  }
+  .flow-node-name { font-size:13px; font-weight:600; margin-bottom:4px; }
+  .flow-node-desc { font-size:11px; color:var(--ink2); line-height:1.45; }
+  .flow-arrow {
+    position:absolute; right:-10px; top:50%;
+    transform:translateY(-50%); z-index:1;
+    font-size:12px; color:var(--amber);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink2); letter-spacing: 1px;
+  }
+  .footer-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: #333; letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 40px 24px 36px; }
+    .main { padding: 32px 24px 48px; }
+    footer { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    .hero-stats { gap: 24px; }
+    .flow-track { flex-direction: column; }
+    .flow-node { border-right: none; border-bottom: 1px solid var(--border2); }
+    .flow-node:last-child { border-bottom: none; }
+    .flow-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- API KEY BAR -->
+<div class="key-bar">
+  <div class="key-bar-label">API Key</div>
+  <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-…   Enter once, used across all builders (stored in browser only)" autocomplete="off">
+  <span class="key-status" id="keyStatus">Not set</span>
+  <div class="key-help">Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <div class="hero-badge">Growth Marketing</div>
+    <div class="hero-eyebrow-text">AI Marketing OS · Internal Tool Dashboard</div>
+  </div>
+  <div class="hero-title">
+    Your brand.<br>
+    <span class="line2">Run by AI.</span><br>
+    Managed by you.
+  </div>
+  <p class="hero-sub">Four intelligent agents working continuously across paid social, paid search, creative and analytics. Enter your API key above once to power all the builders below.</p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">AI Agents</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Always On</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">~4wk</div>
+      <div class="stat-label">To Full Autonomy</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">£2-5K</div>
+      <div class="stat-label">Monthly Retainer</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- AGENT BUILDERS -->
+  <div class="section-title">Agent Prompt Builders</div>
+  <div class="agent-grid">
+
+    <a href="research-agent-builder.html" class="agent-card" style="--card-accent:#00B4D8">
+      <div class="card-num">AGENT · 01 / 04</div>
+      <div class="card-icon">🔍</div>
+      <div class="card-name">Research Agent</div>
+      <div class="card-desc">Monitors competitors, trend signals, and audience shifts. Feeds intelligence into Creative and Media Buying continuously.</div>
+      <div class="card-footer">
+        <div class="card-cta">Build prompt <span class="card-cta-arrow">→</span></div>
+        <div class="card-tag">Prompt Builder</div>
+      </div>
+    </a>
+
+    <a href="creative-agent-builder.html" class="agent-card" style="--card-accent:#F5C842">
+      <div class="card-num">AGENT · 02 / 04</div>
+      <div class="card-icon">✏️</div>
+      <div class="card-name">Creative Agent</div>
+      <div class="card-desc">Generates ad copy, hooks, and headlines to platform spec. Produces multiple variants ready for immediate A/B testing.</div>
+      <div class="card-footer">
+        <div class="card-cta">Build prompt <span class="card-cta-arrow">→</span></div>
+        <div class="card-tag">Prompt Builder</div>
+      </div>
+    </a>
+
+    <a href="analytics-agent-builder.html" class="agent-card" style="--card-accent:#3FB950">
+      <div class="card-num">AGENT · 03 / 04</div>
+      <div class="card-icon">📊</div>
+      <div class="card-name">Analytics Agent</div>
+      <div class="card-desc">The feedback engine. Monitors performance, detects anomalies, and routes insights back to all other agents automatically.</div>
+      <div class="card-footer">
+        <div class="card-cta">Build prompt <span class="card-cta-arrow">→</span></div>
+        <div class="card-tag">Prompt Builder</div>
+      </div>
+    </a>
+
+    <a href="media-buying-agent-builder.html" class="agent-card" style="--card-accent:#F0883E">
+      <div class="card-num">AGENT · 04 / 04</div>
+      <div class="card-icon">⚡</div>
+      <div class="card-name">Media Buying Agent</div>
+      <div class="card-desc">Deploys capital across Meta, Google, and TikTok. Bidding, budgeting, and optimisation — with hard stops you control.</div>
+      <div class="card-footer">
+        <div class="card-cta">Build prompt <span class="card-cta-arrow">→</span></div>
+        <div class="card-tag">Prompt Builder</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ECOSYSTEM BLUEPRINT -->
+  <div class="section-title">Ecosystem Overview</div>
+  <a href="ai-marketing-ecosystem.html" class="eco-card">
+    <div class="eco-left">
+      <div class="eco-icon">🗺</div>
+      <div>
+        <div class="eco-title">AI Marketing Ecosystem Blueprint</div>
+        <div class="eco-desc">Interactive architecture overview — the full system visualised with agent relationships, tech stack, and implementation roadmap.</div>
+      </div>
+    </div>
+    <div class="eco-cta">Open Blueprint <span>→</span></div>
+  </a>
+
+  <!-- AGENT FLOW -->
+  <div class="flow-section">
+    <div class="section-title">How the Agents Connect</div>
+    <div class="flow-track">
+      <div class="flow-node">
+        <div class="flow-node-num">01 RESEARCH</div>
+        <div class="flow-node-name">Monitors & Discovers</div>
+        <div class="flow-node-desc">Trends, competitor moves, audience signals → briefs Creative</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-node-num">02 CREATIVE</div>
+        <div class="flow-node-name">Generates & Variants</div>
+        <div class="flow-node-desc">Copy, hooks, headlines to spec → feeds Media Buying</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-node-num">03 MEDIA BUYING</div>
+        <div class="flow-node-name">Deploys & Optimises</div>
+        <div class="flow-node-desc">Bids, budgets, scales winners → reports to Analytics</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-node-num">04 ANALYTICS</div>
+        <div class="flow-node-name">Measures & Routes</div>
+        <div class="flow-node-desc">Performance signals → back to Research, Creative & Buying ↺</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT DOCS -->
+  <div class="section-title">Client Documents</div>
+  <div class="docs-grid">
+    <div class="doc-card">
+      <div class="doc-icon">📋</div>
+      <div>
+        <div class="doc-name">Client Onboarding Constitution</div>
+        <div class="doc-sub">Fill in with new clients. Becomes the brain every agent reads from. Download from repo.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-icon">📊</div>
+      <div>
+        <div class="doc-name">Pitch Deck</div>
+        <div class="doc-sub">9-slide client-facing deck. "Your brand. Run by AI. Managed by us." Download from repo.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-icon">🗂</div>
+      <div>
+        <div class="doc-name">Prompt Log</div>
+        <div class="doc-sub">Version history for all agent prompts. Track iterations and output quality scores.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-icon">⚡</div>
+      <div>
+        <div class="doc-name">Quick Reference</div>
+        <div class="doc-sub">Daily cheat sheet. 4-agent summary, session startup steps, escalation triggers.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-brand">Growth Marketing · AI Marketing OS · Internal Dashboard</div>
+  <div class="footer-note">API key stored in browser localStorage only — never in code, never on server</div>
+</footer>
+
+<script>
+  // ── API KEY — shared across all builders via localStorage ──
+  (function() {
+    const input  = document.getElementById('apiKeyInput');
+    const status = document.getElementById('keyStatus');
+    const STORE  = 'gm_api_key';
+
+    function updateStatus(key) {
+      if (key && key.startsWith('sk-ant')) {
+        status.textContent = 'Key active ✓';
+        status.className   = 'key-status ok';
+      } else if (key) {
+        status.textContent = 'Invalid format';
+        status.className   = 'key-status';
+      } else {
+        status.textContent = 'Not set';
+        status.className   = 'key-status';
+      }
+    }
+
+    // Load saved key on open
+    const saved = localStorage.getItem(STORE) || '';
+    if (saved) { input.value = saved; updateStatus(saved); }
+
+    // Save on every keystroke
+    input.addEventListener('input', () => {
+      const val = input.value.trim();
+      if (val) localStorage.setItem(STORE, val);
+      else     localStorage.removeItem(STORE);
+      updateStatus(val);
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Marketing Ecosystem</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #080A0F;
+    --surface: #0D1117;
+    --surface2: #141B24;
+    --accent: #00FF88;
+    --accent2: #0088FF;
+    --accent3: #FF6B35;
+    --accent4: #A855F7;
+    --text: #E8EDF2;
+    --muted: #5A6478;
+    --border: rgba(255,255,255,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* Your Role — Center piece */
+  .role-card {
+    background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,136,255,0.08));
+    border: 1px solid rgba(0,255,136,0.25);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    margin: 0 auto 48px;
+    max-width: 560px;
+    position: relative;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .role-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,255,136,0.4), rgba(0,136,255,0.4));
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(8px);
+  }
+
+  .role-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .role-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+
+  .role-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(0,255,136,0.2);
+    animation: pulseRing 2.5s ease infinite;
+    pointer-events: none;
+  }
+
+  @keyframes pulseRing {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(1.06); opacity: 0; }
+  }
+
+  /* Section title */
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Agent grid */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 10px 10px 0 0;
+    transition: opacity 0.25s;
+    opacity: 0.6;
+  }
+
+  .agent-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .agent-card:hover::before { opacity: 1; }
+
+  .agent-card.research::before { background: var(--accent); }
+  .agent-card.creative::before { background: var(--accent3); }
+  .agent-card.buying::before { background: var(--accent2); }
+  .agent-card.analytics::before { background: var(--accent4); }
+
+  .agent-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .agent-card.research .agent-icon { background: rgba(0,255,136,0.1); }
+  .agent-card.creative .agent-icon { background: rgba(255,107,53,0.1); }
+  .agent-card.buying .agent-icon { background: rgba(0,136,255,0.1); }
+  .agent-card.analytics .agent-icon { background: rgba(168,85,247,0.1); }
+
+  .agent-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .agent-desc {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .agent-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* Flow diagram */
+  .flow-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+    margin-bottom: 48px;
+  }
+
+  .flow-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .flow-diagram::-webkit-scrollbar { display: none; }
+
+  .flow-step {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    position: relative;
+  }
+
+  .flow-bubble {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin: 0 auto 10px;
+    position: relative;
+  }
+
+  .flow-bubble.you {
+    background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,136,255,0.2));
+    border: 2px solid rgba(0,255,136,0.5);
+  }
+
+  .flow-bubble.agent {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+  }
+
+  .flow-bubble.loop {
+    background: rgba(168,85,247,0.15);
+    border: 1px solid rgba(168,85,247,0.4);
+  }
+
+  .flow-label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .flow-sub {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 18px;
+    flex-shrink: 0;
+    padding: 0 8px;
+    margin-bottom: 26px;
+    animation: arrowPulse 1.5s ease infinite;
+  }
+
+  @keyframes arrowPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* Stack grid */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    animation: fadeUp 0.6s 0.5s ease both;
+    margin-bottom: 48px;
+  }
+
+  .stack-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .stack-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .stack-function {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .stack-tools {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* KPIs */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    animation: fadeUp 0.6s 0.6s ease both;
+    margin-bottom: 48px;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Roadmap */
+  .roadmap {
+    animation: fadeUp 0.6s 0.7s ease both;
+  }
+
+  .phase {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .phase-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .phase-num.p1 { background: rgba(0,255,136,0.15); color: var(--accent); border: 1px solid rgba(0,255,136,0.3); }
+  .phase-num.p2 { background: rgba(0,136,255,0.15); color: var(--accent2); border: 1px solid rgba(0,136,255,0.3); }
+  .phase-num.p3 { background: rgba(255,107,53,0.15); color: var(--accent3); border: 1px solid rgba(255,107,53,0.3); }
+  .phase-num.p4 { background: rgba(168,85,247,0.15); color: var(--accent4); border: 1px solid rgba(168,85,247,0.3); }
+
+  .phase-content { flex: 1; }
+  .phase-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .phase-desc { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+  .phase-timeline {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Status indicator */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 60px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.5s ease infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Active state for agent cards */
+  .agent-card.active {
+    border-color: rgba(255,255,255,0.2);
+    background: var(--surface2);
+  }
+
+  .detail-panel {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-top: 16px;
+    display: none;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .detail-panel.visible { display: block; }
+
+  .detail-item {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .detail-item:last-child { border-bottom: none; }
+
+  .detail-key {
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    min-width: 100px;
+    padding-top: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">AI Marketing Ecosystem</div>
+    <h1>Engineer the<br><span>Environment.</span><br>Let Agents Work.</h1>
+    <p class="subtitle">Your new role isn't doing tasks — it's designing the rules, feedback loops, and goals that autonomous agents operate within.</p>
+  </div>
+
+  <!-- Your Role -->
+  <div class="role-card">
+    <div class="pulse-ring"></div>
+    <div class="role-label">Your New Title</div>
+    <div class="role-title">AI Systems Architect</div>
+    <p class="role-desc">You set goals, constraints, evaluation criteria, and escalation rules. Agents handle research, creative, buying, and optimization — 24/7, at scale.</p>
+  </div>
+
+  <!-- Agents -->
+  <div class="section-title">Intelligence Layer — The Agents</div>
+  <div class="agents-grid" id="agentsGrid">
+
+    <div class="agent-card research" onclick="toggleAgent(this, 'research')">
+      <div class="agent-icon">🔍</div>
+      <div class="agent-name">Research Agent</div>
+      <div class="agent-desc">Monitors competitors, trends, and audience signals continuously. Surfaces insights before they're obvious.</div>
+      <div class="agent-tags">
+        <span class="tag">Meta API</span>
+        <span class="tag">Perplexity</span>
+        <span class="tag">SimilarWeb</span>
+        <span class="tag">Claude</span>
+      </div>
+    </div>
+
+    <div class="agent-card creative" onclick="toggleAgent(this, 'creative')">
+      <div class="agent-icon">✦</div>
+      <div class="agent-name">Creative Agent</div>
+      <div class="agent-desc">Generates copy variants, headlines, and visual concepts. Tests 100x faster than any human team.</div>
+      <div class="agent-tags">
+        <span class="tag">Claude API</span>
+        <span class="tag">DALL-E</span>
+        <span class="tag">Runway</span>
+        <span class="tag">Figma API</span>
+      </div>
+    </div>
+
+    <div class="agent-card buying" onclick="toggleAgent(this, 'buying')">
+      <div class="agent-icon">📡</div>
+      <div class="agent-name">Media Buying Agent</div>
+      <div class="agent-desc">Bids, budgets, and places ads in real time across platforms. Reacts to ROAS signals in minutes, not days.</div>
+      <div class="agent-tags">
+        <span class="tag">Google Ads API</span>
+        <span class="tag">Meta API</span>
+        <span class="tag">TTD</span>
+        <span class="tag">DV360</span>
+      </div>
+    </div>
+
+    <div class="agent-card analytics" onclick="toggleAgent(this, 'analytics')">
+      <div class="agent-icon">⬡</div>
+      <div class="agent-name">Analytics Agent</div>
+      <div class="agent-desc">Reads performance, flags anomalies, and feeds learnings back to creative and buying agents automatically.</div>
+      <div class="agent-tags">
+        <span class="tag">BigQuery</span>
+        <span class="tag">Looker</span>
+        <span class="tag">GA4</span>
+        <span class="tag">Northbeam</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Detail panels -->
+  <div class="detail-panel" id="detail-research">
+    <div class="detail-item"><div class="detail-key">Inputs</div><div>Competitor URLs, ad libraries, keyword lists, brand guidelines</div></div>
+    <div class="detail-item"><div class="detail-key">Outputs</div><div>Trend briefs, creative opportunities, audience segment recommendations</div></div>
+    <div class="detail-item"><div class="detail-key">Your job</div><div>Define what "interesting" looks like. Set the signal vs noise filters.</div></div>
+    <div class="detail-item"><div class="detail-key">Cadence</div><div>Continuous — runs 24/7, reports weekly digest to you</div></div>
+  </div>
+  <div class="detail-panel" id="detail-creative">
+    <div class="detail-item"><div class="detail-key">Inputs</div><div>Brand voice doc, winning ad data, audience personas, seasonal context</div></div>
+    <div class="detail-item"><div class="detail-key">Outputs</div><div>50–200 copy variants per cycle, A/B test matrices, visual briefs</div></div>
+    <div class="detail-item"><div class="detail-key">Your job</div><div>Write the brand voice system prompt. Set approval thresholds.</div></div>
+    <div class="detail-item"><div class="detail-key">Cadence</div><div>On-demand + triggered by Analytics Agent when CTR drops</div></div>
+  </div>
+  <div class="detail-panel" id="detail-buying">
+    <div class="detail-item"><div class="detail-key">Inputs</div><div>Budget constraints, ROAS targets, audience exclusions, creative assets</div></div>
+    <div class="detail-item"><div class="detail-key">Outputs</div><div>Campaign adjustments, budget reallocation, bid changes, pause/scale decisions</div></div>
+    <div class="detail-item"><div class="detail-key">Your job</div><div>Set the guardrails: max CPA, min ROAS, brand safety, spend caps</div></div>
+    <div class="detail-item"><div class="detail-key">Cadence</div><div>Real-time bidding, hourly budget review, daily reporting</div></div>
+  </div>
+  <div class="detail-panel" id="detail-analytics">
+    <div class="detail-item"><div class="detail-key">Inputs</div><div>Ad platform data, GA4, CRM, revenue data, attribution model</div></div>
+    <div class="detail-item"><div class="detail-key">Outputs</div><div>Performance alerts, creative fatigue signals, audience insights, weekly P&L</div></div>
+    <div class="detail-item"><div class="detail-key">Your job</div><div>Define success metrics. Decide attribution model. Set anomaly thresholds.</div></div>
+    <div class="detail-item"><div class="detail-key">Cadence</div><div>Real-time monitoring, triggers alerts to other agents automatically</div></div>
+  </div>
+
+  <!-- Flow -->
+  <div class="flow-section">
+    <div class="section-title">Orchestration Flow</div>
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="flow-bubble you">🎯</div>
+        <div class="flow-label">You</div>
+        <div class="flow-sub">Set goals</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-bubble agent">🔍</div>
+        <div class="flow-label">Research</div>
+        <div class="flow-sub">Find signals</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-bubble agent">✦</div>
+        <div class="flow-label">Creative</div>
+        <div class="flow-sub">Generate assets</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-bubble agent">📡</div>
+        <div class="flow-label">Buying</div>
+        <div class="flow-sub">Deploy + bid</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-bubble agent">⬡</div>
+        <div class="flow-label">Analytics</div>
+        <div class="flow-sub">Measure output</div>
+      </div>
+      <div class="flow-arrow">↺</div>
+      <div class="flow-step">
+        <div class="flow-bubble loop">🔄</div>
+        <div class="flow-label">Feedback</div>
+        <div class="flow-sub">Loop to creative</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stack -->
+  <div class="section-title">Recommended Tech Stack</div>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-dot" style="background:var(--accent)"></div>
+      <div>
+        <div class="stack-function">Orchestration</div>
+        <div class="stack-tools">n8n · LangGraph · CrewAI</div>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-dot" style="background:var(--accent2)"></div>
+      <div>
+        <div class="stack-function">LLM Backbone</div>
+        <div class="stack-tools">Claude API · GPT-4o</div>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-dot" style="background:var(--accent3)"></div>
+      <div>
+        <div class="stack-function">Ad Platforms</div>
+        <div class="stack-tools">Meta API · Google Ads API · DV360</div>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-dot" style="background:var(--accent4)"></div>
+      <div>
+        <div class="stack-function">Creative Gen</div>
+        <div class="stack-tools">Claude · DALL-E · Runway ML</div>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-dot" style="background:var(--accent)"></div>
+      <div>
+        <div class="stack-function">Data Warehouse</div>
+        <div class="stack-tools">BigQuery · Supabase · dbt</div>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-dot" style="background:var(--accent2)"></div>
+      <div>
+        <div class="stack-function">Workflow Glue</div>
+        <div class="stack-tools">Make.com · Zapier · n8n</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="section-title">What You Unlock</div>
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-value" style="color:var(--accent)">100×</div>
+      <div class="kpi-label">Creative Variants</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color:var(--accent2)">24/7</div>
+      <div class="kpi-label">Optimization</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color:var(--accent3)">–80%</div>
+      <div class="kpi-label">Grunt Work</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color:var(--accent4)">∞</div>
+      <div class="kpi-label">Scalability</div>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <div class="roadmap">
+    <div class="section-title">Implementation Roadmap</div>
+
+    <div class="phase">
+      <div class="phase-num p1">01</div>
+      <div class="phase-content">
+        <div class="phase-title">Foundation — The Brain</div>
+        <div class="phase-desc">Write your brand voice system prompt. Document audience personas, ROAS targets, CPA limits, and brand safety rules. This is your agent "constitution."</div>
+        <div class="phase-timeline">Week 1–2 · No code required</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num p2">02</div>
+      <div class="phase-content">
+        <div class="phase-title">Connect — APIs & Data</div>
+        <div class="phase-desc">Hook up Meta + Google Ads APIs. Pipe data into BigQuery or Supabase. Set up n8n or Make.com as your workflow backbone.</div>
+        <div class="phase-timeline">Week 3–5 · Low-code tools accelerate this</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num p3">03</div>
+      <div class="phase-content">
+        <div class="phase-title">Deploy — First Agent Loop</div>
+        <div class="phase-desc">Start with Analytics + Creative only. Automate weekly creative refresh based on CTR data. Get comfortable with the feedback loop before adding buying automation.</div>
+        <div class="phase-timeline">Week 6–8 · Human approval gates on</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num p4">04</div>
+      <div class="phase-content">
+        <div class="phase-title">Scale — Full Autonomy</div>
+        <div class="phase-desc">Remove approval gates where trust is established. Add Research Agent. Let the loop run. Your job becomes monitoring the system and evolving the strategy.</div>
+        <div class="phase-timeline">Month 3+ · Architect mode unlocked</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="status-bar">
+    <div class="status-dot"></div>
+    Ecosystem blueprint generated — click any agent card to expand its spec
+  </div>
+
+</div>
+
+<script>
+  const agentMap = {
+    research: 'detail-research',
+    creative: 'detail-creative',
+    buying: 'detail-buying',
+    analytics: 'detail-analytics'
+  };
+
+  let activeAgent = null;
+
+  function toggleAgent(card, type) {
+    const panelId = agentMap[type];
+    const panel = document.getElementById(panelId);
+    const allPanels = document.querySelectorAll('.detail-panel');
+    const allCards = document.querySelectorAll('.agent-card');
+
+    if (activeAgent === type) {
+      // Close
+      panel.classList.remove('visible');
+      card.classList.remove('active');
+      activeAgent = null;
+    } else {
+      // Close all
+      allPanels.forEach(p => p.classList.remove('visible'));
+      allCards.forEach(c => c.classList.remove('active'));
+      // Open this
+      panel.classList.add('visible');
+      card.classList.add('active');
+      activeAgent = type;
+      // Scroll into view
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    }
+  }
+</script>
+</body>
+</html>

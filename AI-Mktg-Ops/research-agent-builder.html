@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Agent Prompt Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --ink: #1A1208;
+    --paper: #F5F0E8;
+    --paper2: #EDE8DC;
+    --paper3: #E3DDD0;
+    --amber: #C8860A;
+    --amber-light: #F5C842;
+    --amber-dim: rgba(200,134,10,0.12);
+    --red: #C0392B;
+    --green: #1A6B3C;
+    --muted: #7A7060;
+    --border: rgba(26,18,8,0.12);
+    --shadow: 0 2px 16px rgba(26,18,8,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* LEFT PANEL — Form */
+  .form-panel {
+    padding: 48px 40px;
+    border-right: 1px solid var(--border);
+    background: var(--paper);
+    overflow-y: auto;
+    max-height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--ink);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--amber-light);
+    font-size: 14px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+
+  .logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 34px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+
+  h1 em {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  .intro {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 28px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-num {
+    width: 18px;
+    height: 18px;
+    background: var(--amber);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    background: var(--paper2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+    appearance: none;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px var(--amber-dim);
+  }
+
+  textarea { min-height: 72px; }
+
+  .field-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .field-group.single { grid-template-columns: 1fr; }
+
+  .field-wrap { margin-bottom: 10px; }
+
+  /* Chips */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .chip {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--paper2);
+    font-family: 'DM Sans', sans-serif;
+    user-select: none;
+  }
+
+  .chip.selected {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* Generate button */
+  .generate-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--amber-light);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 32px;
+    text-transform: uppercase;
+  }
+
+  .generate-btn:hover {
+    background: #2D2418;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(26,18,8,0.2);
+  }
+
+  .generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(245,200,66,0.3);
+    border-top-color: var(--amber-light);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+
+  .spinner.active { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RIGHT PANEL — Output */
+  .output-panel {
+    padding: 48px 40px;
+    background: var(--paper3);
+    overflow-y: auto;
+    max-height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .output-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .output-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+
+  .copy-btn {
+    padding: 7px 16px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  .copy-btn.copied {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  /* Prompt output */
+  .prompt-output {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--ink);
+    min-height: 400px;
+    white-space: pre-wrap;
+    position: relative;
+  }
+
+  .placeholder-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+    gap: 14px;
+    color: var(--muted);
+  }
+
+  .placeholder-icon {
+    font-size: 40px;
+    opacity: 0.4;
+  }
+
+  .placeholder-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-style: italic;
+    opacity: 0.5;
+  }
+
+  .placeholder-sub {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+    opacity: 0.4;
+  }
+
+  /* Syntax highlighting */
+  .section-header {
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  .comment { color: var(--muted); }
+
+  /* Sections breakdown */
+  .breakdown {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .breakdown-item {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .breakdown-item:hover { border-color: rgba(200,134,10,0.3); }
+
+  .bi-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: var(--amber-dim);
+    color: var(--amber);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .bi-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .bi-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* Status */
+  .status-msg {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  .status-dot.thinking {
+    background: var(--amber);
+    animation: blink 0.8s ease infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .error-msg {
+    color: var(--red);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(192,57,43,0.05);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: 6px;
+  }
+
+  /* Streaming cursor */
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 14px;
+    background: var(--amber);
+    animation: blink 0.8s ease infinite;
+    vertical-align: middle;
+    margin-left: 1px;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .form-panel, .output-panel { max-height: none; position: relative; }
+    .form-panel { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+
+/* ── SHARED API KEY BAR ── */
+.api-key-bar {
+  background: #1a1a2e;
+  border-bottom: 1px solid rgba(255,200,50,0.15);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: monospace;
+  font-size: 12px;
+}
+.api-key-bar label {
+  color: #F5C842;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+  font-weight: 600;
+}
+.api-key-bar input {
+  flex: 1;
+  max-width: 420px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,200,50,0.2);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: #aaa;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  outline: none;
+}
+.api-key-bar input:focus { border-color: rgba(255,200,50,0.5); color: #fff; }
+.api-key-bar .key-status {
+  font-size: 10px;
+  color: #555;
+  white-space: nowrap;
+}
+.api-key-bar .key-status.ok { color: #3FB950; }
+.api-key-bar .back-link {
+  margin-left: auto;
+  color: rgba(255,200,50,0.6);
+  font-size: 10px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,200,50,0.15);
+  padding: 3px 10px;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.api-key-bar .back-link:hover { color: #F5C842; border-color: rgba(255,200,50,0.4); }
+
+</style>
+</head>
+<body>
+<div class="api-key-bar">
+  <label>API Key</label>
+  <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-…  (stored in browser only, never in code)" autocomplete="off">
+  <span class="key-status" id="keyStatus">Not set</span>
+  <a href="index.html" class="back-link">← Dashboard</a>
+</div>
+
+
+<div class="layout">
+  <!-- LEFT: FORM -->
+  <div class="form-panel">
+    <div class="logo">
+      <div class="logo-mark">RA</div>
+      <div>
+        <div class="logo-text">Research Agent Builder</div>
+        <div class="logo-sub">Prompt Engineering Studio</div>
+      </div>
+    </div>
+
+    <h1>Build your<br><em>Research Agent</em><br>system prompt.</h1>
+    <p class="intro">Fill in your brand context. Claude will engineer a production-ready system prompt you can deploy immediately.</p>
+
+    <!-- 1. Identity -->
+    <div class="section">
+      <div class="section-label"><div class="section-num">1</div> Brand Identity</div>
+      <div class="field-wrap">
+        <label>Brand / Company Name</label>
+        <input type="text" id="brandName" placeholder="e.g. Allbirds, Notion, Your Brand Co.">
+      </div>
+      <div class="field-wrap">
+        <label>Industry & Category</label>
+        <input type="text" id="industry" placeholder="e.g. D2C footwear, B2B SaaS, Health & Wellness">
+      </div>
+      <div class="field-wrap">
+        <label>Who is your customer?</label>
+        <textarea id="audience" placeholder="e.g. 25-40 year old urban professionals who prioritize sustainability and are willing to pay premium for quality..." rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- 2. Competitive Landscape -->
+    <div class="section">
+      <div class="section-label"><div class="section-num">2</div> Competitive Landscape</div>
+      <div class="field-wrap">
+        <label>Top 3–5 competitors (comma separated)</label>
+        <input type="text" id="competitors" placeholder="e.g. Nike, Veja, On Running, New Balance">
+      </div>
+      <div class="field-wrap">
+        <label>What do they do better than you right now?</label>
+        <textarea id="compStrengths" placeholder="e.g. Nike dominates performance messaging, Veja owns sustainability narrative..." rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- 3. Research Focus -->
+    <div class="section">
+      <div class="section-label"><div class="section-num">3</div> Research Focus Areas</div>
+      <label style="margin-bottom:8px">What should this agent monitor? (select all that apply)</label>
+      <div class="chips" id="focusChips">
+        <div class="chip selected" data-val="competitor_ads">Competitor Ads</div>
+        <div class="chip selected" data-val="creative_trends">Creative Trends</div>
+        <div class="chip" data-val="audience_sentiment">Audience Sentiment</div>
+        <div class="chip" data-val="search_trends">Search Trends</div>
+        <div class="chip" data-val="influencer_activity">Influencer Activity</div>
+        <div class="chip" data-val="pricing_changes">Pricing Changes</div>
+        <div class="chip" data-val="product_launches">Product Launches</div>
+        <div class="chip" data-val="industry_news">Industry News</div>
+        <div class="chip" data-val="platform_algo_changes">Platform Algo Changes</div>
+      </div>
+    </div>
+
+    <!-- 4. Signal Filters -->
+    <div class="section">
+      <div class="section-label"><div class="section-num">4</div> Signal vs. Noise</div>
+      <div class="field-wrap">
+        <label>What does a HIGH-VALUE insight look like for you?</label>
+        <textarea id="highSignal" placeholder="e.g. A competitor launching a new campaign angle I haven't tried. An emerging audience pain point with 10k+ mentions. A trend gaining traction before it peaks..." rows="3"></textarea>
+      </div>
+      <div class="field-wrap">
+        <label>What should it IGNORE? (noise filters)</label>
+        <textarea id="noise" placeholder="e.g. Industry awards, generic marketing news, anything not directly relevant to paid social or search performance..." rows="2"></textarea>
+      </div>
+    </div>
+
+    <!-- 5. Output Format -->
+    <div class="section">
+      <div class="section-label"><div class="section-num">5</div> Output Preferences</div>
+      <div class="field-wrap">
+        <label>Report format</label>
+        <select id="outputFormat">
+          <option value="structured_brief">Structured Brief (sections + bullets)</option>
+          <option value="json">JSON (for programmatic use)</option>
+          <option value="scored_insights">Scored Insights (priority 1-10)</option>
+          <option value="action_cards">Action Cards (what to do next)</option>
+        </select>
+      </div>
+      <div class="field-wrap">
+        <label>Reporting cadence instruction</label>
+        <select id="cadence">
+          <option value="daily_digest">Daily Digest</option>
+          <option value="weekly_brief">Weekly Brief</option>
+          <option value="real_time_alerts">Real-time Alerts (trigger-based)</option>
+          <option value="on_demand">On-demand only</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 6. Escalation -->
+    <div class="section">
+      <div class="section-label"><div class="section-num">6</div> Escalation Rules</div>
+      <div class="field-wrap">
+        <label>When must it escalate to you immediately?</label>
+        <textarea id="escalation" placeholder="e.g. If a competitor launches a campaign directly attacking our brand positioning. If a trend is moving faster than 200% week-over-week. If a platform changes ad policy..." rows="3"></textarea>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generateBtn" onclick="generatePrompt()">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnText">Generate System Prompt</span>
+    </button>
+
+    <div id="statusMsg"></div>
+    <div id="errorMsg"></div>
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="output-panel">
+    <div class="output-header">
+      <div class="output-title">Generated System Prompt</div>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()" style="display:none">Copy Prompt</button>
+    </div>
+
+    <div id="outputContainer">
+      <div class="placeholder-state">
+        <div class="placeholder-icon">✦</div>
+        <div class="placeholder-text">Your agent awaits.</div>
+        <div class="placeholder-sub">Fill in the form → Generate</div>
+      </div>
+    </div>
+
+    <div class="breakdown" id="breakdown" style="display:none">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">What Each Section Does</div>
+      <div class="breakdown-item">
+        <div class="bi-num">01</div>
+        <div><div class="bi-title">Identity Block</div><div class="bi-desc">Defines the agent's singular purpose and operating context so it never drifts.</div></div>
+      </div>
+      <div class="breakdown-item">
+        <div class="bi-num">02</div>
+        <div><div class="bi-title">Competitive Intelligence Rules</div><div class="bi-desc">Tells the agent exactly what to watch for on each competitor — not generic monitoring.</div></div>
+      </div>
+      <div class="breakdown-item">
+        <div class="bi-num">03</div>
+        <div><div class="bi-title">Signal Filters</div><div class="bi-desc">Your judgment, encoded. Teaches the agent the difference between noise and a real opportunity.</div></div>
+      </div>
+      <div class="breakdown-item">
+        <div class="bi-num">04</div>
+        <div><div class="bi-title">Output Schema</div><div class="bi-desc">Locks in a consistent format so downstream agents (Creative, Analytics) can parse it reliably.</div></div>
+      </div>
+      <div class="breakdown-item">
+        <div class="bi-num">05</div>
+        <div><div class="bi-title">Escalation Logic</div><div class="bi-desc">The human-in-the-loop rules. Defines when the agent acts vs. when it calls you.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Chip toggle
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => chip.classList.toggle('selected'));
+  });
+
+  function getSelectedChips() {
+    return Array.from(document.querySelectorAll('.chip.selected')).map(c => c.dataset.val).join(', ');
+  }
+
+  let generatedPrompt = '';
+
+  async function generatePrompt() {
+    const brandName = document.getElementById('brandName').value.trim();
+    const industry = document.getElementById('industry').value.trim();
+    const audience = document.getElementById('audience').value.trim();
+    const competitors = document.getElementById('competitors').value.trim();
+    const compStrengths = document.getElementById('compStrengths').value.trim();
+    const focusAreas = getSelectedChips();
+    const highSignal = document.getElementById('highSignal').value.trim();
+    const noise = document.getElementById('noise').value.trim();
+    const outputFormat = document.getElementById('outputFormat').value;
+    const cadence = document.getElementById('cadence').value;
+    const escalation = document.getElementById('escalation').value.trim();
+
+    if (!brandName || !industry) {
+      document.getElementById('errorMsg').innerHTML = '<div class="error-msg">Please fill in at least Brand Name and Industry to generate a prompt.</div>';
+      return;
+    }
+
+    document.getElementById('errorMsg').innerHTML = '';
+    document.getElementById('generateBtn').disabled = true;
+    document.getElementById('spinner').classList.add('active');
+    document.getElementById('btnText').textContent = 'Generating...';
+    document.getElementById('copyBtn').style.display = 'none';
+    document.getElementById('breakdown').style.display = 'none';
+
+    // Show streaming container
+    const container = document.getElementById('outputContainer');
+    container.innerHTML = '<div class="prompt-output" id="streamOutput"><span class="cursor"></span></div>';
+    const streamEl = document.getElementById('streamOutput');
+
+    document.getElementById('statusMsg').innerHTML = '<div class="status-msg"><div class="status-dot thinking"></div> Claude is engineering your prompt...</div>';
+
+    const userMessage = `You are an expert AI prompt engineer specializing in building marketing intelligence agents. 
+
+Generate a complete, production-ready SYSTEM PROMPT for a Research Agent with this exact brand context:
+
+BRAND: ${brandName}
+INDUSTRY: ${industry}
+TARGET AUDIENCE: ${audience || 'Not specified'}
+COMPETITORS: ${competitors || 'Not specified'}
+COMPETITOR STRENGTHS: ${compStrengths || 'Not specified'}
+FOCUS AREAS TO MONITOR: ${focusAreas || 'Competitor ads, creative trends'}
+HIGH-VALUE SIGNAL DEFINITION: ${highSignal || 'Emerging opportunities before competitors spot them'}
+NOISE TO IGNORE: ${noise || 'Generic industry news not relevant to paid media'}
+OUTPUT FORMAT: ${outputFormat}
+REPORTING CADENCE: ${cadence}
+ESCALATION TRIGGERS: ${escalation || 'Major competitor moves, policy changes, viral trends'}
+
+Generate a system prompt that:
+1. Opens with a sharp IDENTITY block (role, purpose, operating context)
+2. Has a COMPETITIVE INTELLIGENCE section with specific watch instructions per competitor
+3. Has a SIGNAL FILTERS section encoding the high-value vs noise judgment
+4. Has an OUTPUT SCHEMA section with exact format instructions
+5. Has an ESCALATION RULES section
+6. Uses clear section headers in ALL CAPS with dashes (e.g. --- IDENTITY ---)
+7. Is written as direct instructions to the agent (second person: "You are...", "Your job is...")
+8. Is specific, opinionated, and immediately deployable — not generic
+
+Make it sharp, specific, and genuinely useful. No fluff. The output should be ONLY the system prompt itself, ready to paste directly into an API call.`;
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': window.getApiKey(),
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          stream: true,
+          messages: [{ role: 'user', content: userMessage }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      generatedPrompt = '';
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6).trim();
+            if (data === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                generatedPrompt += parsed.delta.text;
+                // Render with syntax highlighting
+                streamEl.innerHTML = renderPrompt(generatedPrompt) + '<span class="cursor"></span>';
+              }
+            } catch(e) { /* skip parse errors */ }
+          }
+        }
+      }
+
+      // Final render without cursor
+      streamEl.innerHTML = renderPrompt(generatedPrompt);
+      document.getElementById('copyBtn').style.display = 'block';
+      document.getElementById('breakdown').style.display = 'flex';
+      document.getElementById('statusMsg').innerHTML = '<div class="status-msg"><div class="status-dot"></div> System prompt ready to deploy</div>';
+
+    } catch (err) {
+      document.getElementById('errorMsg').innerHTML = `<div class="error-msg">Error: ${err.message}. Make sure you're using this in the Claude.ai interface.</div>`;
+      document.getElementById('statusMsg').innerHTML = '';
+      container.innerHTML = '<div class="placeholder-state"><div class="placeholder-icon">⚠</div><div class="placeholder-text">Generation failed.</div></div>';
+    } finally {
+      document.getElementById('generateBtn').disabled = false;
+      document.getElementById('spinner').classList.remove('active');
+      document.getElementById('btnText').textContent = 'Regenerate Prompt';
+    }
+  }
+
+  function renderPrompt(text) {
+    // Highlight section headers
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/(---\s*[A-Z][A-Z\s&]+\s*---)/g, '<span class="section-header">$1</span>')
+      .replace(/(#[^\n]+)/g, '<span class="section-header">$1</span>');
+  }
+
+  async function copyPrompt() {
+    if (!generatedPrompt) return;
+    try {
+      await navigator.clipboard.writeText(generatedPrompt);
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy Prompt';
+        btn.classList.remove('copied');
+      }, 2000);
+    } catch(e) {
+      console.error('Copy failed', e);
+    }
+  }
+
+// ── API KEY MANAGEMENT ──
+(function() {
+  const input = document.getElementById('apiKeyInput');
+  const status = document.getElementById('keyStatus');
+  const STORE_KEY = 'gm_api_key';
+
+  function updateStatus(key) {
+    if (key && key.startsWith('sk-ant')) {
+      status.textContent = 'Key set ✓';
+      status.className = 'key-status ok';
+    } else {
+      status.textContent = key ? 'Invalid format' : 'Not set';
+      status.className = 'key-status';
+    }
+  }
+
+  // Load saved key
+  const saved = localStorage.getItem(STORE_KEY) || '';
+  if (saved) { input.value = saved; updateStatus(saved); }
+
+  // Save on change
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    if (val) localStorage.setItem(STORE_KEY, val);
+    else localStorage.removeItem(STORE_KEY);
+    updateStatus(val);
+  });
+
+  // Expose getter for generate functions
+  window.getApiKey = () => localStorage.getItem(STORE_KEY) || input.value.trim();
+})();
+
+</script>
+</body>
+</html>

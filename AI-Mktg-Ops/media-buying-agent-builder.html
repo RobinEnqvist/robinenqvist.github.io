@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Buying Agent Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:       #FAFAF8;
+    --surface:  #FFFFFF;
+    --surface2: #F4F3F0;
+    --surface3: #EDECEA;
+    --ink:      #1A1917;
+    --ink2:     #6B6860;
+    --ink3:     #A09E9A;
+    --amber:    #C8860A;
+    --amber-lt: #F5C842;
+    --amber-bg: #FFFBEF;
+    --amber-dim:rgba(200,134,10,0.1);
+    --red:      #D0341C;
+    --green:    #1A6B3C;
+    --blue:     #1B5EA6;
+    --border:   #E4E2DE;
+    --border2:  #D0CEC9;
+    --shadow:   0 2px 16px rgba(26,25,23,0.07);
+    --shadow-lg:0 8px 40px rgba(26,25,23,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; min-height:100vh; }
+
+  /* ── API KEY BAR ── */
+  .api-key-bar {
+    background: #1a1a2e;
+    border-bottom: 1px solid rgba(255,200,50,0.15);
+    padding: 8px 24px;
+    display: flex; align-items: center; gap: 12px;
+    font-family: monospace; font-size: 12px;
+  }
+  .api-key-bar label {
+    color: #F5C842; font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase; white-space: nowrap; margin: 0; font-weight: 600;
+  }
+  .api-key-bar input {
+    flex: 1; max-width: 420px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,200,50,0.2); border-radius: 4px;
+    padding: 5px 10px; color: #aaa;
+    font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.5px; outline: none;
+  }
+  .api-key-bar input:focus { border-color: rgba(255,200,50,0.5); color: #fff; }
+  .api-key-bar .key-status { font-size: 10px; color: #555; white-space: nowrap; }
+  .api-key-bar .key-status.ok { color: #3FB950; }
+  .api-key-bar .back-link {
+    margin-left: auto; color: rgba(255,200,50,0.6); font-size: 10px;
+    text-decoration: none; letter-spacing: 1px; text-transform: uppercase;
+    border: 1px solid rgba(255,200,50,0.15); padding: 3px 10px; border-radius: 3px;
+    transition: all 0.15s;
+  }
+  .api-key-bar .back-link:hover { color: #F5C842; border-color: rgba(255,200,50,0.4); }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--ink); padding: 0 28px; height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .tb-left { display:flex; align-items:center; gap:12px; }
+  .tb-badge {
+    background: var(--amber); color: var(--ink); font-family:'Space Mono',monospace;
+    font-size:10px; font-weight:700; padding:4px 10px; border-radius:3px; letter-spacing:1px;
+  }
+  .tb-name { font-family:'Syne',sans-serif; font-size:15px; color:#fff; }
+  .tb-sub { font-family:'Space Mono',monospace; font-size:9px; color:#555; letter-spacing:1px; }
+  .tb-steps { display:flex; gap:4px; }
+  .tb-step {
+    font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.5px;
+    padding:4px 12px; border-radius:2px; color:#444;
+  }
+  .tb-step.done { color:#3FB950; }
+  .tb-step.active { background:var(--amber); color:var(--ink); font-weight:700; }
+
+  /* ── LAYOUT ── */
+  .layout { display:grid; grid-template-columns:450px 1fr; min-height:calc(100vh - 104px); }
+
+  /* ── LEFT ── */
+  .left {
+    background:var(--surface); border-right:1px solid var(--border);
+    overflow-y:auto; max-height:calc(100vh - 104px); position:sticky; top:104px;
+  }
+  .left-inner { padding:32px 28px 72px; }
+
+  .form-eyebrow {
+    font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--amber); margin-bottom:6px;
+  }
+  .form-title {
+    font-family:'Syne',sans-serif; font-size:26px; font-weight:800;
+    line-height:1.15; letter-spacing:-0.5px; margin-bottom:8px;
+  }
+  .form-intro { font-size:13px; color:var(--ink2); line-height:1.65; margin-bottom:28px; font-weight:300; }
+
+  .fsec { margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+  .fsec:last-of-type { border-bottom:none; }
+  .fsec-head { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+  .fsec-n {
+    width:22px; height:22px; background:var(--ink); color:var(--amber-lt);
+    font-family:'Space Mono',monospace; font-size:9px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border-radius:3px; flex-shrink:0;
+  }
+  .fsec-label {
+    font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--ink2);
+  }
+
+  .field { margin-bottom:12px; }
+  label { display:block; font-size:12px; font-weight:500; color:var(--ink); margin-bottom:4px; }
+  .hint { color:var(--ink3); font-weight:400; font-size:11px; }
+  input, textarea, select {
+    width:100%; background:var(--surface2); border:1px solid var(--border);
+    border-radius:5px; padding:9px 11px; font-family:'Inter',sans-serif;
+    font-size:13px; color:var(--ink); outline:none; resize:vertical;
+    transition:border-color 0.2s, box-shadow 0.2s; appearance:none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color:var(--amber); box-shadow:0 0 0 3px var(--amber-dim); background:var(--surface);
+  }
+  textarea { min-height:60px; line-height:1.55; }
+
+  /* Platform grid */
+  .platform-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:5px; }
+  .plat {
+    border:1px solid var(--border); border-radius:6px; padding:10px 12px;
+    cursor:pointer; background:var(--surface2); transition:all 0.15s; user-select:none;
+  }
+  .plat.on { background:var(--amber-bg); border-color:var(--amber); }
+  .plat-name { font-size:12px; font-weight:600; margin-bottom:2px; }
+  .plat-sub { font-size:10px; color:var(--ink3); }
+  .plat.on .plat-name { color:var(--amber); }
+
+  /* Rule chips */
+  .chip-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
+  .chip {
+    padding:4px 10px; border-radius:3px; font-family:'Space Mono',monospace;
+    font-size:9px; letter-spacing:0.5px; border:1px solid var(--border);
+    color:var(--ink2); background:var(--surface2); cursor:pointer;
+    transition:all 0.15s; user-select:none;
+  }
+  .chip.on { background:var(--ink); color:var(--amber-lt); border-color:var(--ink); }
+
+  /* Risk toggles */
+  .risk-item {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 11px; background:var(--surface2); border:1px solid var(--border);
+    border-radius:5px; margin-bottom:6px; cursor:pointer;
+  }
+  .risk-label { font-size:12px; font-weight:500; }
+  .risk-sub { font-size:10px; color:var(--ink3); margin-top:1px; }
+  .tog {
+    width:34px; height:18px; background:var(--border2); border-radius:9px;
+    position:relative; transition:background 0.2s; flex-shrink:0;
+  }
+  .tog.on { background:var(--amber); }
+  .tog-thumb {
+    position:absolute; top:2px; left:2px; width:14px; height:14px;
+    border-radius:7px; background:#fff; transition:transform 0.2s;
+  }
+  .tog.on .tog-thumb { transform:translateX(16px); }
+
+  .gen-btn {
+    width:100%; padding:13px; background:var(--ink); color:var(--amber-lt);
+    border:none; border-radius:6px; font-family:'Space Mono',monospace;
+    font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;
+    transition:all 0.2s; margin-top:24px;
+  }
+  .gen-btn:hover { background:#2D2418; transform:translateY(-1px); box-shadow:var(--shadow-lg); }
+  .gen-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+  .spinner {
+    width:13px; height:13px; border:2px solid rgba(245,200,66,0.3);
+    border-top-color:var(--amber-lt); border-radius:50%;
+    animation:spin 0.7s linear infinite; display:none;
+  }
+  .spinner.on { display:block; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* ── RIGHT ── */
+  .right {
+    overflow-y:auto; max-height:calc(100vh - 104px);
+    position:sticky; top:104px; padding:32px 36px 72px; background:var(--bg);
+  }
+
+  .out-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; }
+  .out-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; }
+  .out-meta { font-family:'Space Mono',monospace; font-size:9px; color:var(--ink3); margin-top:5px; letter-spacing:0.5px; }
+
+  .copy-btn {
+    padding:6px 14px; border-radius:4px; border:1px solid var(--border);
+    font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px;
+    text-transform:uppercase; color:var(--ink2); background:transparent;
+    cursor:pointer; transition:all 0.15s; white-space:nowrap;
+  }
+  .copy-btn:hover { border-color:var(--amber); color:var(--amber); }
+  .copy-btn.copied { border-color:var(--green); color:var(--green); }
+
+  .prompt-box {
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:28px; font-family:'Space Mono',monospace; font-size:11px; line-height:1.9;
+    color:var(--ink); min-height:400px; white-space:pre-wrap; box-shadow:var(--shadow);
+  }
+  .prompt-box .hl { color:var(--amber); font-weight:700; }
+  .cursor {
+    display:inline-block; width:2px; height:12px; background:var(--amber);
+    vertical-align:middle; animation:blink 0.8s ease infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .ph {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:400px; text-align:center; gap:10px;
+  }
+  .ph-icon { font-size:36px; opacity:0.12; }
+  .ph-title { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; opacity:0.2; }
+  .ph-sub { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; opacity:0.15; text-transform:uppercase; }
+
+  /* Risk callout */
+  .risk-note {
+    margin-top:16px; padding:12px 16px;
+    background:rgba(200,134,10,0.06); border:1px solid rgba(200,134,10,0.2);
+    border-left:3px solid var(--amber); border-radius:0 6px 6px 0;
+    font-size:12px; color:var(--ink2); line-height:1.55;
+  }
+  .risk-note strong { color:var(--amber); }
+
+  /* Why cards */
+  .why { margin-top:28px; }
+  .why-title { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); margin-bottom:12px; }
+  .why-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  .why-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-bottom:3px solid var(--amber); border-radius:6px; padding:14px 15px;
+    box-shadow:var(--shadow);
+  }
+  .wc-t { font-size:12px; font-weight:600; margin-bottom:4px; }
+  .wc-d { font-size:11px; color:var(--ink2); line-height:1.5; }
+
+  .status-row { display:flex; align-items:center; gap:7px; margin-top:10px; font-family:'Space Mono',monospace; font-size:9px; color:var(--ink3); }
+  .sdot { width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .sdot.pulse { background:var(--amber); animation:blink 0.8s ease infinite; }
+
+  .err { margin-top:10px; padding:9px 13px; background:rgba(208,52,28,0.06); border:1px solid rgba(208,52,28,0.2); border-radius:5px; color:var(--red); font-family:'Space Mono',monospace; font-size:10px; }
+
+  @media (max-width:860px) {
+    .layout { grid-template-columns:1fr; }
+    .left, .right { max-height:none; position:relative; }
+    .tb-steps { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="api-key-bar">
+  <label>API Key</label>
+  <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-…  (stored in browser only, never in code)" autocomplete="off">
+  <span class="key-status" id="keyStatus">Not set</span>
+  <a href="index.html" class="back-link">← Dashboard</a>
+</div>
+
+<div class="topbar">
+  <div class="tb-left">
+    <div class="tb-badge">MB</div>
+    <div>
+      <div class="tb-name">Media Buying Agent Builder</div>
+      <div class="tb-sub">Growth Marketing · AI OS · Agent 04 / 04</div>
+    </div>
+  </div>
+  <div class="tb-steps">
+    <div class="tb-step done">01 Research ✓</div>
+    <div class="tb-step done">02 Creative ✓</div>
+    <div class="tb-step done">03 Analytics ✓</div>
+    <div class="tb-step active">04 Media Buying</div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="left-inner">
+      <div class="form-eyebrow">Agent 04 / 04</div>
+      <div class="form-title">Media Buying<br>Agent.</div>
+      <p class="form-intro">The agent with real money on the line. Define your platforms, bidding rules, budget guardrails, and hard stops — so it optimises aggressively within boundaries you control.</p>
+
+      <!-- 01 Campaign Context -->
+      <div class="fsec">
+        <div class="fsec-head"><div class="fsec-n">01</div><div class="fsec-label">Campaign Context</div></div>
+        <div class="field">
+          <label>Brand & campaign objective</label>
+          <input type="text" id="brand" placeholder="e.g. Allbirds — D2C footwear, objective: profitable new customer acquisition">
+        </div>
+        <div class="field">
+          <label>Monthly ad budget <span class="hint">(total across all platforms)</span></label>
+          <input type="text" id="budget" placeholder="e.g. £12,000 / month — split 70% Meta / 30% Google">
+        </div>
+        <div class="field">
+          <label>Target ROAS (blended) & hard floor</label>
+          <input type="text" id="roas" placeholder="e.g. Target 3.5x · Pause campaigns if below 1.8x for 72hrs">
+        </div>
+        <div class="field">
+          <label>Max CPA / CPL</label>
+          <input type="text" id="cpa" placeholder="e.g. £35 hard ceiling · £28 target · £22 stretch">
+        </div>
+      </div>
+
+      <!-- 02 Platforms -->
+      <div class="fsec">
+        <div class="fsec-head"><div class="fsec-n">02</div><div class="fsec-label">Active Platforms</div></div>
+        <div class="platform-grid" id="platGrid">
+          <div class="plat on" data-val="Meta Ads (Facebook + Instagram) — Advantage+ campaigns, manual CBO, ASC">
+            <div class="plat-name">Meta</div>
+            <div class="plat-sub">Facebook · Instagram · Reels</div>
+          </div>
+          <div class="plat on" data-val="Google Ads — Search, Performance Max, Shopping">
+            <div class="plat-name">Google Ads</div>
+            <div class="plat-sub">Search · PMax · Shopping</div>
+          </div>
+          <div class="plat" data-val="TikTok Ads — In-feed, TopView, Spark Ads">
+            <div class="plat-name">TikTok</div>
+            <div class="plat-sub">In-feed · Spark · TopView</div>
+          </div>
+          <div class="plat" data-val="YouTube Ads — Skippable in-stream, Demand Gen">
+            <div class="plat-name">YouTube</div>
+            <div class="plat-sub">In-stream · Demand Gen</div>
+          </div>
+          <div class="plat" data-val="Pinterest Ads — Shopping, Promoted Pins">
+            <div class="plat-name">Pinterest</div>
+            <div class="plat-sub">Shopping · Promoted Pins</div>
+          </div>
+          <div class="plat" data-val="LinkedIn Ads — Sponsored Content, Lead Gen Forms">
+            <div class="plat-name">LinkedIn</div>
+            <div class="plat-sub">Sponsored · Lead Gen</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Bidding Strategy -->
+      <div class="fsec">
+        <div class="fsec-head"><div class="fsec-n">03</div><div class="fsec-label">Bidding & Budget Rules</div></div>
+        <div class="field">
+          <label>Default bidding strategy</label>
+          <select id="bidStrategy">
+            <option>Lowest cost (maximise volume within budget)</option>
+            <option>Cost cap (target CPA with ceiling)</option>
+            <option>Bid cap (manual max bid per auction)</option>
+            <option>ROAS target (value-based bidding)</option>
+            <option>Target impression share (Google Search)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Budget reallocation rules <span class="hint">(when to shift spend between campaigns)</span></label>
+          <textarea id="realloc" placeholder="e.g. If a campaign hits 4x+ ROAS for 3 consecutive days, increase budget by 20%. If below 2x for 48hrs, reduce by 30% and flag for review." rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label>Audience strategy</label>
+          <textarea id="audience" placeholder="e.g. Prospecting: broad + interest stacks (70% budget). Retargeting: website visitors 7-day + abandoned cart (20%). Retention: LTV lookalikes (10%)." rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- 04 Optimisation Rules -->
+      <div class="fsec">
+        <div class="fsec-head"><div class="fsec-n">04</div><div class="fsec-label">Optimisation Triggers</div></div>
+        <label style="margin-bottom:6px">Autonomous actions the agent can take <span class="hint">(without human approval)</span></label>
+        <div class="chip-row" id="autoChips">
+          <div class="chip on" data-val="Pause underperforming ad sets (CTR below floor for 48hrs)">Pause low CTR ads</div>
+          <div class="chip on" data-val="Scale winning ad sets (+20% budget if ROAS > target for 3 days)">Scale winners</div>
+          <div class="chip on" data-val="Rotate creative (flag ads with frequency > 3 for replacement)">Rotate creative</div>
+          <div class="chip" data-val="Adjust bids based on time-of-day and day-of-week performance data">Dayparting</div>
+          <div class="chip" data-val="Expand to lookalike audiences when prospecting ROAS exceeds target by 20%+">Expand audiences</div>
+          <div class="chip" data-val="Add negative keywords from search term reports (Google)">Neg. keywords</div>
+          <div class="chip" data-val="Test new ad placements when current placements show fatigue signals">Test placements</div>
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label>Optimisation cadence</label>
+          <select id="cadence">
+            <option>Continuous monitoring · actions taken when thresholds trigger</option>
+            <option>Daily — review at 9am, actions by 10am</option>
+            <option>Twice daily — 9am and 4pm reviews</option>
+            <option>Weekly — full review every Monday</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 05 Hard Stops -->
+      <div class="fsec">
+        <div class="fsec-head"><div class="fsec-n">05</div><div class="fsec-label">Hard Stops & Guardrails</div></div>
+        <label style="margin-bottom:8px">Actions that ALWAYS require human approval first</label>
+
+        <div class="risk-item" onclick="toggleRisk(this)">
+          <div><div class="risk-label">Budget changes over £500</div><div class="risk-sub">Any single change exceeding this threshold</div></div>
+          <div class="tog on"><div class="tog-thumb"></div></div>
+        </div>
+        <div class="risk-item" onclick="toggleRisk(this)">
+          <div><div class="risk-label">Pausing campaigns > £1K spent</div><div class="risk-sub">Protect high-investment campaigns from auto-pause</div></div>
+          <div class="tog on"><div class="tog-thumb"></div></div>
+        </div>
+        <div class="risk-item" onclick="toggleRisk(this)">
+          <div><div class="risk-label">New campaign launches</div><div class="risk-sub">All new campaigns require strategy sign-off</div></div>
+          <div class="tog on"><div class="tog-thumb"></div></div>
+        </div>
+        <div class="risk-item" onclick="toggleRisk(this)">
+          <div><div class="risk-label">Audience targeting changes</div><div class="risk-sub">Core audience edits need human review</div></div>
+          <div class="tog on"><div class="tog-thumb"></div></div>
+        </div>
+        <div class="risk-item" onclick="toggleRisk(this)">
+          <div><div class="risk-label">Brand safety exclusions</div><div class="risk-sub">Placement blocklist changes require approval</div></div>
+          <div class="tog on"><div class="tog-thumb"></div></div>
+        </div>
+
+        <div class="field" style="margin-top:10px">
+          <label>Additional hard stops <span class="hint">(anything specific to this brand)</span></label>
+          <textarea id="customStops" placeholder="e.g. Never advertise during major brand PR crises. Never increase spend on a campaign with >5% complaint rate. Never target under-18s." rows="2"></textarea>
+        </div>
+      </div>
+
+      <!-- 06 Reporting -->
+      <div class="fsec">
+        <div class="fsec-head"><div class="fsec-n">06</div><div class="fsec-label">Reporting to Other Agents</div></div>
+        <div class="field">
+          <label>What the Media Buying Agent feeds back to Analytics</label>
+          <textarea id="feedbackOut" placeholder="e.g. Daily: spend pacing vs budget, platform ROAS breakdown, top/bottom performing ad sets. Weekly: audience saturation signals, creative fatigue indicators, bid landscape changes." rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label>Signals it receives from Analytics Agent</label>
+          <textarea id="feedbackIn" placeholder="e.g. Anomaly alerts triggering bid reductions. Weekly ROAS trends informing budget allocation. Creative performance data informing which ads to scale vs pause." rows="2"></textarea>
+        </div>
+      </div>
+
+      <button class="gen-btn" id="genBtn" onclick="generate()">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnTxt">Generate Media Buying Agent Prompt</span>
+      </button>
+      <div id="statusRow"></div>
+      <div id="errMsg"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="out-head">
+      <div>
+        <div class="out-title">Generated System Prompt</div>
+        <div class="out-meta" id="outMeta">Configure the agent → Generate</div>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()" style="display:none">Copy Prompt</button>
+    </div>
+
+    <div class="risk-note">
+      <strong>⚡ This is the agent with real money on the line.</strong> The hard stops and human approval gates you configure here are what prevent a runaway campaign from burning through budget. Take them seriously.
+    </div>
+
+    <div id="outContainer" style="margin-top:16px">
+      <div class="prompt-box">
+        <div class="ph">
+          <div class="ph-icon">◎</div>
+          <div class="ph-title">Media Buying Agent</div>
+          <div class="ph-sub">Configure · Generate · Deploy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why" id="whyPanel" style="display:none">
+      <div class="why-title">Why each section of this prompt matters</div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="wc-t">Budget Guardrails</div>
+          <div class="wc-d">Hard-coded spend limits prevent a single optimisation decision from burning through your client's monthly budget in 48 hours.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-t">Autonomous vs Gated Actions</div>
+          <div class="wc-d">Defines exactly what the agent can do without asking — and what requires a human. The line between speed and safety.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-t">Bidding Strategy Context</div>
+          <div class="wc-d">The agent knows which strategy to use per platform and why — not just what button to press, but the logic behind the decision.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-t">Reallocation Logic</div>
+          <div class="wc-d">Rules for shifting budget from underperformers to winners automatically — without waiting for the weekly review call.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-t">Feedback Loop Integration</div>
+          <div class="wc-d">What it reports to Analytics and what it receives back — so the whole ecosystem stays in sync without manual briefing.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-t">Platform-Specific Rules</div>
+          <div class="wc-d">Meta, Google and TikTok all work differently. The agent knows the nuances of each auction — not just generic bidding theory.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Platform toggles
+  document.querySelectorAll('.plat').forEach(p => p.addEventListener('click', () => p.classList.toggle('on')));
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('on')));
+  function toggleRisk(row) { row.querySelector('.tog').classList.toggle('on'); }
+
+  function getSelected(sel, attr) {
+    return Array.from(document.querySelectorAll(sel + '.on')).map(e => e.dataset[attr]).join('; ');
+  }
+  function getHardStops() {
+    const labels = ['Budget changes over £500','Pausing campaigns over £1K spent','New campaign launches','Audience targeting changes','Brand safety exclusions'];
+    const rows = document.querySelectorAll('.risk-item');
+    return labels.filter((_,i) => rows[i]?.querySelector('.tog')?.classList.contains('on')).join(', ');
+  }
+
+  // ── API KEY ──
+  (function() {
+    const input = document.getElementById('apiKeyInput');
+    const status = document.getElementById('keyStatus');
+    const STORE = 'gm_api_key';
+    function updateStatus(k) {
+      if (k && k.startsWith('sk-ant')) { status.textContent = 'Key set ✓'; status.className = 'key-status ok'; }
+      else { status.textContent = k ? 'Invalid format' : 'Not set'; status.className = 'key-status'; }
+    }
+    const saved = localStorage.getItem(STORE) || '';
+    if (saved) { input.value = saved; updateStatus(saved); }
+    input.addEventListener('input', () => {
+      const v = input.value.trim();
+      if (v) localStorage.setItem(STORE, v); else localStorage.removeItem(STORE);
+      updateStatus(v);
+    });
+    window.getApiKey = () => localStorage.getItem(STORE) || input.value.trim();
+  })();
+
+  let generatedPrompt = '';
+
+  async function generate() {
+    const key = window.getApiKey();
+    if (!key || !key.startsWith('sk-ant')) {
+      document.getElementById('errMsg').innerHTML = '<div class="err">Please enter your Anthropic API key in the bar at the top.</div>';
+      return;
+    }
+
+    const brand       = document.getElementById('brand').value.trim();
+    const budget      = document.getElementById('budget').value.trim();
+    const roas        = document.getElementById('roas').value.trim();
+    const cpa         = document.getElementById('cpa').value.trim();
+    const platforms   = getSelected('#platGrid .plat', 'val');
+    const bidStrategy = document.getElementById('bidStrategy').value;
+    const realloc     = document.getElementById('realloc').value.trim();
+    const audience    = document.getElementById('audience').value.trim();
+    const autoActions = getSelected('#autoChips .chip', 'val');
+    const cadence     = document.getElementById('cadence').value;
+    const hardStops   = getHardStops();
+    const customStops = document.getElementById('customStops').value.trim();
+    const feedbackOut = document.getElementById('feedbackOut').value.trim();
+    const feedbackIn  = document.getElementById('feedbackIn').value.trim();
+
+    if (!brand) {
+      document.getElementById('errMsg').innerHTML = '<div class="err">Please enter the brand and campaign objective.</div>';
+      return;
+    }
+
+    document.getElementById('errMsg').innerHTML = '';
+    document.getElementById('genBtn').disabled = true;
+    document.getElementById('spinner').classList.add('on');
+    document.getElementById('btnTxt').textContent = 'Generating...';
+    document.getElementById('copyBtn').style.display = 'none';
+    document.getElementById('whyPanel').style.display = 'none';
+
+    const box = document.getElementById('outContainer');
+    box.innerHTML = '<div class="prompt-box" id="streamBox"><span class="cursor"></span></div>';
+    document.getElementById('statusRow').innerHTML = '<div class="status-row"><div class="sdot pulse"></div> Engineering media buying logic...</div>';
+    document.getElementById('outMeta').textContent = 'Generating...';
+
+    const userMsg = `You are a senior performance media buyer who has managed £50M+ in ad spend across Meta, Google, and TikTok for high-growth D2C brands.
+
+Build a complete, production-ready SYSTEM PROMPT for a Media Buying Agent with this exact specification:
+
+BRAND & OBJECTIVE: ${brand}
+MONTHLY BUDGET: ${budget || 'Not specified'}
+TARGET ROAS: ${roas || 'Not specified — use conservative defaults'}
+MAX CPA: ${cpa || 'Not specified'}
+ACTIVE PLATFORMS: ${platforms || 'Meta, Google Ads'}
+DEFAULT BIDDING STRATEGY: ${bidStrategy}
+BUDGET REALLOCATION RULES: ${realloc || 'Standard performance-based reallocation'}
+AUDIENCE STRATEGY: ${audience || 'Prospecting, retargeting, retention split'}
+AUTONOMOUS ACTIONS ALLOWED: ${autoActions || 'Pause underperformers, scale winners'}
+OPTIMISATION CADENCE: ${cadence}
+HARD STOPS (human approval required): ${hardStops}
+CUSTOM HARD STOPS: ${customStops || 'None specified'}
+REPORTS TO ANALYTICS: ${feedbackOut || 'Daily spend pacing, platform ROAS breakdown'}
+RECEIVES FROM ANALYTICS: ${feedbackIn || 'Anomaly alerts, weekly performance trends'}
+
+Build a system prompt with these exact sections using ALL-CAPS headers with dashes (e.g. --- IDENTITY ---):
+
+1. IDENTITY — Role definition. This agent is a precision media buyer. Its job is to deploy capital efficiently, protect against waste, and generate profitable returns. It operates with the discipline of a trader and the creativity of a marketer.
+
+2. PRIMARY OBJECTIVE — The north star metric and what success looks like. Anchored to specific numbers from the spec above.
+
+3. PLATFORM OPERATING RULES — For each active platform: default campaign structure, bidding approach, budget allocation logic, and platform-specific nuances the agent must understand (e.g. Meta's learning phase, Google's PMax black box, TikTok's creative fatigue speed).
+
+4. BUDGET MANAGEMENT PROTOCOL — Daily and weekly budget pacing rules. When to accelerate spend (performance above target), when to pull back (performance below floor), and how to handle month-end budget management.
+
+5. AUTONOMOUS OPTIMISATION PLAYBOOK — Exact conditions that trigger each autonomous action. Format as: IF [condition] THEN [action] WITHIN [timeframe]. Be specific — vague triggers produce inconsistent behaviour.
+
+6. HARD STOPS & ESCALATION GATES — Non-negotiable list of actions that require human approval. Framed as absolute rules, not guidelines. Include what happens if a hard stop is reached (pause and alert, not proceed and report).
+
+7. AUDIENCE & TARGETING FRAMEWORK — How to manage the prospecting / retargeting / retention split. When to expand audiences, when to tighten, and how to handle audience overlap and saturation.
+
+8. CREATIVE PERFORMANCE INTEGRATION — How to act on creative signals. When to flag underperforming ads, when to rotate, and what signals to send back to the Creative Agent.
+
+9. FEEDBACK LOOP PROTOCOLS — Exact data to report to the Analytics Agent, and exactly how to act on signals received from Analytics. Make this a two-way protocol, not one-way reporting.
+
+10. FAILURE MODES TO AVOID — Specific mistakes this agent must never make. Include: overspending during learning phases, scaling before statistical significance, ignoring frequency caps, and platform-specific traps.
+
+Make this read like it was written by a media buyer who has been burned by every mistake in the book and built these rules to prevent them happening again. Sharp, specific, immediately deployable.
+
+Output ONLY the system prompt. No preamble, no explanation. Begin directly with the first section header.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          stream: true,
+          messages: [{ role: 'user', content: userMsg }]
+        })
+      });
+
+      if (!res.ok) throw new Error(`API ${res.status}`);
+
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      generatedPrompt = '';
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const raw = line.slice(6).trim();
+          if (raw === '[DONE]') continue;
+          try {
+            const p = JSON.parse(raw);
+            if (p.type === 'content_block_delta' && p.delta?.text) {
+              generatedPrompt += p.delta.text;
+              document.getElementById('streamBox').innerHTML = highlight(generatedPrompt) + '<span class="cursor"></span>';
+            }
+          } catch(e) {}
+        }
+      }
+
+      document.getElementById('streamBox').innerHTML = highlight(generatedPrompt);
+      document.getElementById('copyBtn').style.display = 'block';
+      document.getElementById('whyPanel').style.display = 'block';
+      document.getElementById('statusRow').innerHTML = '<div class="status-row"><div class="sdot"></div> Prompt ready — copy and deploy</div>';
+      document.getElementById('outMeta').textContent = `${generatedPrompt.length} chars · ${generatedPrompt.split(/\s+/).length} words`;
+
+    } catch(err) {
+      document.getElementById('errMsg').innerHTML = `<div class="err">Error: ${err.message}</div>`;
+      document.getElementById('statusRow').innerHTML = '';
+      box.innerHTML = '<div class="prompt-box"><div class="ph"><div class="ph-icon">⚠</div><div class="ph-title">Generation failed.</div></div></div>';
+    } finally {
+      document.getElementById('genBtn').disabled = false;
+      document.getElementById('spinner').classList.remove('on');
+      document.getElementById('btnTxt').textContent = 'Regenerate Prompt';
+    }
+  }
+
+  function highlight(text) {
+    return text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/(---\s*[A-Z][A-Z\s&\/\(\)]+\s*---)/g,'<span class="hl">$1</span>');
+  }
+
+  async function copyPrompt() {
+    if (!generatedPrompt) return;
+    try {
+      await navigator.clipboard.writeText(generatedPrompt);
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied ✓'; btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy Prompt'; btn.classList.remove('copied'); }, 2200);
+    } catch(e) {}
+  }
+</script>
+</body>
+</html>

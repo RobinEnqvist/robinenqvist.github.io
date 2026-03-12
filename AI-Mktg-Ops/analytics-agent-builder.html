@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics Agent Prompt Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:       #0D1117;
+    --surface:  #161B22;
+    --surface2: #1C2330;
+    --surface3: #21262D;
+    --ink:      #E6EDF3;
+    --ink2:     #8B949E;
+    --teal:     #00B4D8;
+    --teal-dim: rgba(0,180,216,0.1);
+    --teal-bg:  rgba(0,180,216,0.06);
+    --green:    #3FB950;
+    --orange:   #F0883E;
+    --red:      #F85149;
+    --border:   #30363D;
+    --border2:  #21262D;
+    --shadow:   0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+    height: 56px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-hex {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--teal), #0077B6);
+    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    font-weight: 500; color: #fff;
+  }
+  .logo-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px; color: var(--ink);
+  }
+  .logo-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--ink2); letter-spacing: 1.5px;
+  }
+
+  nav {
+    display: flex; justify-content: center; gap: 2px;
+  }
+  .nav-step {
+    display: flex; align-items: center; gap: 7px;
+    padding: 5px 14px; border-radius: 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.5px;
+    color: var(--ink2); cursor: default;
+  }
+  .nav-step.done { color: var(--green); }
+  .nav-step.active {
+    background: var(--teal-dim);
+    color: var(--teal);
+    border: 1px solid rgba(0,180,216,0.2);
+  }
+  .nav-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; flex-shrink: 0;
+  }
+
+  .header-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--teal);
+    border: 1px solid rgba(0,180,216,0.25);
+    padding: 4px 10px; border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* ── LEFT ── */
+  .left {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
+    position: sticky; top: 56px;
+  }
+  .left-inner { padding: 32px 28px 64px; }
+
+  .form-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px; line-height: 1.25;
+    margin-bottom: 6px;
+  }
+  .form-title .accent { color: var(--teal); }
+  .form-intro {
+    font-size: 13px; color: var(--ink2);
+    line-height: 1.65; margin-bottom: 28px; font-weight: 300;
+  }
+
+  .fsec {
+    margin-bottom: 24px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--border2);
+  }
+  .fsec:last-of-type { border-bottom: none; }
+
+  .fsec-header {
+    display: flex; align-items: center; gap: 9px; margin-bottom: 14px;
+  }
+  .fsec-num {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    color: var(--teal); background: var(--teal-dim);
+    border: 1px solid rgba(0,180,216,0.2);
+    width: 24px; height: 24px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .fsec-name {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    color: var(--ink2); letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  .field { margin-bottom: 12px; }
+  label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--ink); margin-bottom: 5px;
+  }
+  .label-hint { color: var(--ink2); font-weight: 400; font-size: 11px; }
+
+  input, textarea, select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 9px 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: var(--ink);
+    outline: none; resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px var(--teal-dim);
+    background: var(--surface3);
+  }
+  textarea { min-height: 64px; line-height: 1.55; }
+  select option { background: var(--surface2); }
+
+  /* Metric chips */
+  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+  .chip {
+    padding: 4px 11px; border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    border: 1px solid var(--border); color: var(--ink2);
+    background: var(--surface2); cursor: pointer;
+    transition: all 0.15s; letter-spacing: 0.3px;
+    user-select: none;
+  }
+  .chip.on {
+    background: var(--teal-dim); color: var(--teal);
+    border-color: rgba(0,180,216,0.35);
+  }
+
+  /* Toggle row */
+  .toggle-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; margin-bottom: 8px; cursor: pointer;
+  }
+  .toggle-label { font-size: 12px; font-weight: 500; }
+  .toggle-sub { font-size: 11px; color: var(--ink2); margin-top: 1px; }
+  .toggle-switch {
+    width: 36px; height: 20px; background: var(--border);
+    border-radius: 10px; position: relative;
+    transition: background 0.2s; flex-shrink: 0;
+  }
+  .toggle-switch.on { background: var(--teal); }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 14px; height: 14px; border-radius: 7px;
+    background: #fff; transition: transform 0.2s;
+  }
+  .toggle-switch.on .toggle-thumb { transform: translateX(16px); }
+
+  /* Cadence selector */
+  .cadence-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-top: 5px; }
+  .cad-btn {
+    padding: 8px 6px; text-align: center;
+    border: 1px solid var(--border); border-radius: 6px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    color: var(--ink2); background: var(--surface2);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .cad-btn.on {
+    background: var(--teal-dim); color: var(--teal);
+    border-color: rgba(0,180,216,0.35);
+  }
+
+  .gen-btn {
+    width: 100%; padding: 13px;
+    background: linear-gradient(135deg, #0077B6, var(--teal));
+    color: #fff; border: none; border-radius: 7px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+    transition: all 0.2s; margin-top: 24px;
+    box-shadow: 0 4px 16px rgba(0,180,216,0.2);
+  }
+  .gen-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,180,216,0.3); }
+  .gen-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin 0.7s linear infinite; display: none;
+  }
+  .spinner.on { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── RIGHT ── */
+  .right {
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
+    position: sticky; top: 56px;
+    padding: 32px 36px 64px;
+    background: var(--bg);
+  }
+
+  .out-header {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; margin-bottom: 20px;
+  }
+  .out-title {
+    font-family: 'DM Serif Display', serif; font-size: 22px;
+  }
+  .out-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--ink2); margin-top: 5px;
+  }
+  .copy-btn {
+    padding: 6px 14px; border-radius: 5px;
+    border: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--ink2); background: transparent; cursor: pointer;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .copy-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+  .prompt-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px; line-height: 1.9;
+    color: #CDD9E5;
+    min-height: 400px; white-space: pre-wrap;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .prompt-box .hl { color: var(--teal); font-weight: 500; }
+  .cursor {
+    display: inline-block; width: 2px; height: 12px;
+    background: var(--teal); vertical-align: middle;
+    animation: blink 0.8s ease infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .ph {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 400px; text-align: center; gap: 12px;
+  }
+  .ph-icon { font-size: 40px; opacity: 0.15; }
+  .ph-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px; font-style: italic; opacity: 0.25;
+  }
+  .ph-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 1.5px; opacity: 0.2;
+    text-transform: uppercase;
+  }
+
+  /* Why this matters panel */
+  .why-panel { margin-top: 28px; }
+  .why-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink2); margin-bottom: 14px;
+  }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .why-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--teal);
+    border-radius: 8px; padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .wc-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--ink); }
+  .wc-desc { font-size: 11px; color: var(--ink2); line-height: 1.55; }
+
+  .status-bar {
+    display: flex; align-items: center; gap: 8px; margin-top: 12px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink2);
+  }
+  .sdot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  .sdot.pulse { background: var(--teal); animation: blink 0.8s ease infinite; }
+
+  .err {
+    margin-top: 10px; padding: 10px 14px;
+    background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.2);
+    border-radius: 6px; color: var(--red);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .left, .right { max-height: none; position: relative; }
+    nav { display: none; }
+  }
+
+/* ── SHARED API KEY BAR ── */
+.api-key-bar {
+  background: #1a1a2e;
+  border-bottom: 1px solid rgba(255,200,50,0.15);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: monospace;
+  font-size: 12px;
+}
+.api-key-bar label {
+  color: #F5C842;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+  font-weight: 600;
+}
+.api-key-bar input {
+  flex: 1;
+  max-width: 420px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,200,50,0.2);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: #aaa;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  outline: none;
+}
+.api-key-bar input:focus { border-color: rgba(255,200,50,0.5); color: #fff; }
+.api-key-bar .key-status {
+  font-size: 10px;
+  color: #555;
+  white-space: nowrap;
+}
+.api-key-bar .key-status.ok { color: #3FB950; }
+.api-key-bar .back-link {
+  margin-left: auto;
+  color: rgba(255,200,50,0.6);
+  font-size: 10px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,200,50,0.15);
+  padding: 3px 10px;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.api-key-bar .back-link:hover { color: #F5C842; border-color: rgba(255,200,50,0.4); }
+
+</style>
+</head>
+<body>
+<div class="api-key-bar">
+  <label>API Key</label>
+  <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-…  (stored in browser only, never in code)" autocomplete="off">
+  <span class="key-status" id="keyStatus">Not set</span>
+  <a href="index.html" class="back-link">← Dashboard</a>
+</div>
+
+
+<header>
+  <div class="logo">
+    <div class="logo-hex">AA</div>
+    <div>
+      <div class="logo-name">Analytics Agent Builder</div>
+      <div class="logo-sub">Growth Marketing · AI OS</div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-step done"><div class="nav-dot"></div>01 Research</div>
+    <div class="nav-step done"><div class="nav-dot"></div>02 Creative</div>
+    <div class="nav-step active"><div class="nav-dot"></div>03 Analytics</div>
+    <div class="nav-step"><div class="nav-dot"></div>04 Media Buying</div>
+  </nav>
+  <div class="header-tag">AGENT · 03 / 04</div>
+</header>
+
+<div class="layout">
+
+  <!-- LEFT: FORM -->
+  <div class="left">
+    <div class="left-inner">
+      <div class="form-title">Build your<br><span class="accent">Analytics Agent.</span></div>
+      <p class="form-intro">The feedback engine of the whole system. Define what gets measured, when anomalies get flagged, and what insights get routed where — so the loop stays self-improving.</p>
+
+      <!-- 01 Business Context -->
+      <div class="fsec">
+        <div class="fsec-header">
+          <div class="fsec-num">01</div>
+          <div class="fsec-name">Business Context</div>
+        </div>
+        <div class="field">
+          <label>Brand & business model</label>
+          <input type="text" id="brand" placeholder="e.g. Allbirds — D2C e-commerce, AOV £85, repeat purchase brand">
+        </div>
+        <div class="field">
+          <label>Primary business objective <span class="label-hint">(what winning looks like)</span></label>
+          <input type="text" id="objective" placeholder="e.g. Profitable revenue growth — target £500K MRR at 3.5x blended ROAS">
+        </div>
+        <div class="field">
+          <label>Attribution model in use</label>
+          <select id="attribution">
+            <option>Data-driven (GA4 + Meta)</option>
+            <option>Last-click</option>
+            <option>7-day click / 1-day view (Meta)</option>
+            <option>First-click</option>
+            <option>Linear / time-decay</option>
+            <option>MTA (multi-touch attribution)</option>
+            <option>Northbeam / Triple Whale</option>
+            <option>Not set up yet</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 02 Core Metrics -->
+      <div class="fsec">
+        <div class="fsec-header">
+          <div class="fsec-num">02</div>
+          <div class="fsec-name">Core Metrics to Track</div>
+        </div>
+        <label>Select all metrics this agent should monitor</label>
+        <div class="chip-group" id="metricChips">
+          <div class="chip on" data-val="ROAS">ROAS</div>
+          <div class="chip on" data-val="CPA / CPL">CPA</div>
+          <div class="chip on" data-val="CTR">CTR</div>
+          <div class="chip on" data-val="CVR">CVR</div>
+          <div class="chip on" data-val="CPM">CPM</div>
+          <div class="chip on" data-val="Revenue">Revenue</div>
+          <div class="chip on" data-val="Ad spend">Ad Spend</div>
+          <div class="chip" data-val="Frequency">Frequency</div>
+          <div class="chip" data-val="AOV">AOV</div>
+          <div class="chip" data-val="LTV">LTV</div>
+          <div class="chip" data-val="MER (Marketing Efficiency Ratio)">MER</div>
+          <div class="chip" data-val="NCPA (new customer CPA)">NCPA</div>
+          <div class="chip" data-val="Impression share">Imp. Share</div>
+          <div class="chip" data-val="Quality Score">QS</div>
+          <div class="chip" data-val="Email open/click rate">Email</div>
+          <div class="chip" data-val="Repeat purchase rate">Repeat %</div>
+        </div>
+      </div>
+
+      <!-- 03 Benchmarks -->
+      <div class="fsec">
+        <div class="fsec-header">
+          <div class="fsec-num">03</div>
+          <div class="fsec-name">Benchmarks & Thresholds</div>
+        </div>
+        <div class="field">
+          <label>Target ROAS (blended)</label>
+          <input type="text" id="roas" placeholder="e.g. 3.5x minimum · 5x+ is great">
+        </div>
+        <div class="field">
+          <label>Maximum CPA / CPL</label>
+          <input type="text" id="cpa" placeholder="e.g. £35 hard ceiling · £28 target">
+        </div>
+        <div class="field">
+          <label>Budget envelope (monthly total)</label>
+          <input type="text" id="budget" placeholder="e.g. £12,000 / month across all platforms">
+        </div>
+        <div class="field">
+          <label>Anomaly thresholds — flag when <span class="label-hint">(be specific)</span></label>
+          <textarea id="anomaly" placeholder="e.g. ROAS drops >20% day-on-day. CPA spikes >40% above target for 48hrs. CVR drops below 1.5%. Spend exceeds daily budget by >15%." rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- 04 Reporting -->
+      <div class="fsec">
+        <div class="fsec-header">
+          <div class="fsec-num">04</div>
+          <div class="fsec-name">Reporting Cadence</div>
+        </div>
+        <label>Report types to generate</label>
+        <div class="cadence-grid" id="cadGrid">
+          <div class="cad-btn on" data-val="Daily performance pulse (key metrics vs yesterday + 7-day trend)">Daily Pulse</div>
+          <div class="cad-btn on" data-val="Weekly performance digest (full metric review + recommendations)">Weekly Digest</div>
+          <div class="cad-btn on" data-val="Monthly strategic review (trends, wins, losses, next month plan)">Monthly Review</div>
+          <div class="cad-btn" data-val="Creative performance breakdown (CTR / CVR by ad format and angle)">Creative Report</div>
+          <div class="cad-btn" data-val="Audience segment analysis (performance by segment / cohort)">Audience Report</div>
+          <div class="cad-btn" data-val="Competitor benchmarking (performance vs industry benchmarks)">Competitor Bench</div>
+        </div>
+      </div>
+
+      <!-- 05 Feedback Loop -->
+      <div class="fsec">
+        <div class="fsec-header">
+          <div class="fsec-num">05</div>
+          <div class="fsec-name">Feedback Loop Rules</div>
+        </div>
+        <label style="margin-bottom:8px">What should this agent feed back to other agents?</label>
+
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+          <div>
+            <div class="toggle-label">→ Research Agent</div>
+            <div class="toggle-sub">Send trending creative angles & audience signals</div>
+          </div>
+          <div class="toggle-switch on"><div class="toggle-thumb"></div></div>
+        </div>
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+          <div>
+            <div class="toggle-label">→ Creative Agent</div>
+            <div class="toggle-sub">Flag underperforming copy patterns & winning hooks</div>
+          </div>
+          <div class="toggle-switch on"><div class="toggle-thumb"></div></div>
+        </div>
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+          <div>
+            <div class="toggle-label">→ Media Buying Agent</div>
+            <div class="toggle-sub">Trigger budget reallocations & bid adjustments</div>
+          </div>
+          <div class="toggle-switch on"><div class="toggle-thumb"></div></div>
+        </div>
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+          <div>
+            <div class="toggle-label">→ Human Strategist</div>
+            <div class="toggle-sub">Escalate anomalies + weekly digest to account lead</div>
+          </div>
+          <div class="toggle-switch on"><div class="toggle-thumb"></div></div>
+        </div>
+
+        <div class="field" style="margin-top:12px">
+          <label>What decisions must ALWAYS come to a human first?</label>
+          <textarea id="humanGates" placeholder="e.g. Any budget change over £500. Pausing a campaign that has spent over £1,000. Any audience expansion beyond original targeting." rows="2"></textarea>
+        </div>
+      </div>
+
+      <!-- 06 Output Format -->
+      <div class="fsec">
+        <div class="fsec-header">
+          <div class="fsec-num">06</div>
+          <div class="fsec-name">Output Format</div>
+        </div>
+        <div class="field">
+          <label>Report tone</label>
+          <select id="tone">
+            <option value="executive">Executive — headline numbers + 3 actions, nothing more</option>
+            <option value="analytical" selected>Analytical — numbers + trends + clear recommendations</option>
+            <option value="narrative">Narrative — story-driven with context and commentary</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Structure of every insight</label>
+          <select id="insightStructure">
+            <option value="SOAR">SOAR: Signal → Observation → Action → Risk</option>
+            <option value="PAS" selected>PAS: Problem → Analysis → Solution</option>
+            <option value="BLUF">BLUF: Bottom line up front → Supporting data</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="gen-btn" id="genBtn" onclick="generate()">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnTxt">Generate Analytics Agent Prompt</span>
+      </button>
+      <div id="statusBar"></div>
+      <div id="errMsg"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="right">
+    <div class="out-header">
+      <div>
+        <div class="out-title">Generated System Prompt</div>
+        <div class="out-meta" id="outMeta">Configure the agent and generate →</div>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()" style="display:none">Copy Prompt</button>
+    </div>
+
+    <div id="outContainer">
+      <div class="prompt-box">
+        <div class="ph">
+          <div class="ph-icon">◈</div>
+          <div class="ph-title">Analytics Agent awaits configuration.</div>
+          <div class="ph-sub">Fill form · generate · deploy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-panel" id="whyPanel" style="display:none">
+      <div class="why-title">Why each section of this prompt matters</div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="wc-title">Anomaly Detection Rules</div>
+          <div class="wc-desc">Hardcoded thresholds mean the agent catches performance drops before your morning review — not after you've burned through budget.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-title">Insight Structure (PAS / SOAR)</div>
+          <div class="wc-desc">Every observation ends with a concrete action. The agent never reports a problem without recommending a fix.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-title">Feedback Routing Rules</div>
+          <div class="wc-desc">Closes the loop. Winning signals flow back to Creative and Research automatically — no manual briefing needed.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-title">Human Approval Gates</div>
+          <div class="wc-desc">Defines exactly where AI autonomy ends and human judgment begins — so nothing big happens without your sign-off.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-title">Cadence Discipline</div>
+          <div class="wc-desc">Daily, weekly, and monthly rhythms ensure insight flows at the right altitude — operational vs strategic — without noise.</div>
+        </div>
+        <div class="why-card">
+          <div class="wc-title">Attribution Context</div>
+          <div class="wc-desc">The agent knows which attribution model to trust — so it never misreads Meta ROAS vs true blended performance.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Chips
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('on')));
+  document.querySelectorAll('.cad-btn').forEach(c => c.addEventListener('click', () => c.classList.toggle('on')));
+
+  function toggleSwitch(row) {
+    const sw = row.querySelector('.toggle-switch');
+    sw.classList.toggle('on');
+  }
+
+  function getChips(sel) {
+    return Array.from(document.querySelectorAll(sel + '.on')).map(e => e.dataset.val).join(', ');
+  }
+
+  function getFeedbackTargets() {
+    const labels = ['Research Agent', 'Creative Agent', 'Media Buying Agent', 'Human Strategist'];
+    const rows = document.querySelectorAll('.toggle-row');
+    return labels.filter((_, i) => rows[i]?.querySelector('.toggle-switch')?.classList.contains('on')).join(', ');
+  }
+
+  let generatedPrompt = '';
+
+  async function generate() {
+    const _key = window.getApiKey ? window.getApiKey() : '';
+    if (!_key || !_key.startsWith('sk-ant')) {
+      const errEl = document.getElementById('errMsg') || document.getElementById('errorMsg');
+      if (errEl) errEl.innerHTML = '<div style="color:#F85149;font-family:monospace;font-size:12px;margin-top:8px;padding:8px 12px;background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);border-radius:4px;">Please enter your Anthropic API key in the bar at the top.</div>';
+      return;
+    }
+    const brand     = document.getElementById('brand').value.trim();
+    const objective = document.getElementById('objective').value.trim();
+    const attribution = document.getElementById('attribution').value;
+    const metrics   = getChips('#metricChips .chip');
+    const roas      = document.getElementById('roas').value.trim();
+    const cpa       = document.getElementById('cpa').value.trim();
+    const budget    = document.getElementById('budget').value.trim();
+    const anomaly   = document.getElementById('anomaly').value.trim();
+    const cadence   = getChips('#cadGrid .cad-btn');
+    const feedback  = getFeedbackTargets();
+    const humanGates = document.getElementById('humanGates').value.trim();
+    const tone      = document.getElementById('tone').value;
+    const insight   = document.getElementById('insightStructure').value;
+
+    if (!brand) {
+      document.getElementById('errMsg').innerHTML = '<div class="err">Please enter the brand and business model.</div>';
+      return;
+    }
+
+    document.getElementById('errMsg').innerHTML = '';
+    document.getElementById('genBtn').disabled = true;
+    document.getElementById('spinner').classList.add('on');
+    document.getElementById('btnTxt').textContent = 'Generating...';
+    document.getElementById('copyBtn').style.display = 'none';
+    document.getElementById('whyPanel').style.display = 'none';
+
+    const box = document.getElementById('outContainer');
+    box.innerHTML = '<div class="prompt-box" id="streamBox"><span class="cursor"></span></div>';
+    document.getElementById('statusBar').innerHTML = '<div class="status-bar"><div class="sdot pulse"></div> Synthesising analytics logic...</div>';
+    document.getElementById('outMeta').textContent = 'Generating...';
+
+    const userMsg = `You are a senior marketing analytics architect who has designed measurement frameworks for high-growth D2C brands.
+
+Build a complete, production-ready SYSTEM PROMPT for a Marketing Analytics Agent with this exact specification:
+
+BRAND & BUSINESS MODEL: ${brand}
+PRIMARY OBJECTIVE: ${objective || 'Profitable revenue growth with strong ROAS'}
+ATTRIBUTION MODEL: ${attribution}
+METRICS TO TRACK: ${metrics || 'ROAS, CPA, CTR, CVR, Revenue, Spend'}
+TARGET ROAS: ${roas || 'Not specified — infer sensible defaults'}
+MAX CPA: ${cpa || 'Not specified'}
+MONTHLY BUDGET: ${budget || 'Not specified'}
+ANOMALY THRESHOLDS: ${anomaly || 'Flag significant drops in ROAS or spikes in CPA'}
+REPORTING CADENCE: ${cadence || 'Daily pulse, weekly digest, monthly review'}
+FEEDBACK TARGETS: ${feedback || 'All agents + human strategist'}
+HUMAN APPROVAL GATES: ${humanGates || 'All major budget changes and campaign pauses'}
+REPORT TONE: ${tone}
+INSIGHT STRUCTURE: ${insight}
+
+Build a system prompt with these exact sections using ALL-CAPS headers with dashes (e.g. --- IDENTITY ---):
+
+1. IDENTITY — Role definition. This agent is the performance nervous system of the marketing ecosystem. It monitors, interprets, escalates, and feeds intelligence back into the loop. Not a dashboard — a thinking analyst.
+
+2. PRIMARY OBJECTIVE — What winning looks like, anchored to specific business metrics. The agent should internalise this as its north star.
+
+3. METRICS HIERARCHY — Tiered metrics list: primary (business-critical), secondary (diagnostic), tertiary (early-warning signals). For each metric include: what it measures, what good looks like, what bad looks like.
+
+4. ANOMALY DETECTION PROTOCOL — Specific rules for when to trigger an alert. Include: threshold definitions, time windows (e.g. 24hr vs 48hr vs 7-day), severity levels (Watch / Alert / Emergency), and what to do at each level.
+
+5. ATTRIBUTION CONTEXT — How to read and interpret data given the attribution model in use. What to trust, what to sanity-check, where to look for the true signal. Specifically address platform-reported vs blended ROAS discrepancies.
+
+6. REPORTING FORMATS — Exact templates for each report type (daily/weekly/monthly). Use the specified insight structure. Every insight must end with a concrete recommended action. Reports should be scannable in under 2 minutes.
+
+7. FEEDBACK ROUTING RULES — What signals to send to which agents and when. Include specific trigger conditions. Make this a protocol, not a suggestion.
+
+8. HUMAN ESCALATION GATES — Explicit list of decisions that require human approval before any action is taken. These are hard stops, not guidelines.
+
+9. QUALITY STANDARDS — What separates a useful analytics output from a useless one. The agent must self-check before delivering any report or alert.
+
+Make this analytically rigorous and immediately deployable. It should read like it was written by a data-driven CMO who has seen too many vanity metric reports and wants real signal, not noise.
+
+Output ONLY the system prompt. No preamble, no explanation. Begin directly with the first section header.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': window.getApiKey(),
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          stream: true,
+          messages: [{ role: 'user', content: userMsg }]
+        })
+      });
+
+      if (!res.ok) throw new Error(`API ${res.status}`);
+
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      generatedPrompt = '';
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const raw = line.slice(6).trim();
+          if (raw === '[DONE]') continue;
+          try {
+            const p = JSON.parse(raw);
+            if (p.type === 'content_block_delta' && p.delta?.text) {
+              generatedPrompt += p.delta.text;
+              document.getElementById('streamBox').innerHTML = highlight(generatedPrompt) + '<span class="cursor"></span>';
+            }
+          } catch(e) {}
+        }
+      }
+
+      document.getElementById('streamBox').innerHTML = highlight(generatedPrompt);
+      document.getElementById('copyBtn').style.display = 'block';
+      document.getElementById('whyPanel').style.display = 'block';
+      document.getElementById('statusBar').innerHTML = '<div class="status-bar"><div class="sdot"></div> Prompt ready · copy and deploy</div>';
+      document.getElementById('outMeta').textContent = `${generatedPrompt.length} chars · ${generatedPrompt.split(/\s+/).length} words`;
+
+    } catch(err) {
+      document.getElementById('errMsg').innerHTML = `<div class="err">Error: ${err.message}</div>`;
+      document.getElementById('statusBar').innerHTML = '';
+      box.innerHTML = '<div class="prompt-box"><div class="ph"><div class="ph-icon">⚠</div><div class="ph-title">Generation failed.</div></div></div>';
+    } finally {
+      document.getElementById('genBtn').disabled = false;
+      document.getElementById('spinner').classList.remove('on');
+      document.getElementById('btnTxt').textContent = 'Regenerate Prompt';
+    }
+  }
+
+  function highlight(text) {
+    return text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/(---\s*[A-Z][A-Z\s&\/\(\)]+\s*---)/g, '<span class="hl">$1</span>');
+  }
+
+  async function copyPrompt() {
+    if (!generatedPrompt) return;
+    try {
+      await navigator.clipboard.writeText(generatedPrompt);
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy Prompt'; btn.classList.remove('copied'); }, 2200);
+    } catch(e) {}
+  }
+
+// ── API KEY MANAGEMENT ──
+(function() {
+  const input = document.getElementById('apiKeyInput');
+  const status = document.getElementById('keyStatus');
+  const STORE_KEY = 'gm_api_key';
+
+  function updateStatus(key) {
+    if (key && key.startsWith('sk-ant')) {
+      status.textContent = 'Key set ✓';
+      status.className = 'key-status ok';
+    } else {
+      status.textContent = key ? 'Invalid format' : 'Not set';
+      status.className = 'key-status';
+    }
+  }
+
+  // Load saved key
+  const saved = localStorage.getItem(STORE_KEY) || '';
+  if (saved) { input.value = saved; updateStatus(saved); }
+
+  // Save on change
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    if (val) localStorage.setItem(STORE_KEY, val);
+    else localStorage.removeItem(STORE_KEY);
+    updateStatus(val);
+  });
+
+  // Expose getter for generate functions
+  window.getApiKey = () => localStorage.getItem(STORE_KEY) || input.value.trim();
+})();
+
+</script>
+</body>
+</html>

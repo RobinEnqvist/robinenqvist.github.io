@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creative Agent Prompt Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:       #F7F3EE;
+    --surface:  #FFFFFF;
+    --surface2: #F0EBE2;
+    --ink:      #1C1714;
+    --amber:    #C8860A;
+    --amber-lt: #F5C842;
+    --amber-bg: #FDF6E3;
+    --amber-dim:rgba(200,134,10,0.12);
+    --red:      #C0392B;
+    --green:    #1A6B3C;
+    --muted:    #8A7E70;
+    --border:   #DDD5C8;
+    --shadow:   0 2px 20px rgba(28,23,20,0.08);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--ink);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .topbar-mark {
+    width: 28px; height: 28px;
+    background: var(--amber);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--ink);
+  }
+  .topbar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; color: #fff;
+  }
+  .topbar-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 1.5px;
+  }
+  .step-pills {
+    display: flex; gap: 6px;
+  }
+  .pill {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 1px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pill.active { background: var(--amber); color: var(--ink); border-color: var(--amber); font-weight: 500; }
+  .pill.done { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* ── LEFT PANEL ── */
+  .form-panel {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+  }
+
+  .form-inner { padding: 36px 32px 60px; }
+
+  .panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .panel-title em { color: var(--amber); font-style: italic; }
+  .panel-intro {
+    font-size: 13px; color: var(--muted);
+    line-height: 1.6; margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  /* Section blocks */
+  .form-section {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .form-section:last-of-type { border-bottom: none; }
+
+  .section-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    width: 22px; height: 22px;
+    background: var(--amber);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    color: var(--ink); flex-shrink: 0;
+  }
+  .section-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  .field { margin-bottom: 14px; }
+  label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--ink); margin-bottom: 5px;
+    letter-spacing: 0.1px;
+  }
+  input, textarea, select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; color: var(--ink);
+    outline: none; resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px var(--amber-dim);
+  }
+  textarea { min-height: 68px; }
+
+  /* Platform chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .chip {
+    padding: 5px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    font-size: 12px; cursor: pointer;
+    background: var(--surface2);
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.15s; user-select: none;
+  }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* Format checkboxes */
+  .format-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px; margin-top: 6px;
+  }
+  .fmt-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px; cursor: pointer;
+    background: var(--surface2);
+    transition: all 0.15s; user-select: none;
+  }
+  .fmt-item.on { background: var(--amber-bg); border-color: var(--amber); }
+  .fmt-check {
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 3px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: var(--amber);
+    transition: all 0.15s;
+  }
+  .fmt-item.on .fmt-check { background: var(--amber); border-color: var(--amber); color: #fff; }
+  .fmt-label { font-size: 12px; font-weight: 500; }
+  .fmt-sub { font-size: 10px; color: var(--muted); }
+
+  /* Tone slider */
+  .tone-row {
+    display: flex; justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .tone-label { font-size: 11px; color: var(--muted); font-style: italic; }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%; height: 4px;
+    background: linear-gradient(to right, var(--amber) 0%, var(--amber) 50%, var(--border) 50%, var(--border) 100%);
+    border-radius: 2px; border: none; padding: 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 3px solid #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+  /* Generate button */
+  .gen-btn {
+    width: 100%; padding: 14px;
+    background: var(--ink);
+    color: var(--amber-lt);
+    border: none; border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    cursor: pointer; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all 0.2s; margin-top: 28px;
+  }
+  .gen-btn:hover { background: #2D2418; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(28,23,20,0.2); }
+  .gen-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(245,200,66,0.3);
+    border-top-color: var(--amber-lt);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite; display: none;
+  }
+  .spinner.on { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── RIGHT PANEL ── */
+  .output-panel {
+    background: var(--bg);
+    padding: 36px 40px 60px;
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+  }
+
+  .output-header {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; margin-bottom: 24px;
+  }
+  .output-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; letter-spacing: -0.3px;
+  }
+  .output-meta {
+    font-size: 12px; color: var(--muted); margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .copy-btn {
+    padding: 7px 16px;
+    background: transparent;
+    border: 1px solid var(--border); border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 1px;
+    cursor: pointer; color: var(--muted);
+    transition: all 0.15s; white-space: nowrap;
+    text-transform: uppercase;
+  }
+  .copy-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+  /* Output box */
+  .prompt-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 28px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; line-height: 1.85;
+    color: var(--ink);
+    min-height: 380px;
+    white-space: pre-wrap;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+
+  .placeholder-state {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 380px; text-align: center; gap: 12px;
+  }
+  .ph-icon { font-size: 36px; opacity: 0.3; }
+  .ph-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-style: italic; opacity: 0.4;
+  }
+  .ph-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 1px; opacity: 0.35;
+    text-transform: uppercase;
+  }
+
+  /* Syntax highlights */
+  .hl-section { color: var(--amber); font-weight: 500; }
+
+  .cursor {
+    display: inline-block; width: 2px; height: 13px;
+    background: var(--amber);
+    animation: blink 0.8s ease infinite; vertical-align: middle;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* Anatomy cards */
+  .anatomy { margin-top: 28px; }
+  .anatomy-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .anatomy-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .anatomy-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px;
+    border-left: 3px solid var(--amber);
+    box-shadow: var(--shadow);
+  }
+  .ac-title { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .ac-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* Status */
+  .status { display: flex; align-items: center; gap: 7px; margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  .status-dot.thinking { background: var(--amber); animation: blink 0.8s ease infinite; }
+
+  .error-box {
+    margin-top: 12px; padding: 10px 14px;
+    background: rgba(192,57,43,0.06);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: 6px; color: var(--red);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .form-panel, .output-panel { max-height: none; position: relative; }
+    .step-pills { display: none; }
+  }
+
+/* ── SHARED API KEY BAR ── */
+.api-key-bar {
+  background: #1a1a2e;
+  border-bottom: 1px solid rgba(255,200,50,0.15);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: monospace;
+  font-size: 12px;
+}
+.api-key-bar label {
+  color: #F5C842;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+  font-weight: 600;
+}
+.api-key-bar input {
+  flex: 1;
+  max-width: 420px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,200,50,0.2);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: #aaa;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  outline: none;
+}
+.api-key-bar input:focus { border-color: rgba(255,200,50,0.5); color: #fff; }
+.api-key-bar .key-status {
+  font-size: 10px;
+  color: #555;
+  white-space: nowrap;
+}
+.api-key-bar .key-status.ok { color: #3FB950; }
+.api-key-bar .back-link {
+  margin-left: auto;
+  color: rgba(255,200,50,0.6);
+  font-size: 10px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,200,50,0.15);
+  padding: 3px 10px;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.api-key-bar .back-link:hover { color: #F5C842; border-color: rgba(255,200,50,0.4); }
+
+</style>
+</head>
+<body>
+<div class="api-key-bar">
+  <label>API Key</label>
+  <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-…  (stored in browser only, never in code)" autocomplete="off">
+  <span class="key-status" id="keyStatus">Not set</span>
+  <a href="index.html" class="back-link">← Dashboard</a>
+</div>
+
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-mark">CA</div>
+    <div>
+      <div class="topbar-title">Creative Agent Builder</div>
+      <div class="topbar-sub">Prompt Engineering Studio · Growth Marketing</div>
+    </div>
+  </div>
+  <div class="step-pills">
+    <div class="pill done">01 Research ✓</div>
+    <div class="pill active">02 Creative</div>
+    <div class="pill">03 Analytics</div>
+    <div class="pill">04 Buying</div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT: FORM -->
+  <div class="form-panel">
+    <div class="form-inner">
+      <div class="panel-title">Engineer your<br><em>Creative Agent.</em></div>
+      <p class="panel-intro">Define your brand context, platforms, and creative rules. Claude will build a production-ready system prompt that generates ad copy your clients can deploy immediately.</p>
+
+      <!-- 01 Brand -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-num">01</div>
+          <div class="section-name">Brand Context</div>
+        </div>
+        <div class="field">
+          <label>Brand Name & Category</label>
+          <input type="text" id="brandName" placeholder="e.g. Allbirds — Sustainable D2C Footwear">
+        </div>
+        <div class="field">
+          <label>What they sell (one sentence)</label>
+          <input type="text" id="product" placeholder="e.g. Premium wool trainers for urban professionals">
+        </div>
+        <div class="field">
+          <label>Brand voice in 3 words</label>
+          <input type="text" id="voice" placeholder="e.g. Direct. Warm. Unfiltered.">
+        </div>
+        <div class="field">
+          <label>Target audience (be specific)</label>
+          <textarea id="audience" placeholder="e.g. 28-40 year old urban professionals, sustainability-conscious, willing to pay premium, frustrated by synthetic materials and greenwashing" rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- 02 Platforms -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-num">02</div>
+          <div class="section-name">Platforms & Formats</div>
+        </div>
+        <label>Active ad platforms</label>
+        <div class="chips" id="platformChips">
+          <div class="chip on" data-val="Meta (Facebook/Instagram)">Meta</div>
+          <div class="chip on" data-val="Google Search">Google Search</div>
+          <div class="chip" data-val="TikTok">TikTok</div>
+          <div class="chip" data-val="YouTube">YouTube</div>
+          <div class="chip" data-val="Pinterest">Pinterest</div>
+          <div class="chip" data-val="LinkedIn">LinkedIn</div>
+        </div>
+        <div style="margin-top:16px">
+          <label>Ad formats to generate copy for</label>
+          <div class="format-grid" id="formatGrid">
+            <div class="fmt-item on" data-val="Primary text (up to 125 chars before truncation)">
+              <div class="fmt-check">✓</div>
+              <div><div class="fmt-label">Primary Text</div><div class="fmt-sub">125 chars · Meta</div></div>
+            </div>
+            <div class="fmt-item on" data-val="Headline (40 chars max)">
+              <div class="fmt-check">✓</div>
+              <div><div class="fmt-label">Headline</div><div class="fmt-sub">40 chars · Meta/Google</div></div>
+            </div>
+            <div class="fmt-item on" data-val="Hook line (first 3 seconds · under 8 words)">
+              <div class="fmt-check">✓</div>
+              <div><div class="fmt-label">Hook Line</div><div class="fmt-sub">8 words · Video/TikTok</div></div>
+            </div>
+            <div class="fmt-item" data-val="Google Search headline (30 chars max)">
+              <div class="fmt-check"></div>
+              <div><div class="fmt-label">Search Headline</div><div class="fmt-sub">30 chars · Google</div></div>
+            </div>
+            <div class="fmt-item" data-val="Google description line (90 chars max)">
+              <div class="fmt-check"></div>
+              <div><div class="fmt-label">Description Line</div><div class="fmt-sub">90 chars · Google</div></div>
+            </div>
+            <div class="fmt-item" data-val="Long-form body copy (150-300 words)">
+              <div class="fmt-check"></div>
+              <div><div class="fmt-label">Long-form Body</div><div class="fmt-sub">150-300 words</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Creative Rules -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-num">03</div>
+          <div class="section-name">Creative Rules</div>
+        </div>
+        <div class="field">
+          <label>Messaging angles to use (most effective for this brand)</label>
+          <textarea id="angles" placeholder="e.g. Problem/solution, social proof, founder story, sustainability credentials, comfort vs performance trade-off" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label>Hooks that always land with this audience</label>
+          <textarea id="hooks" placeholder="e.g. 'The thing no one tells you about running shoes...' / Questions that challenge assumptions / Before/after scenarios" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label>What the copy must NEVER do</label>
+          <textarea id="never" placeholder="e.g. Never use fear tactics. Never compare to Nike by name. Never use jargon like 'eco-friendly' — say what actually makes it sustainable." rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label>Current offer or CTA to include</label>
+          <input type="text" id="offer" placeholder="e.g. Free shipping + 30-day returns · or · 15% off first order with WELCOME">
+        </div>
+      </div>
+
+      <!-- 04 Output -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-num">04</div>
+          <div class="section-name">Output Rules</div>
+        </div>
+        <div class="field">
+          <label>Variants per format</label>
+          <select id="variants">
+            <option value="3">3 variants (quick brief)</option>
+            <option value="5" selected>5 variants (standard A/B testing)</option>
+            <option value="10">10 variants (high-velocity testing)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tone on the scale below</label>
+          <div class="tone-row">
+            <span class="tone-label">← Conversational / casual</span>
+            <span class="tone-label">Direct / punchy →</span>
+          </div>
+          <input type="range" id="toneSlider" min="1" max="10" value="5">
+        </div>
+        <div class="field">
+          <label>Self-evaluation: agent scores its own output?</label>
+          <select id="selfEval">
+            <option value="yes" selected>Yes — score each variant before outputting</option>
+            <option value="no">No — output directly without scoring</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="gen-btn" id="genBtn" onclick="generate()">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnText">Generate Creative Agent Prompt</span>
+      </button>
+
+      <div id="statusMsg"></div>
+      <div id="errorMsg"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="output-panel">
+    <div class="output-header">
+      <div>
+        <div class="output-title">Generated System Prompt</div>
+        <div class="output-meta" id="outputMeta">Fill in the form and generate →</div>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()" style="display:none">Copy Prompt</button>
+    </div>
+
+    <div id="outputContainer">
+      <div class="prompt-box">
+        <div class="placeholder-state">
+          <div class="ph-icon">✦</div>
+          <div class="ph-title">Your Creative Agent awaits.</div>
+          <div class="ph-sub">Complete form → Generate</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="anatomy" id="anatomy" style="display:none">
+      <div class="anatomy-title">What each section of this prompt does</div>
+      <div class="anatomy-grid">
+        <div class="anatomy-card">
+          <div class="ac-title">Identity & Brand Voice</div>
+          <div class="ac-desc">Locks the agent's persona to this brand. It cannot drift into generic copywriting mode.</div>
+        </div>
+        <div class="anatomy-card">
+          <div class="ac-title">Platform Format Rules</div>
+          <div class="ac-desc">Character limits and specs are baked in. Every output is deployment-ready, not just directionally correct.</div>
+        </div>
+        <div class="anatomy-card">
+          <div class="ac-title">Messaging Hierarchy</div>
+          <div class="ac-desc">Prioritises angles proven to work for this audience — not generic copywriting formulas.</div>
+        </div>
+        <div class="anatomy-card">
+          <div class="ac-title">Self-Evaluation Rubric</div>
+          <div class="ac-desc">The agent scores its own copy before output — filtering weak variants before they reach you.</div>
+        </div>
+        <div class="anatomy-card">
+          <div class="ac-title">Variant Structure</div>
+          <div class="ac-desc">Forces multiple angles per format so you have immediate A/B test options without extra prompting.</div>
+        </div>
+        <div class="anatomy-card">
+          <div class="ac-title">Hard Guardrails</div>
+          <div class="ac-desc">Brand safety rules are non-negotiable instructions — the agent treats them like legal constraints.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Chips
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('on')));
+
+  // Format checkboxes
+  document.querySelectorAll('.fmt-item').forEach(f => {
+    f.addEventListener('click', () => {
+      f.classList.toggle('on');
+      f.querySelector('.fmt-check').textContent = f.classList.contains('on') ? '✓' : '';
+    });
+  });
+
+  // Tone slider gradient
+  const slider = document.getElementById('toneSlider');
+  slider.addEventListener('input', () => {
+    const val = (slider.value - 1) / 9 * 100;
+    slider.style.background = `linear-gradient(to right, var(--amber) 0%, var(--amber) ${val}%, var(--border) ${val}%, var(--border) 100%)`;
+  });
+
+  function getSelected(selector, attr) {
+    return Array.from(document.querySelectorAll(selector + '.on')).map(el => el.dataset[attr]).join(', ');
+  }
+
+  function getToneLabel(val) {
+    if (val <= 2) return "highly conversational and relaxed — like a friend talking";
+    if (val <= 4) return "warm and approachable with some personality";
+    if (val <= 6) return "balanced — friendly but clear and purposeful";
+    if (val <= 8) return "direct and confident with minimal fluff";
+    return "punchy, punchy, punchy — every word earns its place";
+  }
+
+  let generatedPrompt = '';
+
+  async function generate() {
+    const _key = window.getApiKey ? window.getApiKey() : '';
+    if (!_key || !_key.startsWith('sk-ant')) {
+      const errEl = document.getElementById('errMsg') || document.getElementById('errorMsg');
+      if (errEl) errEl.innerHTML = '<div style="color:#F85149;font-family:monospace;font-size:12px;margin-top:8px;padding:8px 12px;background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);border-radius:4px;">Please enter your Anthropic API key in the bar at the top.</div>';
+      return;
+    }
+    const brand    = document.getElementById('brandName').value.trim();
+    const product  = document.getElementById('product').value.trim();
+    const voice    = document.getElementById('voice').value.trim();
+    const audience = document.getElementById('audience').value.trim();
+    const platforms = getSelected('#platformChips .chip', 'val');
+    const formats   = getSelected('#formatGrid .fmt-item', 'val');
+    const angles   = document.getElementById('angles').value.trim();
+    const hooks    = document.getElementById('hooks').value.trim();
+    const never    = document.getElementById('never').value.trim();
+    const offer    = document.getElementById('offer').value.trim();
+    const variants = document.getElementById('variants').value;
+    const tone     = document.getElementById('toneSlider').value;
+    const selfEval = document.getElementById('selfEval').value;
+
+    if (!brand || !product) {
+      document.getElementById('errorMsg').innerHTML = '<div class="error-box">Please fill in Brand Name and Product at minimum.</div>';
+      return;
+    }
+
+    document.getElementById('errorMsg').innerHTML = '';
+    document.getElementById('genBtn').disabled = true;
+    document.getElementById('spinner').classList.add('on');
+    document.getElementById('btnText').textContent = 'Generating...';
+    document.getElementById('copyBtn').style.display = 'none';
+    document.getElementById('anatomy').style.display = 'none';
+
+    const container = document.getElementById('outputContainer');
+    container.innerHTML = '<div class="prompt-box" id="streamOut"><span class="cursor"></span></div>';
+    document.getElementById('statusMsg').innerHTML = '<div class="status"><div class="status-dot thinking"></div> Claude is engineering your Creative Agent prompt...</div>';
+    document.getElementById('outputMeta').textContent = 'Generating...';
+
+    const userMsg = `You are an expert AI prompt engineer specialising in marketing automation and paid advertising copywriting systems.
+
+Build a complete, production-ready SYSTEM PROMPT for a Creative Agent with this exact context:
+
+BRAND: ${brand}
+PRODUCT: ${product}
+BRAND VOICE: ${voice || 'Not specified — infer from context'}
+TARGET AUDIENCE: ${audience || 'Not specified'}
+ACTIVE PLATFORMS: ${platforms || 'Meta, Google'}
+AD FORMATS REQUIRED: ${formats || 'Primary text, Headline, Hook line'}
+PROVEN MESSAGING ANGLES: ${angles || 'Problem/solution, social proof'}
+HOOKS THAT LAND: ${hooks || 'Not specified'}
+COPY NEVER DO LIST: ${never || 'Not specified'}
+CURRENT OFFER / CTA: ${offer || 'Not specified'}
+VARIANTS PER FORMAT: ${variants}
+TONE: ${getToneLabel(tone)} (${tone}/10)
+SELF-EVALUATION: ${selfEval === 'yes' ? 'Yes — agent scores each variant 1-10 before outputting, with brief rationale' : 'No self-scoring — output directly'}
+
+Generate a system prompt that includes these exact sections with ALL-CAPS headers using dashes (e.g. --- IDENTITY ---):
+
+1. IDENTITY — Sharp role definition. This agent is a senior direct-response copywriter who lives inside this brand. One job: write ad copy that converts.
+2. BRAND VOICE RULES — Specific voice instructions derived from the 3-word brief. Give concrete examples of what ON-BRAND vs OFF-BRAND looks like.
+3. AUDIENCE INTELLIGENCE — Who the agent is writing for. Include psychographic triggers, not just demographics.
+4. PLATFORM FORMAT SPECS — Exact character limits and specs per platform/format. These are hard constraints, not guidelines.
+5. MESSAGING HIERARCHY — Prioritised list of angles to use, with brief notes on when to use each one.
+6. HOOK FORMULAS — Specific hook structures that work for this audience. Minimum 4 formulas with examples.
+7. OUTPUT STRUCTURE — Exact format the agent must use for every response. Must include: format label, variant number, the copy, character count, and (if self-eval enabled) a score out of 10 with one-line rationale.
+8. HARD GUARDRAILS — Non-negotiable rules. Framed as absolute constraints, not suggestions.
+9. QUALITY TRIGGERS — Specific phrases or patterns that flag LOW-QUALITY copy. The agent must never output these.
+
+Make it sharp, opinionated, and immediately deployable. This should read like it was written by someone who has spent 10 years running D2C paid media campaigns, not a generic AI assistant.
+
+Output ONLY the system prompt — nothing before it, nothing after it. No preamble, no explanation. Start directly with the first section header.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': window.getApiKey(),
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          stream: true,
+          messages: [{ role: 'user', content: userMsg }]
+        })
+      });
+
+      if (!res.ok) throw new Error(`API ${res.status}`);
+
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      generatedPrompt = '';
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6).trim();
+          if (data === '[DONE]') continue;
+          try {
+            const p = JSON.parse(data);
+            if (p.type === 'content_block_delta' && p.delta?.text) {
+              generatedPrompt += p.delta.text;
+              document.getElementById('streamOut').innerHTML = render(generatedPrompt) + '<span class="cursor"></span>';
+            }
+          } catch(e) {}
+        }
+      }
+
+      document.getElementById('streamOut').innerHTML = render(generatedPrompt);
+      document.getElementById('copyBtn').style.display = 'block';
+      document.getElementById('anatomy').style.display = 'block';
+      document.getElementById('statusMsg').innerHTML = '<div class="status"><div class="status-dot"></div> Prompt ready — copy and deploy</div>';
+      document.getElementById('outputMeta').textContent = `${generatedPrompt.length} chars · ${Math.ceil(generatedPrompt.split(' ').length)} words`;
+
+    } catch(err) {
+      document.getElementById('errorMsg').innerHTML = `<div class="error-box">Error: ${err.message}</div>`;
+      document.getElementById('statusMsg').innerHTML = '';
+      container.innerHTML = '<div class="prompt-box"><div class="placeholder-state"><div class="ph-icon">⚠</div><div class="ph-title">Generation failed.</div></div></div>';
+    } finally {
+      document.getElementById('genBtn').disabled = false;
+      document.getElementById('spinner').classList.remove('on');
+      document.getElementById('btnText').textContent = 'Regenerate Prompt';
+    }
+  }
+
+  function render(text) {
+    return text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/(---\s*[A-Z][A-Z\s&\/]+\s*---)/g, '<span class="hl-section">$1</span>')
+      .replace(/(^#{1,3}\s.+$)/gm, '<span class="hl-section">$1</span>');
+  }
+
+  async function copyPrompt() {
+    if (!generatedPrompt) return;
+    try {
+      await navigator.clipboard.writeText(generatedPrompt);
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy Prompt'; btn.classList.remove('copied'); }, 2000);
+    } catch(e) {}
+  }
+
+// ── API KEY MANAGEMENT ──
+(function() {
+  const input = document.getElementById('apiKeyInput');
+  const status = document.getElementById('keyStatus');
+  const STORE_KEY = 'gm_api_key';
+
+  function updateStatus(key) {
+    if (key && key.startsWith('sk-ant')) {
+      status.textContent = 'Key set ✓';
+      status.className = 'key-status ok';
+    } else {
+      status.textContent = key ? 'Invalid format' : 'Not set';
+      status.className = 'key-status';
+    }
+  }
+
+  // Load saved key
+  const saved = localStorage.getItem(STORE_KEY) || '';
+  if (saved) { input.value = saved; updateStatus(saved); }
+
+  // Save on change
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    if (val) localStorage.setItem(STORE_KEY, val);
+    else localStorage.removeItem(STORE_KEY);
+    updateStatus(val);
+  });
+
+  // Expose getter for generate functions
+  window.getApiKey = () => localStorage.getItem(STORE_KEY) || input.value.trim();
+})();
+
+</script>
+</body>
+</html>
