@@ -313,7 +313,7 @@ img {
    ABOUT / TAGLINE
    ============================================================ */
 .about {
-  padding: 100px 0;
+  padding: 100px 0 32px;
 }
 
 .about__heading {
@@ -382,7 +382,7 @@ img {
 }
 
 .my-work__link {
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--accent);
