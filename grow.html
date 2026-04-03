@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GROW. – Growth Work – Robin Karl Wilhelm</title>
+  <meta name="description" content="Growth strategy, Shopify optimisation, SEO, and analytics by Robin Karl Wilhelm. Case study: RKW x SkrapGear." />
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5HHX2SJ4');</script>
+  <!-- End Google Tag Manager -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ---- GROW PAGE ---- */
+    .grow-hero {
+      padding: 160px 0 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .grow-hero__label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .grow-hero__title {
+      font-size: clamp(64px, 12vw, 140px);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    .grow-hero__sub {
+      font-size: clamp(14px, 1.8vw, 18px);
+      color: var(--muted);
+      max-width: 52ch;
+      line-height: 1.65;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--muted);
+      transition: color 0.2s;
+      margin-bottom: 60px;
+    }
+
+    .back-link:hover { color: var(--text); }
+    .back-link::before { content: '←'; font-size: 14px; }
+
+    /* ---- CASE STUDY SECTIONS ---- */
+    .case-study {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .case-study__header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .case-study__title {
+      font-size: clamp(22px, 3.5vw, 40px);
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .case-study__wip {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .case-study__objective {
+      font-size: clamp(14px, 1.6vw, 18px);
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .case-study__body {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* Process steps */
+    .process { display: flex; flex-direction: column; }
+
+    .process__step {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .process__step:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .process__label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .process__desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 38ch;
+    }
+
+    /* Media panel */
+    .case-study__media {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    .case-study__media img {
+      width: 60%;
+      height: auto;
+      object-fit: contain;
+      filter: brightness(0.9);
+    }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .case-study__body {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .case-study { padding: 80px 0; }
+
+      .case-study__header {
+        text-align: left;
+        margin-bottom: 48px;
+      }
+
+      .case-study__objective { margin: 0; }
+      .grow-hero { padding: 120px 0 60px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HHX2SJ4" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+
+  <!-- HEADER / NAV -->
+  <header class="site-header">
+    <nav class="nav">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div class="nav-mobile" id="navMobile" aria-hidden="true">
+    <button class="nav-mobile__close" id="navClose" aria-label="Close menu">✕</button>
+    <ul>
+      <li><a href="create.html" class="nav-mobile__link">CREATE</a></li>
+      <li><a href="grow.html" class="nav-mobile__link">GROW</a></li>
+      <li><a href="index.html#story" class="nav-mobile__link">STORY</a></li>
+      <li><a href="index.html#extensions" class="nav-mobile__link">EXTENSIONS</a></li>
+    </ul>
+  </div>
+
+  <!-- PAGE HERO -->
+  <section class="grow-hero">
+    <div class="container">
+      <a href="index.html" class="back-link">BACK TO HOME</a>
+      <span class="grow-hero__label">STRATEGY &amp; GROWTH</span>
+      <h1 class="grow-hero__title">GROW<span class="dot">.</span></h1>
+      <p class="grow-hero__sub">Shopify optimisation, SEO, content, and analytics — systems built to compound over time.</p>
+    </div>
+  </section>
+
+  <!-- CASE STUDY: SKRAPGEAR -->
+  <section class="case-study" id="skrapgear">
+    <div class="container">
+
+      <div class="case-study__header">
+        <h2 class="case-study__title">RKW x SkrapGear</h2>
+        <span class="case-study__wip">WORK IN PROGRESS</span>
+        <p class="case-study__objective">Objective: Optimise Shopify and socials for growth.</p>
+      </div>
+
+      <div class="case-study__body">
+        <div class="process">
+
+          <div class="process__step">
+            <p class="process__label">SHOPIFY — CRM — SEO — AEO</p>
+            <p class="process__desc">Auditing and rebuilding the Shopify store for conversion — clean UX, faster load times, and search visibility across both traditional SEO and AI-powered answer engines.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">DESIGN — WEBB — CONTENT — NEWS</p>
+            <p class="process__desc">Refreshing the visual identity across web and social. Building a content engine that keeps the brand active, relevant, and discoverable.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">MEASURE — GTM — GA4</p>
+            <p class="process__desc">Full tracking setup via Google Tag Manager and GA4 — so every channel, click, and conversion is measured and optimised over time.</p>
+          </div>
+
+        </div>
+
+        <div class="case-study__media">
+          <img src="images/Skrap_logo.png" alt="SkrapGear logo" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html#grow">ABOUT</a>
+        <a href="https://www.instagram.com/rawphoto.robin/" target="_blank" rel="noopener">SOCIALS</a>
+        <a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">LINKEDIN</a>
+      </nav>
+      <div class="footer-copy">© RKW</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
