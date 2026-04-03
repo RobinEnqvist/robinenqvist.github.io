@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CREATE. – Robin Karl Wilhelm</title>
+  <meta name="description" content="Motion work and creative output by Robin Karl Wilhelm" />
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5HHX2SJ4');</script>
+  <!-- End Google Tag Manager -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ---- CREATE PAGE SPECIFIC ---- */
+    .create-hero {
+      padding: 160px 0 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .create-hero__label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .create-hero__title {
+      font-size: clamp(64px, 12vw, 140px);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    .create-hero__sub {
+      font-size: clamp(14px, 1.8vw, 18px);
+      color: var(--muted);
+      max-width: 52ch;
+      line-height: 1.65;
+    }
+
+    /* ---- MOTION GRID ---- */
+    .motion-section {
+      padding: 80px 0 120px;
+    }
+
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    .motion-item {
+      position: relative;
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+
+    .motion-item--wide {
+      grid-column: span 2;
+    }
+
+    .motion-item__media {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      filter: brightness(0.85);
+      transition: filter 0.35s;
+    }
+
+    .motion-item--wide .motion-item__media {
+      aspect-ratio: 21 / 9;
+    }
+
+    .motion-item:hover .motion-item__media {
+      filter: brightness(1);
+    }
+
+    .motion-item__caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 40px 32px 24px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .motion-item:hover .motion-item__caption {
+      opacity: 1;
+    }
+
+    .motion-item__title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .motion-item__type {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* GIF item – smaller span */
+    .motion-item--gif .motion-item__media {
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      background: #0a0a0a;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--muted);
+      transition: color 0.2s;
+      margin-bottom: 60px;
+    }
+
+    .back-link:hover {
+      color: var(--text);
+    }
+
+    .back-link::before {
+      content: '←';
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .motion-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .motion-item--wide {
+        grid-column: span 1;
+      }
+
+      .motion-item--wide .motion-item__media {
+        aspect-ratio: 16 / 9;
+      }
+
+      .motion-item__caption {
+        opacity: 1;
+      }
+
+      .create-hero {
+        padding: 120px 0 60px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HHX2SJ4" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- HEADER / NAV -->
+  <header class="site-header">
+    <nav class="nav">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div class="nav-mobile" id="navMobile" aria-hidden="true">
+    <button class="nav-mobile__close" id="navClose" aria-label="Close menu">✕</button>
+    <ul>
+      <li><a href="create.html" class="nav-mobile__link">CREATE</a></li>
+      <li><a href="index.html#grow" class="nav-mobile__link">GROW</a></li>
+      <li><a href="index.html#story" class="nav-mobile__link">STORY</a></li>
+      <li><a href="index.html#extensions" class="nav-mobile__link">EXTENSIONS</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="create-hero">
+    <div class="container">
+      <a href="index.html" class="back-link">BACK TO HOME</a>
+      <span class="create-hero__label">MOTION &amp; CREATIVE</span>
+      <h1 class="create-hero__title">CREATE<span class="dot">.</span></h1>
+      <p class="create-hero__sub">A selection of motion work — brand films, animations, and visual campaigns crafted for growth.</p>
+    </div>
+  </section>
+
+  <!-- MOTION GRID -->
+  <section class="motion-section">
+    <div class="container">
+      <div class="motion-grid">
+
+        <!-- ZlideOn – wide hero piece -->
+        <div class="motion-item motion-item--wide">
+          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
+            <source src="motion/ZlideOn-RKW.mp4" type="video/mp4" />
+          </video>
+          <div class="motion-item__caption">
+            <p class="motion-item__type">BRAND FILM</p>
+            <p class="motion-item__title">ZlideOn</p>
+          </div>
+        </div>
+
+        <!-- Visplan -->
+        <div class="motion-item">
+          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
+            <source src="motion/Visplan-RKW.mp4" type="video/mp4" />
+          </video>
+          <div class="motion-item__caption">
+            <p class="motion-item__type">MOTION</p>
+            <p class="motion-item__title">Visplan</p>
+          </div>
+        </div>
+
+        <!-- Particle Space -->
+        <div class="motion-item">
+          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
+            <source src="motion/motion.graphics.particle.space-RKW.mp4" type="video/mp4" />
+          </video>
+          <div class="motion-item__caption">
+            <p class="motion-item__type">MOTION GRAPHICS</p>
+            <p class="motion-item__title">Particle Space</p>
+          </div>
+        </div>
+
+        <!-- Visplan Short -->
+        <div class="motion-item">
+          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
+            <source src="motion/Visplan-short-RKW.mp4" type="video/mp4" />
+          </video>
+          <div class="motion-item__caption">
+            <p class="motion-item__type">SHORT FILM</p>
+            <p class="motion-item__title">Visplan Short</p>
+          </div>
+        </div>
+
+        <!-- DTAE Logo GIF -->
+        <div class="motion-item motion-item--gif">
+          <img class="motion-item__media" src="motion/DTAE-logo-RKW.gif" alt="DTAE Logo Animation" />
+          <div class="motion-item__caption">
+            <p class="motion-item__type">LOGO ANIMATION</p>
+            <p class="motion-item__title">DTAE</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html#grow">ABOUT</a>
+        <a href="https://www.instagram.com/rawphoto.robin/" target="_blank" rel="noopener">SOCIALS</a>
+        <a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">LINKEDIN</a>
+      </nav>
+      <div class="footer-copy">© RKW</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
