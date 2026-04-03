@@ -385,12 +385,12 @@ img {
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 2px;
-  color: var(--muted);
-  transition: color 0.2s;
+  color: var(--accent);
+  transition: opacity 0.2s;
 }
 
 .my-work__link:hover {
-  color: var(--text);
+  opacity: 0.75;
 }
 
 /* ============================================================
