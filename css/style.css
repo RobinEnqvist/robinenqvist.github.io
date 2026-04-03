@@ -170,7 +170,7 @@ img {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
 }
 
@@ -195,8 +195,8 @@ img {
 .hero__content {
   position: relative;
   z-index: 1;
-  padding: 0 32px;
-  text-align: center;
+  padding: 0 64px;
+  text-align: left;
   max-width: 700px;
 }
 
