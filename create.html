@@ -82,7 +82,33 @@
       font-size: clamp(22px, 3.5vw, 40px);
       font-weight: 400;
       letter-spacing: 1px;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
+    }
+
+    .case-study__wip {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .case-study__media--logo {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    .case-study__media--logo img {
+      width: 60%;
+      height: auto;
+      object-fit: contain;
+      filter: brightness(0.9);
     }
 
     .case-study__objective {
@@ -284,10 +310,41 @@
     </div>
   </section>
 
-  <!-- NEXT: GROW -->
-  <section class="my-work">
+  <!-- CASE STUDY 3: SKRAPGEAR -->
+  <section class="case-study" id="skrapgear">
     <div class="container">
-      <a href="grow.html" class="my-work__link">Next: See growth work →</a>
+
+      <div class="case-study__header">
+        <h2 class="case-study__title">RKW x SkrapGear</h2>
+        <span class="case-study__wip">WORK IN PROGRESS</span>
+        <p class="case-study__objective">Objective: Optimise Shopify and socials for growth.</p>
+      </div>
+
+      <div class="case-study__body">
+        <div class="process">
+
+          <div class="process__step">
+            <p class="process__label">SHOPIFY — CRM — SEO — AEO</p>
+            <p class="process__desc">Auditing and rebuilding the Shopify store for conversion — clean UX, faster load times, and search visibility across both traditional SEO and AI-powered answer engines.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">DESIGN — WEBB — CONTENT — NEWS</p>
+            <p class="process__desc">Refreshing the visual identity across web and social. Building a content engine that keeps the brand active, relevant, and discoverable.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">MEASURE — GTM — GA4</p>
+            <p class="process__desc">Full tracking setup via Google Tag Manager and GA4 — so every channel, click, and conversion is measured and optimised over time.</p>
+          </div>
+
+        </div>
+
+        <div class="case-study__media case-study__media--logo">
+          <img src="images/Skrap_logo.png" alt="SkrapGear logo" />
+        </div>
+      </div>
+
     </div>
   </section>
 
