@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CREATE. – Robin Karl Wilhelm</title>
-  <meta name="description" content="Motion work and creative output by Robin Karl Wilhelm" />
+  <title>CREATE. – Motion & Creative Work – Robin Karl Wilhelm</title>
+  <meta name="description" content="Motion design and brand animation by Robin Karl Wilhelm. Case studies for VisPlan and ZlideOn — explainer films, logo animation, and product animation." />
 
   <!-- Google Tag Manager -->
   <script>(function (w, d, s, l, i) {
@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* ---- CREATE PAGE SPECIFIC ---- */
+    /* ---- CREATE PAGE ---- */
     .create-hero {
       padding: 160px 0 80px;
       border-bottom: 1px solid var(--border);
@@ -52,83 +52,6 @@
       line-height: 1.65;
     }
 
-    /* ---- MOTION GRID ---- */
-    .motion-section {
-      padding: 80px 0 120px;
-    }
-
-    .motion-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2px;
-    }
-
-    .motion-item {
-      position: relative;
-      background: #0a0a0a;
-      overflow: hidden;
-    }
-
-    .motion-item--wide {
-      grid-column: span 2;
-    }
-
-    .motion-item__media {
-      width: 100%;
-      display: block;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      filter: brightness(0.85);
-      transition: filter 0.35s;
-    }
-
-    .motion-item--wide .motion-item__media {
-      aspect-ratio: 21 / 9;
-    }
-
-    .motion-item:hover .motion-item__media {
-      filter: brightness(1);
-    }
-
-    .motion-item__caption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 40px 32px 24px;
-      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .motion-item:hover .motion-item__caption {
-      opacity: 1;
-    }
-
-    .motion-item__title {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .motion-item__type {
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 2px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    /* GIF item – smaller span */
-    .motion-item--gif .motion-item__media {
-      aspect-ratio: 1 / 1;
-      object-fit: contain;
-      background: #0a0a0a;
-    }
-
-    /* Back link */
     .back-link {
       display: inline-flex;
       align-items: center;
@@ -141,31 +64,105 @@
       margin-bottom: 60px;
     }
 
-    .back-link:hover {
+    .back-link:hover { color: var(--text); }
+    .back-link::before { content: '←'; font-size: 14px; }
+
+    /* ---- CASE STUDY SECTIONS ---- */
+    .case-study {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .case-study__header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .case-study__title {
+      font-size: clamp(22px, 3.5vw, 40px);
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .case-study__objective {
+      font-size: clamp(14px, 1.6vw, 18px);
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .case-study__body {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* Process steps */
+    .process {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .process__step {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .process__step:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .process__label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
       color: var(--text);
     }
 
-    .back-link::before {
-      content: '←';
-      font-size: 14px;
+    .process__desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 38ch;
+    }
+
+    /* Media panel */
+    .case-study__media {
+      position: relative;
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+
+    .case-study__video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
     }
 
     /* Responsive */
-    @media (max-width: 700px) {
-      .motion-grid {
+    @media (max-width: 800px) {
+      .case-study__body {
         grid-template-columns: 1fr;
+        gap: 48px;
       }
 
-      .motion-item--wide {
-        grid-column: span 1;
+      .case-study {
+        padding: 80px 0;
       }
 
-      .motion-item--wide .motion-item__media {
-        aspect-ratio: 16 / 9;
+      .case-study__header {
+        text-align: left;
+        margin-bottom: 48px;
       }
 
-      .motion-item__caption {
-        opacity: 1;
+      .case-study__objective {
+        margin: 0;
       }
 
       .create-hero {
@@ -179,15 +176,12 @@
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HHX2SJ4" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
   <!-- HEADER / NAV -->
   <header class="site-header">
     <nav class="nav">
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
     </nav>
   </header>
@@ -202,75 +196,91 @@
     </ul>
   </div>
 
-  <!-- HERO -->
+  <!-- PAGE HERO -->
   <section class="create-hero">
     <div class="container">
       <a href="index.html" class="back-link">BACK TO HOME</a>
       <span class="create-hero__label">MOTION &amp; CREATIVE</span>
       <h1 class="create-hero__title">CREATE<span class="dot">.</span></h1>
-      <p class="create-hero__sub">A selection of motion work — brand films, animations, and visual campaigns crafted for growth.</p>
+      <p class="create-hero__sub">Brand films, explainer animations, and product visuals — built from concept to delivery.</p>
     </div>
   </section>
 
-  <!-- MOTION GRID -->
-  <section class="motion-section">
+  <!-- CASE STUDY 1: VISPLAN -->
+  <section class="case-study" id="visplan">
     <div class="container">
-      <div class="motion-grid">
 
-        <!-- ZlideOn – wide hero piece -->
-        <div class="motion-item motion-item--wide">
-          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
-            <source src="motion/ZlideOn-RKW.mp4" type="video/mp4" />
-          </video>
-          <div class="motion-item__caption">
-            <p class="motion-item__type">BRAND FILM</p>
-            <p class="motion-item__title">ZlideOn</p>
+      <div class="case-study__header">
+        <h2 class="case-study__title">RKW x VisPlan</h2>
+        <p class="case-study__objective">Objective: Produce an animated explainer video and logo animation.</p>
+      </div>
+
+      <div class="case-study__body">
+        <div class="process">
+
+          <div class="process__step">
+            <p class="process__label">IDEATION — BRAND — NOW — FUTURE</p>
+            <p class="process__desc">Mapped VisPlan's brand from current state to future vision — building a visual language that would hold across both a logo mark and a full explainer film.</p>
           </div>
+
+          <div class="process__step">
+            <p class="process__label">PRODUCTION — ILLUSTRATOR — AFTER EFFECTS</p>
+            <p class="process__desc">Every asset built from scratch in Illustrator, then brought to life frame by frame in After Effects.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">DELIVERY — LOGO &amp; EXPLAINER ANIMATION</p>
+            <p class="process__desc">Three final deliverables: a logo animation, a full-length explainer film, and a short loop cut for social distribution.</p>
+          </div>
+
         </div>
 
-        <!-- Visplan -->
-        <div class="motion-item">
-          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
+        <div class="case-study__media">
+          <video class="case-study__video" autoplay muted loop playsinline preload="metadata">
             <source src="motion/Visplan-RKW.mp4" type="video/mp4" />
           </video>
-          <div class="motion-item__caption">
-            <p class="motion-item__type">MOTION</p>
-            <p class="motion-item__title">Visplan</p>
-          </div>
         </div>
-
-        <!-- Particle Space -->
-        <div class="motion-item">
-          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
-            <source src="motion/motion.graphics.particle.space-RKW.mp4" type="video/mp4" />
-          </video>
-          <div class="motion-item__caption">
-            <p class="motion-item__type">MOTION GRAPHICS</p>
-            <p class="motion-item__title">Particle Space</p>
-          </div>
-        </div>
-
-        <!-- Visplan Short -->
-        <div class="motion-item">
-          <video class="motion-item__media" autoplay muted loop playsinline preload="metadata">
-            <source src="motion/Visplan-short-RKW.mp4" type="video/mp4" />
-          </video>
-          <div class="motion-item__caption">
-            <p class="motion-item__type">SHORT FILM</p>
-            <p class="motion-item__title">Visplan Short</p>
-          </div>
-        </div>
-
-        <!-- DTAE Logo GIF -->
-        <div class="motion-item motion-item--gif">
-          <img class="motion-item__media" src="motion/DTAE-logo-RKW.gif" alt="DTAE Logo Animation" />
-          <div class="motion-item__caption">
-            <p class="motion-item__type">LOGO ANIMATION</p>
-            <p class="motion-item__title">DTAE</p>
-          </div>
-        </div>
-
       </div>
+
+    </div>
+  </section>
+
+  <!-- CASE STUDY 2: ZLIDEON -->
+  <section class="case-study" id="zlideon">
+    <div class="container">
+
+      <div class="case-study__header">
+        <h2 class="case-study__title">RKW x ZlideOn</h2>
+        <p class="case-study__objective">Objective: Produce an animation that explains and sells the product.</p>
+      </div>
+
+      <div class="case-study__body">
+        <div class="process">
+
+          <div class="process__step">
+            <p class="process__label">IDEATION — CUSTOMER — TEAM — PRODUCT</p>
+            <p class="process__desc">Started with the customer — how they discover, use, and talk about ZlideOn — then shaped the entire animation around that journey.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">PRODUCTION — ILLUSTRATOR — AFTER EFFECTS</p>
+            <p class="process__desc">Product visuals illustrated with precision in Illustrator, then animated in After Effects to match the pace and energy of the brand.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">DELIVERY — PRODUCT ANIMATION</p>
+            <p class="process__desc">A single, punchy animation that explains the product and drives purchase intent — built to perform across digital channels.</p>
+          </div>
+
+        </div>
+
+        <div class="case-study__media">
+          <video class="case-study__video" autoplay muted loop playsinline preload="metadata">
+            <source src="motion/ZlideOn-RKW.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
     </div>
   </section>
 
