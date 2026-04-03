@@ -445,6 +445,11 @@ img {
   color: var(--muted);
   line-height: 1.75;
   max-width: 48ch;
+  margin-bottom: 20px;
+}
+
+.feature__text p:last-child {
+  margin-bottom: 0;
 }
 
 /* ============================================================
