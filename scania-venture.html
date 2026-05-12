@@ -173,14 +173,8 @@
       transform-origin: center;
     }
 
-    .ring-1 { animation: record 40s linear infinite; }
-    .ring-2 { animation: record 60s linear infinite; }
-    .ring-3 { animation: record 50s linear infinite reverse; }
-
-    @keyframes record {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
+    @keyframes record-cw  { to { transform: rotate(360deg);  } }
+    @keyframes record-ccw { to { transform: rotate(-360deg); } }
 
     .venture-hero {
       font-family: "Scania Office Headline", sans-serif;
@@ -591,11 +585,45 @@
 
   <script>
     function scaleToViewport() {
-      var scale = window.innerWidth / 1512;
-      document.body.style.zoom = scale;
+      document.body.style.zoom = window.innerWidth / 1512;
     }
     scaleToViewport();
     window.addEventListener('resize', scaleToViewport);
+
+    function revealRing(el, duration, delay, spinDuration, reverse) {
+      var mask = 'conic-gradient(black 0deg, transparent 0deg)';
+      el.style.webkitMaskImage = mask;
+      el.style.maskImage = mask;
+
+      setTimeout(function () {
+        var start = performance.now();
+
+        function frame(now) {
+          var t = Math.min((now - start) / duration, 1);
+          var eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+          var deg = eased * 360;
+          var m = 'conic-gradient(black ' + deg + 'deg, transparent ' + deg + 'deg)';
+          el.style.webkitMaskImage = m;
+          el.style.maskImage = m;
+
+          if (t < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            el.style.webkitMaskImage = '';
+            el.style.maskImage = '';
+            el.style.animation = (reverse ? 'record-ccw' : 'record-cw') + ' ' + spinDuration + 's linear infinite';
+          }
+        }
+
+        requestAnimationFrame(frame);
+      }, delay);
+    }
+
+    window.addEventListener('load', function () {
+      revealRing(document.querySelector('.ring-1'), 2200,  300, 40, false);
+      revealRing(document.querySelector('.ring-2'), 2200,  900, 60, false);
+      revealRing(document.querySelector('.ring-3'), 2200, 1500, 50, true);
+    });
   </script>
 </body>
 </html>
