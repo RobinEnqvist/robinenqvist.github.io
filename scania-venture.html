@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=1512">
   <title>Venture by Scania</title>
   <meta name="robots" content="noindex, nofollow">
   <style>
@@ -291,8 +291,6 @@
       font-weight: 400;
       line-height: 1.6;
       color: #000;
-      height: 202px;
-      overflow: hidden;
     }
 
     .related-placeholder {
@@ -555,5 +553,16 @@
     </div>
   </footer>
 
+  <script>
+    function scaleToViewport() {
+      const scale = window.innerWidth / 1512;
+      document.body.style.transformOrigin = 'top left';
+      document.body.style.transform = 'scale(' + scale + ')';
+      document.body.style.width = (1512) + 'px';
+      document.documentElement.style.height = Math.ceil(document.body.scrollHeight * scale) + 'px';
+    }
+    scaleToViewport();
+    window.addEventListener('resize', scaleToViewport);
+  </script>
 </body>
 </html>
