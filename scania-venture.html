@@ -159,14 +159,13 @@
       transform: translate(-50%, -50%);
       width: 300px;
       height: 300px;
-      perspective: 600px;
+      perspective: 500px;
       z-index: 2;
     }
 
     .venture-logo-img {
       width: 100%;
       height: 100%;
-      transform-style: preserve-3d;
     }
 
     .ring-1, .ring-2, .ring-3 {
@@ -174,26 +173,13 @@
       transform-origin: center;
     }
 
-    /* Ring 1 — equatorial, spins around Y axis like Earth */
-    .ring-1 { animation: orbit-y 9s linear infinite; }
+    .ring-1 { animation: hoop 16s linear infinite; }
+    .ring-2 { animation: hoop 20s linear infinite; }
+    .ring-3 { animation: hoop 24s linear infinite; }
 
-    /* Ring 2 — tilted 60°, spins around a diagonal axis */
-    .ring-2 { animation: orbit-tilted-a 12s linear infinite; }
-
-    /* Ring 3 — tilted opposite 60°, spins the other way */
-    .ring-3 { animation: orbit-tilted-b 15s linear infinite; }
-
-    @keyframes orbit-y {
+    @keyframes hoop {
       from { transform: rotateY(0deg); }
       to   { transform: rotateY(360deg); }
-    }
-    @keyframes orbit-tilted-a {
-      from { transform: rotate3d(0.866, 0.5, 0, 0deg); }
-      to   { transform: rotate3d(0.866, 0.5, 0, 360deg); }
-    }
-    @keyframes orbit-tilted-b {
-      from { transform: rotate3d(0.866, -0.5, 0, 0deg); }
-      to   { transform: rotate3d(0.866, -0.5, 0, -360deg); }
     }
 
     .venture-hero {
