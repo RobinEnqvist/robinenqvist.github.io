@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venture by Scania</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #E4E8EE;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000;
+      min-width: 1512px;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ────────────────────────────────────────── */
+    .site-header {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      width: 1464px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 100;
+    }
+
+    .logo-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .logo-name,
+    .logo-sub {
+      background: #000;
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 6px;
+      display: inline-block;
+    }
+
+    .logo-name {
+      font-size: 28px;
+      font-weight: 450;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .logo-sub {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+    }
+
+    .join-btn {
+      background: #000;
+      color: #fff;
+      border-radius: 4px;
+      padding: 4px 6px;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* ── CONTENT CONTAINER ─────────────────────────────── */
+    .content-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 120px;
+      padding: 270px 24px 0;
+    }
+
+    /* ── HEADING SECTION ───────────────────────────────── */
+    .heading-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 120px;
+    }
+
+    .logo-slogan-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 0 121px;
+      gap: 71px;
+    }
+
+    .slogan-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 278px;
+      width: 100%;
+    }
+
+    .venture-logo-img {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) translateX(-190px) translateX(144.5px);
+      top: 0;
+      width: 381px;
+      height: 278px;
+      object-fit: fill;
+      z-index: 2;
+    }
+
+    .venture-hero {
+      font-size: 140px;
+      font-weight: 450;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: center;
+      background: radial-gradient(ellipse at 50% 50%, rgba(116,116,116,1) 0%, rgba(163,163,163,1) 48%, rgba(116,116,116,1) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .our-ventures-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .our-ventures-label {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #000;
+    }
+
+    .tags {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .tag, .dot {
+      font-size: 24px;
+      font-weight: 500;
+      color: #000;
+    }
+
+    /* ── MAIN ARTICLE – JUNA ───────────────────────────── */
+    .main-article {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      gap: 100px;
+    }
+
+    .main-image {
+      width: 100%;
+      height: 577px;
+      overflow: hidden;
+    }
+
+    .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 23%;
+    }
+
+    .article-text {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      padding: 0 227px;
+    }
+
+    .article-title {
+      font-size: 40px;
+      font-weight: 450;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-align: center;
+      color: #000;
+    }
+
+    .article-body {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #000;
+    }
+
+    /* ── RELATED ARTICLES ──────────────────────────────── */
+    .related-articles {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+      padding: 150px 0 0 124px;
+      border-top: 1px solid #000;
+    }
+
+    .related-article {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      width: 598px;
+    }
+
+    .related-header {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+
+    .related-title {
+      font-size: 40px;
+      font-weight: 450;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #000;
+    }
+
+    .related-body {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #000;
+      height: 202px;
+      overflow: hidden;
+    }
+
+    .related-placeholder {
+      width: 598px;
+      height: 402px;
+      background: #4D4D4D;
+      flex-shrink: 0;
+    }
+
+    /* ── FEATURES – INDUSTRIAL BATTERIES ──────────────── */
+    .features {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      padding: 0 124px 0 0;
+    }
+
+    .feature-image {
+      width: 495px;
+      height: 577px;
+      background: #4D4D4D;
+      flex-shrink: 0;
+    }
+
+    .feature-description {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .feature-title {
+      font-size: 40px;
+      font-weight: 450;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-align: center;
+      color: #000;
+    }
+
+    .feature-body {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #000;
+      width: 722px;
+    }
+
+    /* ── SECONDARY ARTICLE – LOTS ──────────────────────── */
+    .secondary-article {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      gap: 158px;
+      padding: 0 124px;
+    }
+
+    .secondary-image {
+      width: 100%;
+      height: 576px;
+      background: #ACACAC;
+    }
+
+    .secondary-text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .secondary-title {
+      font-size: 40px;
+      font-weight: 450;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #000;
+      width: 351px;
+      flex-shrink: 0;
+    }
+
+    .secondary-body {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #000;
+      width: 845px;
+    }
+
+    /* ── FOOTER ────────────────────────────────────────── */
+    .site-footer {
+      margin-top: 120px;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      gap: 200px;
+      padding: 86px 24px 24px 128px;
+    }
+
+    .footer-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .footer-headline {
+      font-size: 32px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .footer-cta {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1px solid #5A8FFF;
+      border-radius: 2px;
+      width: 100%;
+    }
+
+    .footer-cta-text {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #5A8FFF;
+    }
+
+    .footer-cta-arrow {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #5A8FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-cta-arrow::after {
+      content: "→";
+      font-size: 10px;
+      color: #5A8FFF;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding-bottom: 8px;
+    }
+
+    .footer-brand {
+      font-size: 48px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #fff;
+      letter-spacing: 0.02em;
+      opacity: 0.15;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="logo-group">
+      <span class="logo-name">Venture</span>
+      <span class="logo-sub">by Scania</span>
+    </div>
+    <div class="join-btn">Join the next chapter</div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="content-container">
+
+    <!-- HEADING SECTION -->
+    <section class="heading-section">
+      <div class="logo-slogan-wrap">
+        <div class="slogan-container">
+          <img src="images/scania-venture/venture-logo-1d592c.png" class="venture-logo-img" alt="">
+          <span class="venture-hero">Venture</span>
+        </div>
+      </div>
+      <div class="our-ventures-wrap">
+        <span class="our-ventures-label">Our Ventures</span>
+        <div class="tags">
+          <span class="tag">Juna</span>
+          <span class="dot">•</span>
+          <span class="tag">Erinion</span>
+          <span class="dot">•</span>
+          <span class="tag">Industrial Batteries</span>
+          <span class="dot">•</span>
+          <span class="tag">Lots</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN ARTICLE – JUNA -->
+    <article class="main-article">
+      <div class="main-image">
+        <img src="images/scania-venture/juna-main-64a961.png" alt="Juna">
+      </div>
+      <div class="article-text">
+        <h1 class="article-title">Juna</h1>
+        <p class="article-body">Juna is one of the latest recruits to the group. With a mind like a blade — razor-sharp and intelligent — she runs on pure, sweet electricity.<br><br>And she also makes it possible for everyone to share that electricity; having created a smart, easy to use, electric truck as-a-Service system. What drives her: transitioning to zero-emission road logistics.</p>
+      </div>
+    </article>
+
+    <!-- RELATED ARTICLES -->
+    <div class="related-articles">
+      <div class="related-article">
+        <div class="related-header">
+          <h2 class="related-title">Erinion</h2>
+        </div>
+        <p class="related-body">Erinion enables charging infrastructure for heavy duty road transport. That means he's always at your side, wherever you are on your electrification journey.<br><br>Don't misjudge him for his charming, feisty look — Erinion is the calmest, most levelheaded person of the group. He stays peaceful, by your side; no matter the circumstances and where you're headed.</p>
+      </div>
+      <div class="related-placeholder"></div>
+    </div>
+
+    <!-- FEATURES – INDUSTRIAL BATTERIES -->
+    <div class="features">
+      <div class="feature-image"></div>
+      <div class="feature-description">
+        <h2 class="feature-title">Industrial Batteries</h2>
+        <p class="feature-body">Their name is pretty straight to the point. They are: battery systems, simplifying off-road electrification.<br><br>An energetic twin pair; never staying still or quiet. Although they're constantly bouncing off the walls — they actually have an important goal. To de-risk electrification through predictable, reliable performance.</p>
+      </div>
+    </div>
+
+    <!-- SECONDARY ARTICLE – LOTS -->
+    <div class="secondary-article">
+      <div class="secondary-image"></div>
+      <div class="secondary-text">
+        <h2 class="secondary-title">Lots</h2>
+        <p class="secondary-body">Ever since her birth, Lots has known what her purpose in life is: to dismantle the Emissions Empire. This has led to her already having created the world's largest net-zero logistics ecosystem.<br><br>The youngest of them all, but also the brains of the group. She spends the days crouched by her computer, transitioning complex data into actionable insights.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-main">
+      <p class="footer-headline">Write the next chapter with us.</p>
+      <div class="footer-cta">
+        <span class="footer-cta-text">Join us for a better future...</span>
+        <div class="footer-cta-arrow"></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-brand">Scania</span>
+    </div>
+  </footer>
+
+</body>
+</html>
