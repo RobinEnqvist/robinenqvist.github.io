@@ -555,11 +555,8 @@
 
   <script>
     function scaleToViewport() {
-      const scale = window.innerWidth / 1512;
-      document.body.style.transformOrigin = 'top left';
-      document.body.style.transform = 'scale(' + scale + ')';
-      document.body.style.width = (1512) + 'px';
-      document.documentElement.style.height = Math.ceil(document.body.scrollHeight * scale) + 'px';
+      var scale = window.innerWidth / 1512;
+      document.body.style.zoom = scale;
     }
     scaleToViewport();
     window.addEventListener('resize', scaleToViewport);
