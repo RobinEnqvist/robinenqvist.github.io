@@ -152,23 +152,49 @@
       width: 100%;
     }
 
-    .venture-logo-img {
+    .logo-3d-wrap {
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
       width: 300px;
       height: 300px;
+      perspective: 600px;
       z-index: 2;
-      overflow: visible;
     }
 
-    .ring-1 { transform-origin: 1399px 1399px; animation: spinCW 18s linear infinite; }
-    .ring-2 { transform-origin: 1399px 1399px; animation: spinCCW 12s linear infinite; }
-    .ring-3 { transform-origin: 1399px 1399px; animation: spinCW 24s linear infinite; }
+    .venture-logo-img {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
 
-    @keyframes spinCW  { to { transform: rotate(360deg);  } }
-    @keyframes spinCCW { to { transform: rotate(-360deg); } }
+    .ring-1, .ring-2, .ring-3 {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    /* Ring 1 — equatorial, spins around Y axis like Earth */
+    .ring-1 { animation: orbit-y 9s linear infinite; }
+
+    /* Ring 2 — tilted 60°, spins around a diagonal axis */
+    .ring-2 { animation: orbit-tilted-a 12s linear infinite; }
+
+    /* Ring 3 — tilted opposite 60°, spins the other way */
+    .ring-3 { animation: orbit-tilted-b 15s linear infinite; }
+
+    @keyframes orbit-y {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
+    @keyframes orbit-tilted-a {
+      from { transform: rotate3d(0.866, 0.5, 0, 0deg); }
+      to   { transform: rotate3d(0.866, 0.5, 0, 360deg); }
+    }
+    @keyframes orbit-tilted-b {
+      from { transform: rotate3d(0.866, -0.5, 0, 0deg); }
+      to   { transform: rotate3d(0.866, -0.5, 0, -360deg); }
+    }
 
     .venture-hero {
       font-family: "Scania Office Headline", sans-serif;
@@ -486,7 +512,7 @@
     <section class="heading-section">
       <div class="logo-slogan-wrap">
         <div class="slogan-container">
-          <svg class="venture-logo-img" width="2798" height="2798" viewBox="0 0 2798 2798" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="logo-3d-wrap"><svg class="venture-logo-img" width="2798" height="2798" viewBox="0 0 2798 2798" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- Outer circle — static -->
             <g>
               <path d="M1445.11 2350.67C1316.56 2350.67 1191.83 2325.49 1074.42 2275.82C961.009 2227.85 859.187 2159.19 771.724 2071.75C684.281 1984.31 615.601 1882.46 567.65 1769.05C517.979 1651.62 492.805 1526.9 492.805 1398.34C492.805 1269.79 517.979 1145.07 567.65 1027.66C615.622 914.266 684.281 812.423 771.724 724.96C859.167 637.518 961.009 568.838 1074.42 520.887C1191.85 471.215 1316.56 446.041 1445.11 446.041C1573.66 446.041 1698.38 471.215 1815.79 520.887C1929.21 568.858 2031.03 637.518 2118.49 724.96C2205.93 812.403 2274.61 914.245 2322.57 1027.66C2372.24 1145.09 2397.41 1269.79 2397.41 1398.34C2397.41 1526.9 2372.24 1651.62 2322.57 1769.05C2274.59 1882.44 2205.93 1984.29 2118.49 2071.75C2031.05 2159.19 1929.21 2227.87 1815.79 2275.82C1698.36 2325.49 1573.66 2350.67 1445.11 2350.67ZM1445.11 495.057C1323.15 495.057 1204.86 518.941 1093.51 566.031C985.957 611.524 889.359 676.661 806.381 759.618C723.425 842.575 658.288 939.194 612.795 1046.75C565.704 1158.1 541.821 1276.39 541.821 1398.34C541.821 1520.3 565.704 1638.59 612.795 1749.94C658.288 1857.49 723.425 1954.09 806.381 2037.07C889.338 2120.03 985.957 2185.16 1093.51 2230.66C1204.86 2277.75 1323.15 2301.63 1445.11 2301.63C1567.06 2301.63 1685.35 2277.75 1796.7 2230.66C1904.26 2185.16 2000.86 2120.03 2083.83 2037.07C2166.79 1954.11 2231.93 1857.49 2277.42 1749.94C2324.51 1638.59 2348.39 1520.3 2348.39 1398.34C2348.39 1276.39 2324.51 1158.1 2277.42 1046.75C2231.93 939.194 2166.79 842.595 2083.83 759.618C2000.88 676.661 1904.26 611.524 1796.7 566.031C1685.35 518.941 1567.06 495.057 1445.11 495.057Z" fill="black"/>
@@ -503,7 +529,7 @@
             <g class="ring-3">
               <path d="M582.317 2064.25C791.368 2151.65 1104.66 2207.16 1453.63 2207.16C1536.71 2207.16 1617.76 2204.01 1695.86 2198.05C2206.73 2158.99 2591.55 1998.99 2591.55 1807.19C2591.55 1704.96 2482.25 1611.78 2302.82 1541.11C2093.75 1453.65 1780.3 1398.08 1431.16 1398.08C1348.04 1398.08 1266.95 1401.23 1188.8 1407.21C677.994 1446.3 293.238 1606.29 293.238 1798.07C293.238 1900.37 402.659 1993.59 582.317 2064.27V2064.25ZM1689.8 1518.4C1873.39 1555.2 2034.41 1605.86 2163.39 1663.44C2292.09 1720.89 2375.72 1789.43 2399.34 1862.1C2411.79 1900.45 2407.65 1937.91 2384.67 1973.04C2275.48 2148.64 1741.01 2200.67 1195.03 2086.84C1011.42 2050.02 850.36 1999.38 721.377 1941.78C592.723 1884.33 509.09 1815.81 485.493 1743.14C473.039 1704.79 477.177 1667.33 500.159 1632.22C609.355 1456.62 1143.82 1404.59 1689.8 1518.4Z" fill="black"/>
             </g>
-          </svg>
+          </svg></div>
           <span class="venture-hero">Venture</span>
         </div>
       </div>
