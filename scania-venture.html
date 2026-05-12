@@ -159,7 +159,7 @@
       transform: translate(-50%, -50%);
       width: 300px;
       height: 300px;
-      perspective: 500px;
+
       z-index: 2;
     }
 
@@ -173,13 +173,13 @@
       transform-origin: center;
     }
 
-    .ring-1 { animation: hoop 16s linear infinite; }
-    .ring-2 { animation: hoop 20s linear infinite; }
-    .ring-3 { animation: hoop 24s linear infinite; }
+    .ring-1 { animation: record 40s linear infinite; }
+    .ring-2 { animation: record 60s linear infinite; }
+    .ring-3 { animation: record 50s linear infinite reverse; }
 
-    @keyframes hoop {
-      from { transform: rotateY(0deg); }
-      to   { transform: rotateY(360deg); }
+    @keyframes record {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
 
     .venture-hero {
