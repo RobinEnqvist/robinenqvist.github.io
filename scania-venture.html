@@ -177,32 +177,32 @@
       z-index: 1;
     }
 
-    .our-ventures-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .our-ventures-label {
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #000;
-    }
-
-    .tags {
+    .venture-nav {
       display: flex;
       flex-direction: row;
-      gap: 20px;
+      gap: 12px;
       align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .tag, .dot {
-      font-size: 24px;
-      font-weight: 500;
+    .venture-btn {
+      font-family: "Scania Office", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: #000;
+      text-decoration: none;
+      border: 1px solid #000;
+      padding: 10px 20px;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .venture-btn:hover {
+      background: #000;
+      color: #E4E8EE;
     }
 
     /* ── MAIN ARTICLE – JUNA ───────────────────────────── */
@@ -490,22 +490,16 @@
           <span class="venture-hero">Venture</span>
         </div>
       </div>
-      <div class="our-ventures-wrap">
-        <span class="our-ventures-label">Our Ventures</span>
-        <div class="tags">
-          <span class="tag">Juna</span>
-          <span class="dot">•</span>
-          <span class="tag">Erinion</span>
-          <span class="dot">•</span>
-          <span class="tag">Industrial Batteries</span>
-          <span class="dot">•</span>
-          <span class="tag">Lots</span>
-        </div>
-      </div>
+      <nav class="venture-nav">
+        <a href="#juna" class="venture-btn">Juna</a>
+        <a href="#erinion" class="venture-btn">Erinion</a>
+        <a href="#industrial-batteries" class="venture-btn">Industrial Batteries</a>
+        <a href="#lots" class="venture-btn">Lots</a>
+      </nav>
     </section>
 
     <!-- MAIN ARTICLE – JUNA -->
-    <article class="main-article">
+    <article class="main-article" id="juna">
       <div class="main-image">
         <img src="images/scania-venture/juna-main-64a961.png" alt="Juna">
       </div>
@@ -516,7 +510,7 @@
     </article>
 
     <!-- RELATED ARTICLES -->
-    <div class="related-articles">
+    <div class="related-articles" id="erinion">
       <div class="related-article">
         <div class="related-header">
           <h2 class="related-title">Erinion</h2>
@@ -527,7 +521,7 @@
     </div>
 
     <!-- FEATURES – INDUSTRIAL BATTERIES -->
-    <div class="features">
+    <div class="features" id="industrial-batteries">
       <div class="feature-image"></div>
       <div class="feature-description">
         <h2 class="feature-title">Industrial Batteries</h2>
@@ -536,7 +530,7 @@
     </div>
 
     <!-- SECONDARY ARTICLE – LOTS -->
-    <div class="secondary-article">
+    <div class="secondary-article" id="lots">
       <div class="secondary-image"></div>
       <div class="secondary-text">
         <h2 class="secondary-title">Lots</h2>
