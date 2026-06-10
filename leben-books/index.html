@@ -241,6 +241,11 @@ a{color:inherit;text-decoration:none;}
   background:linear-gradient(to right,var(--navy),transparent);
   z-index:1;pointer-events:none;
 }
+.hero-split .right::after{
+  content:"";position:absolute;bottom:0;left:0;right:0;height:clamp(60px,10vw,160px);
+  background:linear-gradient(to bottom,transparent,var(--navy-900));
+  z-index:1;pointer-events:none;
+}
 .hero-cover{
   max-height:72vh;
   max-width:100%;
