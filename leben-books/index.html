@@ -223,26 +223,36 @@ a{color:inherit;text-decoration:none;}
 #about-sub{display:none;}
 #about-sub.open{display:contents;}
 
-/* ============ HERO: shared ============ */
+/* ============ HERO ============ */
 .hero{position:relative;}
 
-/* fullbleed */
-.hero-fb{min-height:100svh;display:flex;align-items:flex-end;position:relative;overflow:hidden;}
-.hero-fb .bg{position:absolute;inset:0;}
-.hero-fb .bg .slot{position:absolute;inset:0;}
-.hero-fb .scrim{position:absolute;inset:0;background:
-  linear-gradient(to top, var(--navy-900) 2%, color-mix(in srgb,var(--navy-900) 30%,transparent) 42%, transparent 75%),
-  linear-gradient(to right, color-mix(in srgb,var(--navy-900) 62%,transparent), transparent 60%);}
-.hero-fb .content{position:relative;z-index:2;padding-bottom:clamp(48px,8vh,110px);max-width:880px;}
-.hero-fb h1{font-size:clamp(2.8rem,6.4vw,6.2rem);margin:.5rem 0 1.4rem;}
+/* split */
+.hero-split{min-height:100svh;display:grid;grid-template-columns:1.02fr 1fr;}
+.hero-split .left{display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,10vw,140px) var(--gut) 80px;position:relative;}
+.hero-split h1{font-size:clamp(2.8rem,5.8vw,6rem);margin:1.4rem 0 1.5rem;}
+.hero-split .right{
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--navy-900);
+  padding:clamp(100px,10vw,140px) clamp(40px,5vw,80px) 80px;
+}
+.hero-cover{
+  max-height:72vh;
+  max-width:100%;
+  width:auto;
+  object-fit:contain;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.35),
+    0 30px 70px rgba(0,0,0,.55),
+    0 70px 140px rgba(0,0,0,.3);
+}
+@media(max-width:900px){
+  .hero-split{grid-template-columns:1fr;}
+  .hero-split .right{min-height:56vh;}
+}
 .hero-tag{font-family:var(--font-display);font-style:italic;font-weight:400;
-  font-size:clamp(1.3rem,2.4vw,2rem);color:var(--ivory);opacity:.92;max-width:34ch;line-height:1.3;margin-bottom:2.2rem;}
+  font-size:clamp(1.15rem,2vw,1.7rem);color:var(--ivory);opacity:.92;max-width:34ch;line-height:1.3;margin-bottom:2.2rem;}
 .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;}
-.scroll-cue{position:absolute;right:var(--gut);bottom:clamp(48px,8vh,110px);z-index:2;
-  writing-mode:vertical-rl;font-family:var(--font-sans);font-size:.66rem;letter-spacing:.3em;
-  text-transform:uppercase;color:var(--ivory-dim);display:flex;align-items:center;gap:1rem;}
-.scroll-cue::after{content:"";width:1px;height:60px;background:linear-gradient(var(--accent),transparent);}
-@media(max-width:880px){.scroll-cue{display:none;}}
 
 /* ============ SECTIONS ============ */
 section{position:relative;}
@@ -449,12 +459,8 @@ section[id]{scroll-margin-top:96px;}
 <main>
 
 <!-- ============ HERO ============ -->
-<section class="hero hero-fb">
-  <div class="bg">
-    <div class="slot slot--dark" data-label="Hero image — full bleed"></div>
-  </div>
-  <div class="scrim"></div>
-  <div class="wrap content">
+<section class="hero hero-split">
+  <div class="left">
     <span class="eyebrow">Independent Boutique Publishing · Stockholm</span>
     <h1 class="display">Different minds,<br><em class="serif-it">brilliant</em> books.</h1>
     <p class="hero-tag">A boutique publishing house for bold minds — emotionally intelligent stories told with artistic integrity and a wide reach.</p>
@@ -463,7 +469,9 @@ section[id]{scroll-margin-top:96px;}
       <a class="btn" href="#founder"><span>Meet the founder</span> <span class="arw">&#8594;</span></a>
     </div>
   </div>
-  <div class="scroll-cue">Scroll</div>
+  <div class="right">
+    <img class="hero-cover" src="assets/book-cover.png" alt="Är allt jag trott om att bli mamma en lögn?" />
+  </div>
 </section>
 
 <!-- ============ STATEMENT ============ -->
@@ -755,13 +763,9 @@ section[id]{scroll-margin-top:96px;}
     }
   });
 
-  /* --- header scroll solidify --- */
+  /* --- header: always solid for split hero --- */
   const hdr = document.querySelector('.hdr');
-  function updateHeader() {
-    hdr.classList.toggle('solid', window.scrollY > 40);
-  }
-  updateHeader();
-  window.addEventListener('scroll', updateHeader, { passive: true });
+  hdr.classList.add('solid');
 
   /* --- mobile drawer --- */
   const drawer = document.getElementById('drawer');
