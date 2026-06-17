@@ -62,15 +62,20 @@ a{color:inherit;text-decoration:none;}
 .sec-pad{padding-block:clamp(72px,10vw,140px);}
 .page-hero{padding-top:clamp(120px,14vw,180px);padding-bottom:clamp(48px,6vw,80px);}
 
-/* NEWS GRID */
+/* NEWS ARTICLE CARDS */
 .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:clamp(20px,3vw,36px);margin-top:clamp(36px,5vw,64px);}
-.news-card{background:var(--navy-800);padding:clamp(1.4rem,3vw,2.2rem);display:flex;flex-direction:column;gap:1rem;transition:background .3s;}
-.news-card:hover{background:var(--navy-700);}
-.news-card blockquote{font-family:var(--font-display);font-style:italic;font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.5;margin:0;color:var(--ivory);}
-.news-card cite{font-family:var(--font-sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-style:normal;}
-.news-card .news-date{font-family:var(--font-sans);font-size:.68rem;letter-spacing:.14em;color:var(--ivory-dim);}
-.news-card .news-link{margin-top:auto;padding-top:.5rem;font-family:var(--font-sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent);padding-bottom:.2em;align-self:flex-start;transition:border-color .3s;}
-.news-card .news-link:hover{border-color:var(--accent);}
+.news-article-card{background:var(--navy-800);display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease;}
+.news-article-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+.news-article-card--review{cursor:default;}
+.news-article-card--review:hover{transform:none;box-shadow:none;}
+.news-card-img{overflow:hidden;aspect-ratio:16/9;}
+.news-card-img img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s ease;}
+.news-article-card:hover .news-card-img img{transform:scale(1.04);}
+.news-card-body{padding:clamp(1.1rem,2.5vw,1.8rem);display:flex;flex-direction:column;gap:.6rem;flex:1;}
+.news-card-tag{font-family:var(--font-sans);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);}
+.news-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.2;margin:0;color:var(--ivory);}
+.news-card-excerpt{font-family:var(--font-sans);font-size:.88rem;line-height:1.7;color:var(--ivory-dim);margin:0;}
+.news-card-read{font-family:var(--font-sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-top:auto;padding-top:.6rem;}
 
 /* FOOTER */
 .ft{background:var(--navy-900);padding-block:clamp(48px,7vw,96px);}
@@ -135,30 +140,44 @@ a{color:inherit;text-decoration:none;}
   <div class="wrap">
     <div class="news-grid">
 
-      <!-- ARTIKEL 1 -->
-      <div class="news-card rv">
-        <span class="news-date">Juni 2026</span>
-        <blockquote>«Framför allt handlar det om att göra upp med sin egen prestationsdjävul och ha modet att omfamna alla delar av sig själv.»</blockquote>
-        <cite>Från Dramatens stora scen till sen ADHD-diagnos — Sara Sommerfeld om att vara misslyckad som mamma</cite>
-        <a class="news-link" href="https://newsroom.notified.com/gul-pr/posts/pressreleases/fran-dramatens-stora-scen-till-sen-adhd-diagn" target="_blank" rel="noopener">Läs hela pressreleasen &#8594;</a>
+      <!-- Pressrelease 1 -->
+      <a href="nyheter/dramatens-stora-scen.html" class="news-article-card rv">
+        <div class="news-card-img">
+          <img src="assets/press-release/pressrelease-1-thumb.png" alt="Pressrelease thumbnail" />
+        </div>
+        <div class="news-card-body">
+          <span class="news-card-tag">Pressrelease · Juni 2026</span>
+          <h3 class="news-card-title">Från Dramatens stora scen till sen ADHD-diagnos</h3>
+          <p class="news-card-excerpt">Sara Sommerfeld om att vara misslyckad som mamma — och modet att omfamna alla delar av sig själv.</p>
+          <span class="news-card-read">Läs mer &#8594;</span>
+        </div>
+      </a>
+
+      <!-- Recension: Camilla Läckberg -->
+      <div class="news-article-card news-article-card--review rv">
+        <div class="news-card-body">
+          <span class="news-card-tag">Recension</span>
+          <h3 class="news-card-title">Camilla Läckberg om debuten</h3>
+          <p class="news-card-excerpt">«En så ljuvlig och skickligt gjord bok! Ärlig, kärleksfull och brutal, men hela tiden på väg mot ljuset.»</p>
+        </div>
       </div>
 
-      <!-- RECENSION 1 -->
-      <div class="news-card rv">
-        <blockquote>«En så ljuvlig och skickligt gjord bok! Ärlig, kärleksfull och brutal, men hela tiden på väg mot ljuset.»</blockquote>
-        <cite>Camilla Läckberg</cite>
+      <!-- Recension: BTJ -->
+      <div class="news-article-card news-article-card--review rv">
+        <div class="news-card-body">
+          <span class="news-card-tag">BTJ · Betyg 5/5</span>
+          <h3 class="news-card-title">Kajsa Banck, BTJ</h3>
+          <p class="news-card-excerpt">«Boken är mycket medryckande skriven och med sitt tempo och sin personliga berättarröst är den mycket svår att lägga ifrån sig.»</p>
+        </div>
       </div>
 
-      <!-- RECENSION 2 -->
-      <div class="news-card rv">
-        <blockquote>«Boken är mycket medryckande skriven och med sitt tempo och sin personliga berättarröst är den mycket svår att lägga ifrån sig.»</blockquote>
-        <cite>Kajsa Banck, BTJ · Betyg 5/5</cite>
-      </div>
-
-      <!-- RECENSION 3 -->
-      <div class="news-card rv">
-        <blockquote>«Vilken lysande debut! Jag fängslades från start.»</blockquote>
-        <cite>@Bokugglor</cite>
+      <!-- Recension: Bokugglor -->
+      <div class="news-article-card news-article-card--review rv">
+        <div class="news-card-body">
+          <span class="news-card-tag">Recension</span>
+          <h3 class="news-card-title">@Bokugglor</h3>
+          <p class="news-card-excerpt">«Vilken lysande debut! Jag fängslades från start.»</p>
+        </div>
       </div>
 
     </div>

@@ -156,6 +156,28 @@ a{color:inherit;text-decoration:none;}
 .drawer .sub{font-family:var(--font-sans);font-size:.95rem;letter-spacing:.04em;color:var(--ivory-dim);padding-left:1rem;border:0;}
 .drawer-close{position:absolute;top:24px;right:24px;font-size:2rem;line-height:1;}
 
+/* ============ NEWS ARTICLE CARDS ============ */
+.news-article-card{
+  background:var(--navy-800);display:flex;flex-direction:column;
+  text-decoration:none;color:inherit;
+  transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease;
+  cursor:pointer;
+}
+.news-article-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+.news-article-card--review{cursor:default;}
+.news-article-card--review:hover{transform:none;box-shadow:none;}
+.news-card-img{overflow:hidden;aspect-ratio:16/9;}
+.news-card-img img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s ease;}
+.news-article-card:hover .news-card-img img{transform:scale(1.04);}
+.news-card-body{padding:clamp(1.1rem,2.5vw,1.8rem);display:flex;flex-direction:column;gap:.6rem;flex:1;}
+.news-card-tag{font-family:var(--font-sans);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);}
+.news-card-title{font-family:var(--font-display);font-weight:500;font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.2;margin:0;color:var(--ivory);}
+.news-card-excerpt{font-family:var(--font-sans);font-size:.88rem;line-height:1.7;color:var(--ivory-dim);margin:0;}
+.news-card-read{font-family:var(--font-sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-top:auto;padding-top:.6rem;}
+@media(max-width:760px){
+  .news-grid-3{grid-template-columns:1fr!important;}
+}
+
 /* ============ HERO ============ */
 .hero{position:relative;}
 .hero::after{
@@ -165,16 +187,16 @@ a{color:inherit;text-decoration:none;}
   z-index:2;pointer-events:none;
 }
 
-.hero-split{min-height:100svh;display:grid;grid-template-columns:1.02fr 1fr;}
+.hero-split{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;}
 .hero-split .left{display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,10vw,140px) var(--gut) 80px;position:relative;}
 .hero-split .right{
   position:relative;overflow:hidden;
-  display:flex;align-items:flex-start;justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   background:var(--navy-900);
-  padding:clamp(100px,10vw,140px) clamp(40px,5vw,80px) 80px;
+  padding:clamp(80px,8vw,120px) clamp(20px,3vw,48px) 80px;
 }
 .hero-split .right::before{
-  content:"";position:absolute;top:0;left:0;width:clamp(120px,22vw,320px);height:100%;
+  content:"";position:absolute;top:0;left:0;width:clamp(80px,14vw,200px);height:100%;
   background:linear-gradient(to right,var(--navy),transparent);
   z-index:1;pointer-events:none;
 }
@@ -184,10 +206,10 @@ a{color:inherit;text-decoration:none;}
   z-index:1;pointer-events:none;
 }
 .hero-cover{
-  max-height:72vh;
-  max-width:100%;
+  max-height:80vh;
+  max-width:90%;
   width:auto;
-  margin-top:clamp(80px,9vw,120px);
+  margin-top:clamp(40px,5vw,80px);
   object-fit:contain;
   box-shadow:
     0 8px 20px rgba(0,0,0,.35),
@@ -299,7 +321,6 @@ section[id]{scroll-margin-top:96px;}
     </a>
 
     <nav class="nav" aria-label="Primär">
-      <a href="index.html">Hem</a>
       <a href="about.html">Om oss</a>
       <a href="books.html">Böcker</a>
       <a href="press.html">Press</a>
@@ -316,7 +337,6 @@ section[id]{scroll-margin-top:96px;}
 <!-- Mobile drawer -->
 <div class="drawer" id="drawer">
   <button class="drawer-close" id="drawer-close" aria-label="Stäng meny">&times;</button>
-  <a href="index.html">Hem</a>
   <a href="about.html">Om oss</a>
   <a href="books.html">Böcker</a>
   <a href="press.html">Press</a>
@@ -333,7 +353,8 @@ section[id]{scroll-margin-top:96px;}
     <h1 class="display" style="font-size:clamp(2rem,4.4vw,4.4rem);margin:1.2rem 0 .9rem;">
       Är allt jag trott om att bli mamma<br><em class="serif-it">en lögn?</em>
     </h1>
-    <p class="hero-award">Av författaren till hyllade debuten <em>Är allt jag lärt mig om kärlek en lögn?</em> — 20 000 sålda ex · BTJ-betyg 5/5 · Andrapris i Adlibrispriset Årets debut · Finalist i Årets Feelgood</p>
+    <p class="hero-award">Av författaren till succédebuten <em>Är allt jag lärt mig om kärlek en lögn?</em></p>
+    <p style="font-family:var(--font-sans);font-size:.75rem;letter-spacing:.14em;color:var(--accent);margin:-1rem 0 1.5rem;opacity:.85">BTJ-betyg 5/5 · Andrapris Adlibrispriset · Finalist Årets Feelgood</p>
     <p class="hero-body">Ju mer mamman kämpar för att rädda sitt barn, desto tydligare blir det att hon också kämpar för att hitta något hon tappat bort för länge sedan: sig själv.</p>
     <p style="font-family:var(--font-sans);font-size:.78rem;letter-spacing:.14em;color:var(--accent);margin:0 0 1.2rem">Begränsat antal signerade ex finns att förboka på Bokus</p>
     <div class="hero-cta">
@@ -376,20 +397,39 @@ section[id]{scroll-margin-top:96px;}
       </div>
       <a class="btn" href="nyheter.html" style="align-self:flex-end"><span>Alla nyheter</span> <span class="arw">&#8594;</span></a>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,36px)">
-      <div class="rv" style="background:var(--navy-800);padding:clamp(1.4rem,3vw,2.2rem);display:flex;flex-direction:column;gap:.8rem">
-        <blockquote style="font-family:var(--font-display);font-style:italic;font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.5;margin:0 0 .3rem;color:var(--ivory)">«Framför allt handlar det om att göra upp med sin egen prestationsdjävul och ha modet att omfamna alla delar av sig själv.»</blockquote>
-        <cite style="font-family:var(--font-sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)">Gul PR · Pressrelease</cite>
-        <a href="https://newsroom.notified.com/gul-pr/posts/pressreleases/fran-dramatens-stora-scen-till-sen-adhd-diagn" target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent);padding-bottom:.2em;align-self:flex-start;margin-top:auto">Läs hela &#8594;</a>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.5vw,32px)">
+
+      <!-- Artikel 1: Pressrelease -->
+      <a href="nyheter/dramatens-stora-scen.html" class="rv news-article-card">
+        <div class="news-card-img">
+          <img src="assets/press-release/pressrelease-1-thumb.png" alt="Pressrelease thumbnail" />
+        </div>
+        <div class="news-card-body">
+          <span class="news-card-tag">Pressrelease · Juni 2026</span>
+          <h3 class="news-card-title">Från Dramatens stora scen till sen ADHD-diagnos</h3>
+          <p class="news-card-excerpt">Sara Sommerfeld om att vara misslyckad som mamma — och modet att omfamna alla delar av sig själv.</p>
+          <span class="news-card-read">Läs mer &#8594;</span>
+        </div>
+      </a>
+
+      <!-- Artikel 2: Recension Camilla Läckberg -->
+      <div class="rv news-article-card news-article-card--review">
+        <div class="news-card-body">
+          <span class="news-card-tag">Recension</span>
+          <h3 class="news-card-title">Camilla Läckberg om debuten</h3>
+          <p class="news-card-excerpt">«En så ljuvlig och skickligt gjord bok! Ärlig, kärleksfull och brutal, men hela tiden på väg mot ljuset.»</p>
+        </div>
       </div>
-      <div class="rv" style="background:var(--navy-800);padding:clamp(1.4rem,3vw,2.2rem);display:flex;flex-direction:column;gap:.8rem">
-        <blockquote style="font-family:var(--font-display);font-style:italic;font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.5;margin:0 0 .3rem;color:var(--ivory)">«En så ljuvlig och skickligt gjord bok! Ärlig, kärleksfull och brutal, men hela tiden på väg mot ljuset.»</blockquote>
-        <cite style="font-family:var(--font-sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)">Camilla Läckberg</cite>
+
+      <!-- Artikel 3: BTJ -->
+      <div class="rv news-article-card news-article-card--review">
+        <div class="news-card-body">
+          <span class="news-card-tag">BTJ · Betyg 5/5</span>
+          <h3 class="news-card-title">Kajsa Banck, BTJ</h3>
+          <p class="news-card-excerpt">«Boken är mycket medryckande skriven och med sitt tempo och sin personliga berättarröst är den mycket svår att lägga ifrån sig.»</p>
+        </div>
       </div>
-      <div class="rv" style="background:var(--navy-800);padding:clamp(1.4rem,3vw,2.2rem);display:flex;flex-direction:column;gap:.8rem">
-        <blockquote style="font-family:var(--font-display);font-style:italic;font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.5;margin:0 0 .3rem;color:var(--ivory)">«Boken är mycket medryckande skriven och med sitt tempo och sin personliga berättarröst är den mycket svår att lägga ifrån sig.»</blockquote>
-        <cite style="font-family:var(--font-sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)">Kajsa Banck, BTJ · Betyg 5/5</cite>
-      </div>
+
     </div>
   </div>
 </section>
@@ -403,7 +443,7 @@ section[id]{scroll-margin-top:96px;}
   <div class="wrap">
     <div class="rv" style="margin-bottom:clamp(36px,5vw,56px)">
       <span class="eyebrow">Kontakter</span>
-      <h2 class="display" style="font-size:clamp(2rem,3.8vw,3.2rem);margin:.6rem 0 0">Rätt person, direkt.</h2>
+      <h2 class="display" style="font-size:clamp(2rem,3.8vw,3.2rem);margin:.6rem 0 0">Hör av dig!</h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:clamp(20px,3vw,40px)">
       <div class="rv" style="border-top:1px solid color-mix(in srgb,var(--accent) 50%,transparent);padding-top:1.6rem">
