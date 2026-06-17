@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sara Sommerfeld — Author</title>
+<meta name="description" content="Sara Sommerfeld — playwright, screenwriter and novelist. Plays, film and books." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Raleway:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0b0b0b;
+  --bg-2:     #111111;
+  --bg-3:     #161616;
+  --text:     #f0ece4;
+  --text-dim: rgba(240,236,228,.78);
+  --gold:     #b89a60;
+  --gold-dim: rgba(184,154,96,.35);
+  --rule:     rgba(240,236,228,.12);
+  --max:      1200px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-weight: 300; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+.eyebrow {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400; font-size: .68rem;
+  letter-spacing: .36em; text-transform: uppercase; color: var(--gold);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 3rem;
+  background: rgba(11,11,11,.93); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-logo {
+  font-family: 'Cormorant', serif;
+  font-weight: 400; font-size: 1.1rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--text);
+}
+.nav-links { display: flex; gap: 2.4rem; list-style: none; }
+.nav-links a {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400; font-size: .65rem;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: rgba(240,236,228,.6); transition: color .25s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.nav-hamburger span { display: block; width: 24px; height: 1px; background: var(--text); }
+.mobile-nav {
+  display: none; position: fixed; inset: 0; z-index: 99;
+  background: rgba(11,11,11,.97);
+  flex-direction: column; align-items: center; justify-content: center; gap: 2.2rem;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-family: 'Cormorant', serif;
+  font-size: 2rem; font-weight: 300;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(240,236,228,.6); transition: color .25s;
+}
+.mobile-nav a:hover { color: var(--gold); }
+
+/* ── PAGE INTRO ── */
+.page-intro {
+  padding: 9rem 3rem 5rem;
+  max-width: var(--max); margin: 0 auto;
+}
+.page-label {
+  font-family: 'Raleway', sans-serif;
+  font-size: .68rem; letter-spacing: .36em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 1rem;
+}
+.page-title {
+  font-family: 'Cormorant', serif;
+  font-weight: 300; font-size: clamp(2.8rem, 5vw, 5rem);
+  line-height: 1.05; letter-spacing: .02em; color: var(--text);
+  margin-bottom: 2rem;
+}
+.page-title em { font-style: italic; }
+.page-lead {
+  font-family: 'Cormorant', serif;
+  font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+  line-height: 1.85; color: var(--text-dim); max-width: 680px;
+}
+.page-lead p + p { margin-top: 1.1em; }
+.page-lead em { font-style: italic; color: var(--text); }
+
+/* ── SECTION TABS ── */
+.section-tabs {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg-3);
+  position: sticky; top: 62px; z-index: 50;
+}
+.section-tabs-inner {
+  max-width: var(--max); margin: 0 auto; padding: 0 3rem;
+  display: flex; gap: 0;
+}
+.tab-link {
+  font-family: 'Raleway', sans-serif;
+  font-size: .65rem; letter-spacing: .28em; text-transform: uppercase;
+  color: rgba(240,236,228,.5); padding: 1.2rem 2rem;
+  border-bottom: 2px solid transparent;
+  transition: color .25s, border-color .25s;
+}
+.tab-link:hover { color: var(--text); }
+.tab-link.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── CONTENT SECTIONS ── */
+.content-section { padding: 6rem 3rem; }
+.content-section:nth-child(even) { background: var(--bg-2); }
+
+.content-inner { max-width: var(--max); margin: 0 auto; }
+
+.section-header { margin-bottom: 3.5rem; }
+.section-header .eyebrow { display: block; margin-bottom: .8rem; }
+.section-title {
+  font-family: 'Cormorant', serif;
+  font-weight: 300; font-size: clamp(2rem, 3.5vw, 3.2rem);
+  line-height: 1.1; color: var(--text);
+}
+.section-title em { font-style: italic; }
+
+.body-text {
+  font-family: 'Cormorant', serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+  line-height: 1.85; color: var(--text-dim); max-width: 640px;
+}
+.body-text p + p { margin-top: 1.1em; }
+.body-text em { font-style: italic; color: var(--text); }
+
+/* ── PLAYS ── */
+.play-item {
+  border-top: 1px solid var(--rule); padding: 2rem 0;
+}
+.play-item:last-child { border-bottom: 1px solid var(--rule); }
+.play-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 1.5rem; margin-bottom: .8rem; flex-wrap: wrap;
+}
+.play-title {
+  font-family: 'Cormorant', serif;
+  font-size: clamp(1.3rem, 2vw, 1.8rem); font-weight: 400; font-style: italic;
+  color: var(--text);
+}
+.play-meta {
+  font-family: 'Raleway', sans-serif;
+  font-size: .6rem; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap;
+}
+.play-desc {
+  font-family: 'Cormorant', serif;
+  font-size: 1.08rem; line-height: 1.75; color: var(--text-dim);
+  max-width: 720px;
+}
+.play-tag {
+  display: inline-block; margin-top: 1rem;
+  font-family: 'Raleway', sans-serif;
+  font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+  padding: .4em 1em; border: 1px solid var(--gold-dim); color: var(--gold);
+}
+
+/* ── VIDEOS ── */
+.videos-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem;
+}
+.video-item { }
+.video-thumb {
+  aspect-ratio: 16/9; background: var(--bg-3);
+  border: 1px solid var(--rule); margin-bottom: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.video-thumb iframe { width: 100%; height: 100%; border: none; }
+.video-title {
+  font-family: 'Cormorant', serif;
+  font-size: 1.12rem; font-weight: 400; color: var(--text); margin-bottom: .4rem;
+}
+.video-meta {
+  font-family: 'Raleway', sans-serif;
+  font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ── BOOKS ── */
+.books-list { display: flex; flex-direction: column; gap: 4rem; }
+
+.book-item {
+  display: grid; grid-template-columns: 160px 1fr; gap: 3.5rem; align-items: start;
+  padding-top: 3rem; border-top: 1px solid var(--rule);
+}
+.book-item:first-child { padding-top: 0; border-top: none; }
+
+.book-cover {
+  box-shadow: 0 24px 60px rgba(0,0,0,.65);
+}
+.book-cover img { width: 100%; }
+
+.book-info { display: flex; flex-direction: column; gap: .8rem; }
+.book-eyebrow { font-size: .65rem; }
+.book-title {
+  font-family: 'Cormorant', serif;
+  font-size: clamp(1.4rem, 2.2vw, 2rem); font-weight: 400; font-style: italic;
+  line-height: 1.25; color: var(--text);
+}
+.book-subtitle {
+  font-family: 'Cormorant', serif;
+  font-size: 1.05rem; font-style: italic; color: var(--text-dim); line-height: 1.5;
+}
+.book-desc {
+  font-family: 'Cormorant', serif;
+  font-size: 1.08rem; line-height: 1.8; color: var(--text-dim);
+}
+.book-desc em { font-style: italic; color: var(--text); }
+
+.book-stats {
+  display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
+  padding-top: 1rem; margin-top: .5rem; border-top: 1px solid var(--rule);
+}
+.book-stat {
+  font-family: 'Raleway', sans-serif;
+  font-size: .63rem; letter-spacing: .12em; color: var(--text-dim);
+}
+.book-stat strong { color: var(--gold); font-weight: 400; }
+
+.book-press {
+  margin-top: 1.5rem; padding: 1.5rem 2rem;
+  border: 1px solid var(--rule);
+}
+.book-press-text {
+  font-family: 'Cormorant', serif;
+  font-size: 1.05rem; font-style: italic; line-height: 1.7;
+  color: var(--text); margin-bottom: .5rem;
+}
+.book-press-source {
+  font-family: 'Raleway', sans-serif;
+  font-size: .58rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold);
+}
+
+.book-links { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+
+.btn-ghost {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400; font-size: .65rem;
+  letter-spacing: .24em; text-transform: uppercase;
+  padding: .8em 1.8em;
+  border: 1px solid var(--rule); color: var(--text-dim);
+  transition: border-color .3s, color .3s; display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule); padding: 2.5rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg);
+}
+.footer-copy {
+  font-family: 'Raleway', sans-serif;
+  font-size: .6rem; letter-spacing: .2em;
+  color: rgba(240,236,228,.4); text-transform: uppercase;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 960px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .page-intro { padding: 8rem 1.5rem 4rem; }
+  .section-tabs-inner { padding: 0 1.5rem; overflow-x: auto; }
+  .content-section { padding: 4rem 1.5rem; }
+  .videos-grid { grid-template-columns: 1fr; }
+  .book-item { grid-template-columns: 120px 1fr; gap: 2rem; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="actress.html" onclick="closeMobileNav()">Actress</a>
+  <a href="index.html#director" onclick="closeMobileNav()">Writer & Director</a>
+  <a href="author.html" onclick="closeMobileNav()">Author</a>
+  <a href="speaker.html" onclick="closeMobileNav()">Speaker</a>
+  <a href="index.html#contact" onclick="closeMobileNav()">Contact</a>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Sara Sommerfeld</a>
+  <ul class="nav-links">
+    <li><a href="actress.html">Actress</a></li>
+    <li><a href="index.html#director">Writer &amp; Director</a></li>
+    <li><a href="author.html" class="active">Author</a></li>
+    <li><a href="speaker.html">Speaker</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── PAGE INTRO ── -->
+<div class="page-intro">
+  <span class="page-label">Playwright · Screenwriter · Novelist</span>
+  <h1 class="page-title"><em>Author</em></h1>
+  <div class="page-lead">
+    <p>Sara Sommerfeld creates across forms — as playwright, screenwriter and novelist. Her work moves between theatre, film and literature, often exploring themes of identity, belonging and inheritance.</p>
+    <p>She is a graduate of Alma Manusutbildning and has completed advanced writing programmes at Stockholm University of the Arts and SVT. Her debut novel sold 20,000 copies in its first year.</p>
+  </div>
+</div>
+
+<!-- ── TABS ── -->
+<div class="section-tabs">
+  <div class="section-tabs-inner">
+    <a href="#plays" class="tab-link active">Plays</a>
+    <a href="#film" class="tab-link">Film &amp; Video</a>
+    <a href="#books" class="tab-link">Books</a>
+  </div>
+</div>
+
+<!-- ── PLAYS ── -->
+<section id="plays" class="content-section">
+  <div class="content-inner">
+    <div class="section-header">
+      <span class="eyebrow">For the stage</span>
+      <h2 class="section-title"><em>Plays</em></h2>
+    </div>
+
+    <div class="play-item">
+      <div class="play-header">
+        <p class="play-title">Show Bizniz</p>
+        <span class="play-meta">Playwright debut · 2023</span>
+      </div>
+      <p class="play-desc">Sara Sommerfeld's critically acclaimed solo performance, presented on the Main Stage of Sweden's Royal Dramatic Theatre (Dramaten) in 2023. The production later toured Sweden and was broadcast on SVT in 2025. An unflinching look at the entertainment industry — written, performed and lived by Sara herself.</p>
+      <span class="play-tag">Dramaten Main Stage · Sweden Tour · SVT 2025</span>
+    </div>
+
+    <div class="play-item">
+      <div class="play-header">
+        <p class="play-title">Gallret — A monologue about Gustaf Fröding</p>
+        <span class="play-meta">Stage · Teater Giljotin · 2020</span>
+      </div>
+      <p class="play-desc">A monologue for the stage, directed and written by Sara Sommerfeld. Performed at Teater Giljotin in 2020.</p>
+    </div>
+
+    <div class="play-item">
+      <div class="play-header">
+        <p class="play-title">Pelle Svanslös och miljödagen</p>
+        <span class="play-meta">Stage Production · Furuvik · 2025</span>
+      </div>
+      <p class="play-desc">Sara Sommerfeld writes and directs the new Pelle Svanslös production at Furuvik. For the first time, the award-winning actress, screenwriter and director is behind both script and direction — bringing humour, music and an important environmental message to audiences of all ages. A fast-paced show where no paw is too small to make a difference.</p>
+      <span class="play-tag">Furuvik · Family Theatre · 2025</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FILM & VIDEO ── -->
+<section id="film" class="content-section">
+  <div class="content-inner">
+    <div class="section-header">
+      <span class="eyebrow">For screen</span>
+      <h2 class="section-title">Film &amp; <em>Video</em></h2>
+    </div>
+
+    <div class="videos-grid">
+      <div class="video-item">
+        <div class="video-thumb">
+          <iframe src="https://player.vimeo.com/video/138192806" allowfullscreen title="My Grandmother and the Holocaust — Trailer"></iframe>
+        </div>
+        <p class="video-title">My Grandmother and the Holocaust</p>
+        <p class="video-meta">Documentary · TV4 · 2015 · Dir. Sara Sommerfeld</p>
+      </div>
+      <div class="video-item">
+        <div class="video-thumb" style="align-items:center;justify-content:center;display:flex;flex-direction:column;gap:.8rem">
+          <span style="font-family:'Cormorant',serif;font-size:1.1rem;font-style:italic;color:rgba(240,236,228,.4)">A Trembling Soul</span>
+          <span style="font-family:'Raleway',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,236,228,.25)">Clip coming soon</span>
+        </div>
+        <p class="video-title">A Trembling Soul (När själen darrar)</p>
+        <p class="video-meta">Short Film · SVT · 2020 · Dir. Sara Sommerfeld</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BOOKS ── -->
+<section id="books" class="content-section">
+  <div class="content-inner">
+    <div class="section-header">
+      <span class="eyebrow">In print</span>
+      <h2 class="section-title"><em>Books</em></h2>
+    </div>
+
+    <div class="books-list">
+
+      <div class="book-item">
+        <div class="book-cover">
+          <img src="images/cover-ar-allt-jag-lart-mig-om-mig-sjalv-en-logn.jpeg" alt="Is Everything I Learned About Love a Lie?" />
+        </div>
+        <div class="book-info">
+          <span class="eyebrow book-eyebrow">Debut Novel · 2024</span>
+          <h3 class="book-title">Is Everything I Learned About Love a Lie?</h3>
+          <p class="book-subtitle">Är allt jag lärt mig om kärlek en lögn?</p>
+          <p class="book-desc">An emotional autobiographical novel written with self-distance and a large measure of humour. Sara Sommerfeld unabashedly faces her self-hatred, doubts and fragile self-esteem — and travels to Bali to find herself. With Elizabeth Gilbert's <em>Eat, Pray, Love</em> as a companion, it becomes both a dramatic and life-changing journey. A novel about traveling far away to find home, about the search for one's true self and the killing of one's inner perfectionist.</p>
+          <div class="book-stats">
+            <p class="book-stat"><strong>20,000</strong> copies sold in year one</p>
+            <p class="book-stat"><strong>5/5 — Brilliant</strong> · BTJ</p>
+            <p class="book-stat"><strong>Nominated</strong> · Adlibris Debut of the Year</p>
+            <p class="book-stat"><strong>Finalist</strong> · Best Feelgood 2025</p>
+          </div>
+          <div class="book-press">
+            <p class="book-press-text">"Sara Sommerfeld debuts as a writer and she does it with bravura. Very compellingly written — with its pace and personal narrative voice it is very hard to put down."</p>
+            <span class="book-press-source">BTJ · Kajsa Bank · Rating 5/5 — Brilliant</span>
+          </div>
+          <div class="book-links">
+            <a href="#" class="btn-ghost">Adlibris ↗</a>
+            <a href="#" class="btn-ghost">Bokus ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-cover">
+          <img src="images/cover-ar-allt-jag-trott-om-att-bli-mamma-en-logn.jpg" alt="Is Everything I Believed About Becoming a Mother a Lie?" />
+        </div>
+        <div class="book-info">
+          <span class="eyebrow book-eyebrow">New · 2026</span>
+          <h3 class="book-title">Is Everything I Believed About Becoming a Mother a Lie?</h3>
+          <p class="book-subtitle">Är allt jag trott om att bli mamma en lögn?</p>
+          <p class="book-desc">The more the mother fights to save her child, the clearer it becomes that she is also fighting to find something she lost long ago: herself. An emotionally honest novel about motherhood, love and identity — written with the same unflinching honesty and warmth that made Sara's debut a bestseller.</p>
+          <div class="book-links">
+            <a href="#" class="btn-ghost">Adlibris ↗</a>
+            <a href="#" class="btn-ghost">Bokus ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-copy">© <span id="yr"></span> Sara Sommerfeld. All rights reserved.</p>
+  <p class="footer-copy">Stockholm · International</p>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+function toggleMobileNav() { document.getElementById('mobileNav').classList.toggle('open'); }
+function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+/* Highlight active tab on scroll */
+const tabs = document.querySelectorAll('.tab-link');
+const sections = ['plays','film','books'].map(id => document.getElementById(id));
+window.addEventListener('scroll', () => {
+  let current = 0;
+  sections.forEach((s, i) => { if (window.scrollY >= s.offsetTop - 140) current = i; });
+  tabs.forEach((t, i) => t.classList.toggle('active', i === current));
+}, { passive: true });
+</script>
+</body>
+</html>
