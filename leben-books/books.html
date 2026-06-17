@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Books — Leben Books</title>
+<meta name="description" content="Published works by Sara Sommerfeld — LeBen Books." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+
+:root{
+  --navy:#14213d;
+  --navy-900:#0d1730;
+  --navy-800:#1b2c4d;
+  --navy-700:#27395c;
+  --ivory:#f4efe2;
+  --ivory-dim:#cfc8b8;
+  --paper:#f7f4ec;
+  --ink:#14213d;
+  --accent:#bd8a5e;
+  --font-display:'Cormorant Garamond', Georgia, serif;
+  --font-sans:'Jost', system-ui, sans-serif;
+  --maxw:1320px;
+  --gut:clamp(20px,5vw,72px);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--navy);color:var(--ivory);font-family:var(--font-sans);font-weight:300;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--accent);color:var(--navy-900);}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut);}
+
+.eyebrow{font-family:var(--font-sans);font-weight:400;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:.85em;}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--accent);opacity:.8;}
+.eyebrow.center::after{content:"";width:34px;height:1px;background:var(--accent);opacity:.8;}
+.eyebrow.center{justify-content:center;}
+.display{font-family:var(--font-display);font-weight:500;line-height:.98;letter-spacing:-.01em;text-wrap:balance;}
+
+.btn{display:inline-flex;align-items:center;gap:.7em;font-family:var(--font-sans);font-weight:400;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;padding:1.05em 1.9em;border:1px solid var(--accent);color:var(--ivory);background:transparent;cursor:pointer;transition:all .45s cubic-bezier(.2,.7,.2,1);}
+.btn .arw{transition:transform .45s cubic-bezier(.2,.7,.2,1);}
+.btn:hover{background:var(--accent);color:var(--navy-900);}
+.btn:hover .arw{transform:translateX(5px);}
+.btn--solid{background:var(--accent);color:var(--navy-900);border-color:var(--accent);}
+.btn--solid:hover{background:transparent;color:var(--ivory);}
+
+.rule{height:1px;background:color-mix(in srgb,var(--ivory) 14%,transparent);border:0;}
+
+/* ============ HEADER ============ */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .5s ease,border-color .5s ease;border-bottom:1px solid transparent;}
+.hdr.solid{background:color-mix(in srgb,var(--navy-900) 88%,transparent);backdrop-filter:blur(14px) saturate(1.2);border-bottom:1px solid color-mix(in srgb,var(--ivory) 12%,transparent);}
+.hdr-inner{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding-block:clamp(8px,0.8vw,12px);}
+.brand{display:flex;align-items:center;gap:.95rem;}
+.brand img{height:clamp(44px,4.84vw,59px);width:auto;}
+.brand .tag{font-family:var(--font-sans);font-weight:300;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ivory-dim);max-width:32ch;line-height:1.45;border-left:1px solid color-mix(in srgb,var(--ivory) 24%,transparent);padding-left:.95rem;}
+@media(max-width:880px){.brand .tag{display:none;}}
+.nav{display:flex;align-items:center;gap:clamp(1.1rem,2vw,2.2rem);}
+.nav a{font-family:var(--font-sans);font-weight:400;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ivory);padding:.4em 0;position:relative;display:inline-flex;align-items:center;}
+.nav a::after{content:"";position:absolute;left:0;bottom:-2px;height:1px;width:0;background:var(--accent);transition:width .4s cubic-bezier(.2,.7,.2,1);}
+.nav a:hover::after,.nav a.active::after{width:100%;}
+.menu-btn{display:none;background:none;border:0;color:var(--ivory);cursor:pointer;flex-direction:column;gap:5px;padding:6px;}
+.menu-btn span{width:24px;height:1.5px;background:var(--ivory);display:block;}
+@media(max-width:980px){.nav{display:none;}.menu-btn{display:flex;}}
+.drawer{position:fixed;inset:0;z-index:70;background:var(--navy-900);transform:translateX(100%);transition:transform .5s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;padding:var(--gut);padding-top:90px;}
+.drawer.open{transform:translateX(0);}
+.drawer a{font-family:var(--font-display);font-size:2rem;color:var(--ivory);display:block;padding:.55rem 0;border-bottom:1px solid color-mix(in srgb,var(--ivory) 12%,transparent);}
+.drawer-close{position:absolute;top:24px;right:24px;font-size:2rem;line-height:1;background:none;border:0;color:var(--ivory);cursor:pointer;}
+
+/* ============ PAGE HERO ============ */
+.bk-hero{background:var(--navy-900);padding-top:clamp(100px,12vw,160px);padding-bottom:clamp(60px,8vw,100px);text-align:center;}
+.bk-hero .eyebrow{margin-bottom:1.4rem;}
+.bk-hero h1{font-family:var(--font-display);font-weight:500;font-size:clamp(2.4rem,5vw,4.4rem);line-height:.97;letter-spacing:-.01em;margin:0 auto .9rem;max-width:18ch;text-wrap:balance;}
+.bk-hero p{font-family:var(--font-sans);font-weight:300;font-size:1rem;line-height:1.8;color:var(--ivory-dim);max-width:46ch;margin:0 auto;}
+
+/* ============ BOOK — FEATURED (dark) ============ */
+.book-featured{
+  background:var(--navy-900);
+  padding-block:clamp(80px,11vw,150px);
+}
+.book-featured .wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(40px,6vw,80px);align-items:start;}
+@media(max-width:860px){.book-featured .wrap{grid-template-columns:1fr;}}
+
+.book-cover-wrap img{width:100%;max-width:380px;box-shadow:0 40px 80px -20px rgba(0,0,0,.65);}
+.book-badge{display:inline-block;background:var(--accent);color:var(--navy-900);font-family:var(--font-sans);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;padding:.5em 1em;font-weight:400;margin-bottom:1.2rem;}
+
+.book-info .eyebrow{color:var(--accent);margin-bottom:.5rem;}
+.book-kicker{font-family:var(--font-display);font-style:italic;font-size:clamp(.95rem,1.4vw,1.1rem);color:var(--ivory-dim);line-height:1.5;margin:.4rem 0 1.2rem;max-width:44ch;}
+.book-info h2{font-family:var(--font-display);font-weight:500;font-size:clamp(2rem,4vw,3.5rem);line-height:1;letter-spacing:-.01em;color:var(--ivory);margin:0 0 1.8rem;}
+.book-desc{font-family:var(--font-sans);font-weight:300;font-size:.95rem;line-height:1.85;color:var(--ivory-dim);max-width:52ch;margin:0 0 1.6rem;}
+.book-author-bio{font-family:var(--font-sans);font-weight:300;font-size:.88rem;line-height:1.85;color:var(--ivory-dim);max-width:52ch;margin:0 0 2rem;padding-top:1.4rem;border-top:1px solid color-mix(in srgb,var(--ivory) 12%,transparent);}
+
+.book-meta-row{display:flex;flex-wrap:wrap;gap:.6rem 2rem;margin-bottom:.8rem;}
+.book-meta-item{display:flex;flex-direction:column;gap:.25rem;}
+.book-meta-label{font-family:var(--font-sans);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);}
+.book-meta-val{font-family:var(--font-sans);font-size:.9rem;color:var(--ivory-dim);font-weight:300;}
+
+.book-contact{font-family:var(--font-sans);font-weight:300;font-size:.85rem;line-height:1.7;color:var(--ivory-dim);margin:0 0 2rem;}
+.book-contact a{color:var(--accent);}
+
+.book-cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;}
+
+/* ============ DIVIDER ============ */
+.section-divider{background:var(--navy);padding-block:clamp(60px,8vw,100px);text-align:center;}
+.section-divider .ornament{font-family:var(--font-display);font-style:italic;font-size:clamp(1.2rem,2vw,1.6rem);color:color-mix(in srgb,var(--ivory) 30%,transparent);letter-spacing:.08em;}
+
+/* ============ BOOK — DEBUT (dark) ============ */
+.book-debut{background:var(--navy-800);padding-block:clamp(80px,11vw,150px);}
+.book-debut .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(40px,7vw,100px);align-items:start;}
+@media(max-width:860px){.book-debut .wrap{grid-template-columns:1fr;}.book-debut .book-info{order:-1;}}
+.book-debut .book-cover-wrap img{max-width:340px;box-shadow:0 40px 80px -20px rgba(5,12,28,.5);}
+
+.debut-reviews-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,28px);margin-top:2.6rem;}
+@media(max-width:540px){.debut-reviews-grid{grid-template-columns:1fr;}}
+.debut-review{background:var(--navy-900);padding:1.5rem 1.8rem;}
+.debut-review blockquote{font-family:var(--font-display);font-style:italic;font-size:1.1rem;line-height:1.5;color:var(--ivory);margin:0 0 .9rem;}
+.debut-review blockquote::before{content:"\201C";color:var(--accent);}
+.debut-review blockquote::after{content:"\201D";color:var(--accent);}
+.debut-review .review-source{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-family:var(--font-sans);}
+
+/* ============ FOOTER ============ */
+.ft{background:var(--navy-900);padding-top:clamp(70px,9vw,120px);}
+.ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:clamp(28px,4vw,60px);padding-bottom:clamp(50px,7vw,80px);}
+.ft-brand img{height:64px;margin-bottom:1.4rem;}
+.ft-brand p{font-family:var(--font-display);font-style:italic;font-size:1.15rem;line-height:1.5;color:var(--ivory);max-width:26ch;}
+.ft-col h4{font-family:var(--font-sans);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin:.4rem 0 1.3rem;}
+.ft-col a{display:block;font-family:var(--font-sans);font-weight:300;font-size:.95rem;color:var(--ivory-dim);padding:.42rem 0;transition:color .3s,padding-left .3s;}
+.ft-col a:hover{color:var(--ivory);padding-left:.4rem;}
+.ft-col p{font-family:var(--font-sans);font-weight:300;font-size:.88rem;color:var(--ivory-dim);line-height:1.6;margin:0 0 .3rem;}
+.ft-bottom{border-top:1px solid color-mix(in srgb,var(--ivory) 12%,transparent);padding-block:1.8rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;}
+.ft-bottom small{font-family:var(--font-sans);font-size:.74rem;letter-spacing:.04em;color:var(--ivory-dim);font-weight:300;}
+.ft-social{display:flex;gap:1.6rem;}
+.ft-social a{font-family:var(--font-sans);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ivory-dim);}
+.ft-social a:hover{color:var(--accent);}
+@media(max-width:900px){.ft-top{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.ft-top{grid-template-columns:1fr;}}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);}
+.rv.in{opacity:1;transform:none;}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none;}}
+</style>
+</head>
+<body>
+
+
+<!-- ============ HEADER ============ -->
+<header class="hdr solid" id="top">
+  <div class="wrap hdr-inner">
+    <a class="brand" href="index.html" aria-label="Leben Books — home">
+      <img src="logo/leben-logo-ivory.png" alt="Leben Books" />
+      <span class="tag">A boutique publishing house for bold minds</span>
+    </a>
+    <nav class="nav" aria-label="Primär">
+      <a href="index.html">Hem</a>
+      <a href="about.html">Om oss</a>
+      <a href="books.html" class="active">Böcker</a>
+      <a href="press.html">Press</a>
+      <a href="nyheter.html">Nyheter</a>
+      <a href="contact.html">Kontakt</a>
+    </nav>
+    <button class="menu-btn" id="menu-btn" aria-label="Öppna meny">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawer-close" aria-label="Stäng meny">&times;</button>
+  <a href="index.html">Hem</a>
+  <a href="about.html">Om oss</a>
+  <a href="books.html">Böcker</a>
+  <a href="press.html">Press</a>
+  <a href="nyheter.html">Nyheter</a>
+  <a href="contact.html">Kontakt</a>
+</div>
+
+<!-- ============ BOOK 1 — CURRENT RELEASE ============ -->
+<section class="book-featured" id="mammaboken">
+  <div class="wrap">
+
+    <div class="book-cover-wrap rv">
+      <div class="book-badge">Ny bok</div>
+      <img src="assets/book-cover.png" alt="Är allt jag trott om att bli mamma en lögn? av Sara Sommerfeld" />
+    </div>
+
+    <div class="book-info rv">
+      <span class="eyebrow">Aktuell utgivning</span>
+      <p class="book-kicker">Ny roman · AV FÖRFATTAREN TILL HYLLADE DEBUTEN<br><em>Är allt jag lärt mig om kärlek en lögn?</em><br>20&nbsp;000 sålda ex, BTJ-betyg 5/5 · Andrapris i Adlibrispriset Årets debut · Finalist i Årets Feelgood</p>
+      <h2>Är allt jag trott om att bli mamma en lögn?</h2>
+
+      <p class="book-desc">En varm och drabbande samtidsroman skriven i rappt tempo och med en stor portion humor – om en högpresterande mamma, en kärleksrelation på glid och en son som krisar i skolan. Ju mer mamman kämpar för att rädda sitt barn, desto tydligare blir det att hon också kämpar för att hitta något hon tappat bort för länge sedan: sig själv.</p>
+
+      <p class="book-author-bio">Sara Sommerfeld är skådespelerska, regissör, dramatiker och författare, med Guldbaggenominering och i ett femtiotal film-, tv- och scenproduktioner i ryggen, som Vingar av glas, Hem till Midgård, LasseMajas Detektivbyrå, Tsatsiki, Beck – advokaten och Göta kanal 3. Senast aktuell som skådespelare och dramatiker med den kritikerrosade soloföreställningen Show Bizniz på Dramatens stora scen, även sänd på SVT 2025.</p>
+
+      <div class="book-meta-row">
+        <div class="book-meta-item">
+          <span class="book-meta-label">Utkommer</span>
+          <span class="book-meta-val">24 augusti 2026</span>
+        </div>
+        <div class="book-meta-item">
+          <span class="book-meta-label">ISBN</span>
+          <span class="book-meta-val">978-91-531-5190-6</span>
+        </div>
+        <div class="book-meta-item">
+          <span class="book-meta-label">Förlag</span>
+          <span class="book-meta-val">LeBen Books</span>
+        </div>
+      </div>
+
+      <div class="book-contact">
+        <p><strong>Läsexemplar</strong><br>Mejla oss för information om läsexemplar.<br><a href="mailto:info@lebenbooks.com">info@lebenbooks.com</a></p>
+        <p style="margin-top:1rem"><strong>Pressförfrågningar</strong><br>Gul PR · Vilhelm Hansén<br><a href="mailto:vilhelm@gulpr.se">vilhelm@gulpr.se</a> · <a href="tel:+46736907409">+46 73-690 74 09</a></p>
+      </div>
+
+      <div class="book-cta">
+        <a class="btn btn--solid" href="https://www.bokus.com/bok/B000432429/signerad---ar-allt-jag-trott-om-att-bli-mamma-en-logn" target="_blank" rel="noopener">
+          Beställ nu <span class="arw">&#8594;</span>
+        </a>
+        <a class="btn" href="press.html">
+          Pressmaterial <span class="arw">&#8594;</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ RÖSTER OM DEBUTROMANEN ============ -->
+<section style="background:var(--navy-800);padding-block:clamp(80px,11vw,140px)" id="karleksboken">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:3rem">
+      <span class="eyebrow">Röster om debutromanen</span>
+      <h2 style="font-family:var(--font-display);font-weight:500;font-size:clamp(1.6rem,3vw,2.6rem);line-height:1.05;color:var(--ivory);margin:.8rem 0 .4rem;font-style:italic">"Är allt jag lärt mig om kärlek en lögn?"</h2>
+      <p style="font-family:var(--font-sans);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)">The Book Affair förlag 2024 · 20 000 sålda ex · BTJ 5/5 · Andrapris Adlibrispriset Årets Debut · Finalist Årets Feelgood</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(16px,2vw,24px)">
+      <div class="debut-review rv">
+        <blockquote>Boken är mycket medryckande skriven och med sitt tempo och sin personliga berättarröst är den mycket svår att lägga ifrån sig. För alla som någon gång brottats med självtvivel och prestations-jagande är igenkänningsfaktorn hög. Sommerfelds debut är en inspirerande berättelse om att vi människor allra längst inne är mer lika än olika och att alla duger precis som vi är. Läs den!</blockquote>
+        <span class="review-source">Helhetsbetyg 5/5 – briljant · Kajsa Banck, BTJ</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>En så ljuvlig och skickligt gjord bok! Den är ärlig, kärleksfull och brutal, men hela tiden på väg mot ljuset.</blockquote>
+        <span class="review-source">Camilla Läckberg</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>Vissa böcker går djupare in i hjärtat än andra, denna är en sådan. En välskriven berättelse som betyder något och samtidigt är underhållande.</blockquote>
+        <span class="review-source">@Boktokig</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>Jag kommer rekommendera ALLA jag känner att läsa denna bok. När jag började läsa kunde jag inte sluta. En oerhört bra bok.</blockquote>
+        <span class="review-source">@Josbocker</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>En riktigt bladvändare!</blockquote>
+        <span class="review-source">@CarinaNunstedt</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>En bok som berör på djupet, väcker tankar och som kommer att stanna kvar hos mig länge.</blockquote>
+        <span class="review-source">@Erikasbokhylla</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>Vilken lysande debut! Jag fängslades från start och ville inte att boken skulle ta slut.</blockquote>
+        <span class="review-source">@Bokugglor</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>Dialogen är rapp och stundtals väldigt humoristisk. Det är riktigt jäkla bra! En unik läsupplevelse och en bok jag varmt kan rekommendera till alla.</blockquote>
+        <span class="review-source">@Bokbesatt</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>En personlig och stark roman om att hitta sitt sanna jag.</blockquote>
+        <span class="review-source">@Boknjutaren</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>Otroligt tankeväckande bok som inspirerar och berör.</blockquote>
+        <span class="review-source">@Virresbokhylla</span>
+      </div>
+      <div class="debut-review rv">
+        <blockquote>Så himla bra bok! Jag ser fram emot fler böcker av Sara.</blockquote>
+        <span class="review-source">@annasboktips_</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <img src="logo/leben-logo-ivory.png" alt="Leben Books" />
+        <p>Ett Stockholmsbaserat oberoende boutique-förlag som förenar tre decenniers erfarenhet av scenkonst, film, tv och litteratur.</p>
+      </div>
+      <div class="ft-col">
+        <h4>Böcker</h4>
+        <a href="#mammaboken">Är allt jag trott om att bli mamma en lögn?</a>
+        <a href="#karleksboken">Är allt jag lärt mig om kärlek en lögn?</a>
+      </div>
+      <div class="ft-col">
+        <h4>Förlag</h4>
+        <a href="about.html">Om oss</a>
+        <a href="press.html">Press</a>
+        <a href="contact.html">Kontakt</a>
+      </div>
+      <div class="ft-col">
+        <h4>Kontakt</h4>
+        <p>info@lebenbooks.com</p>
+        <p>Stockholm, Sverige</p>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <small>© 2026 LeBen Books AB. All rights reserved.</small>
+      <div class="ft-social">
+        <a href="https://instagram.com/leben_books" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* mobile menu */
+  const btn=document.getElementById('menu-btn');
+  const drawer=document.getElementById('drawer');
+  const drawerClose=document.getElementById('drawer-close');
+  if(btn){btn.addEventListener('click',()=>drawer.classList.add('open'));}
+  if(drawerClose){drawerClose.addEventListener('click',()=>drawer.classList.remove('open'));}
+  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>drawer.classList.remove('open')));
+
+  /* reveal on scroll */
+  const els=document.querySelectorAll('.rv');
+  if(!els.length)return;
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12});
+  els.forEach(el=>io.observe(el));
+  setTimeout(()=>els.forEach(el=>el.classList.add('in')),1600);
+})();
+</script>
+</body>
+</html>
