@@ -177,7 +177,7 @@ img {
 .hero__bg {
   position: absolute;
   inset: 0;
-  background: url('../images/rkw-background.jpg') center / cover no-repeat;
+  background: url('../Media/images/rkw-background.jpg') center / cover no-repeat;
   filter: brightness(0.45);
 }
 

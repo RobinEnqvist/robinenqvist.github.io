@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Time Tracker</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup">
+
+    <header class="popup__header">
+      <span class="popup__title">TIME TRACKER</span>
+      <span class="popup__date" id="todayDate"></span>
+    </header>
+
+    <div class="popup__body" id="siteList">
+      <div class="popup__empty" id="emptyState">No data yet today.<br>Browse a few sites first.</div>
+    </div>
+
+    <footer class="popup__footer">
+      <span class="popup__total" id="totalTime">Total: 0m</span>
+      <button class="popup__reset" id="resetBtn">Reset today</button>
+    </footer>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
