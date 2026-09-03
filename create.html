@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CREATE. – Motion & Creative Work – Robin Karl Wilhelm</title>
-  <meta name="description" content="Motion design and brand animation by Robin Karl Wilhelm. Case studies for VisPlan and ZlideOn — explainer films, logo animation, and product animation." />
+  <title>CREATE. – Motion &amp; Creative Work – Robin Karl Wilhelm Enqvist</title>
+  <meta name="description" content="Motion design and brand animation by Robin Karl Wilhelm Enqvist. Case studies for Dema, VisPlan, ZlideOn and SkrapGear — explainer films, logo animation, product animation and AI-assisted motion graphics." />
 
   <!-- Google Tag Manager -->
   <script>(function (w, d, s, l, i) {
@@ -109,6 +109,22 @@
       height: auto;
       object-fit: contain;
       filter: brightness(0.9);
+    }
+
+    /* Portrait media (3:4 social cuts) */
+    .case-study__media--portrait {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .case-study__media--portrait .case-study__video {
+      aspect-ratio: 3 / 4;
+      object-fit: contain;
+      width: auto;
+      max-width: 100%;
+      max-height: 560px;
+      margin: 0 auto;
     }
 
     .case-study__objective {
@@ -232,7 +248,48 @@
     </div>
   </section>
 
-  <!-- CASE STUDY 1: VISPLAN -->
+  <!-- CASE STUDY 1: DEMA -->
+  <section class="case-study" id="dema">
+    <div class="container">
+
+      <div class="case-study__header">
+        <h2 class="case-study__title">RKW x Dema</h2>
+        <span class="case-study__wip">SPECULATIVE — SELF-INITIATED</span>
+        <p class="case-study__objective">Objective: Make the case for the decision e-commerce brands don't measure.</p>
+      </div>
+
+      <div class="case-study__body">
+        <div class="process">
+
+          <div class="process__step">
+            <p class="process__label">IDEATION — MARGIN — RETURNS — THE FIFTH DECISION</p>
+            <p class="process__desc">Every e-commerce brand tracks four decisions: what to buy, how to price it, how to sell it, how to ship it. The film argues for the fifth — the one where the customer sends it back, and the margin quietly leaves.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">PRODUCTION — PROMPT — SEEDANCE — CAPCUT</p>
+            <p class="process__desc">Built almost entirely by prompt against a locked style key, in the brand's own palette. No After Effects. A week from blank page to finished cut.</p>
+          </div>
+
+          <div class="process__step">
+            <p class="process__label">DELIVERY — 20 SECONDS — 3:4 — SOCIAL</p>
+            <p class="process__desc">Cut to twenty seconds and framed 3:4 for feed, where completion rate is still the signal that decides how far a piece travels.</p>
+          </div>
+
+        </div>
+
+        <div class="case-study__media case-study__media--portrait">
+          <video class="case-study__video" muted loop playsinline preload="none"
+            poster="Media/posters/dema.jpg">
+            <source src="Media/Motion/Dema-RKW.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CASE STUDY 2: VISPLAN -->
   <section class="case-study" id="visplan">
     <div class="container">
 
@@ -262,8 +319,9 @@
         </div>
 
         <div class="case-study__media">
-          <video class="case-study__video" autoplay muted loop playsinline preload="metadata">
-            <source src="Media/Motion/Visplan-RKW.mp4" type="video/mp4" />
+          <video class="case-study__video" muted loop playsinline preload="none"
+            poster="Media/posters/visplan.jpg">
+            <source src="Media/Motion/Visplan-short-RKW.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -271,7 +329,7 @@
     </div>
   </section>
 
-  <!-- CASE STUDY 2: ZLIDEON -->
+  <!-- CASE STUDY 3: ZLIDEON -->
   <section class="case-study" id="zlideon">
     <div class="container">
 
@@ -301,8 +359,9 @@
         </div>
 
         <div class="case-study__media">
-          <video class="case-study__video" autoplay muted loop playsinline preload="metadata">
-            <source src="Media/Motion/ZlideOn-RKW.mp4" type="video/mp4" />
+          <video class="case-study__video" muted loop playsinline preload="none"
+            poster="Media/posters/zlideon.jpg">
+            <source src="Media/Motion/ZlideOn-RKW-web.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -310,7 +369,7 @@
     </div>
   </section>
 
-  <!-- CASE STUDY 3: SKRAPGEAR -->
+  <!-- CASE STUDY 4: SKRAPGEAR -->
   <section class="case-study" id="skrapgear">
     <div class="container">
 
@@ -356,11 +415,28 @@
         <a href="https://www.instagram.com/rawphoto.robin/" target="_blank" rel="noopener">SOCIALS</a>
         <a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">LINKEDIN</a>
       </nav>
-      <div class="footer-copy">© RKW</div>
+      <div class="footer-copy">© Robin Karl Wilhelm Enqvist</div>
     </div>
   </footer>
 
   <script src="js/main.js"></script>
+  <script>
+    // Case-filmerna laddas och spelas forst nar de syns i vyn.
+    (function () {
+      var vids = document.querySelectorAll('.case-study__video');
+      if (!('IntersectionObserver' in window)) {
+        vids.forEach(function (v) { v.setAttribute('preload', 'metadata'); v.play().catch(function () {}); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.play().catch(function () {}); }
+          else { e.target.pause(); }
+        });
+      }, { rootMargin: '200px 0px', threshold: 0.25 });
+      vids.forEach(function (v) { io.observe(v); });
+    })();
+  </script>
 </body>
 
 </html>
