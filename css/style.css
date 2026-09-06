@@ -688,6 +688,21 @@ img {
   opacity: 0.4;
 }
 
+.footer-copy--split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  opacity: 1;
+}
+
+.footer-copy--split > span {
+  opacity: 0.4;
+}
+
+.footer-copy--split .footer-name {
+  opacity: 0.75;
+}
+
 /* ============================================================
    EXTENSIONS SECTION
    ============================================================ */
