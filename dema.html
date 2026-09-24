@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>RKW x Dema – Motion tests</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .dema-hero {
+      padding: 140px 0 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dema-hero__label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .dema-hero__title {
+      font-size: clamp(44px, 9vw, 104px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    .dema-hero__sub {
+      font-size: clamp(14px, 1.8vw, 18px);
+      color: var(--muted);
+      max-width: 56ch;
+      line-height: 1.65;
+    }
+
+    .films {
+      padding: 80px 0 120px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 56px;
+    }
+
+    .film__video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: #0a0a0a;
+      object-fit: contain;
+    }
+
+    .film__meta {
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    .film__label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .film__desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 46ch;
+      margin-bottom: 16px;
+    }
+
+    .film__dl {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .film__dl:hover { color: var(--text); }
+    .film__dl::after { content: '↓'; font-size: 14px; }
+
+    @media (max-width: 800px) {
+      .films {
+        grid-template-columns: 1fr;
+        gap: 64px;
+        padding: 56px 0 80px;
+      }
+      .dema-hero {
+        padding: 110px 0 48px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="dema-hero">
+    <div class="container">
+      <span class="dema-hero__label">RKW X DEMA · MOTION TESTS</span>
+      <h1 class="dema-hero__title">Measured,<br />then moved<span class="dot">.</span></h1>
+      <p class="dema-hero__sub">Two tests built in code with the real numbers from Henrik's recording. Every shape on screen is one of the seventeen rectangles in Dema's wordmark.</p>
+    </div>
+  </section>
+
+  <main class="container films">
+
+    <article class="film">
+      <video class="film__video" controls playsinline preload="metadata" poster="Media/posters/dema-lyftet.jpg">
+        <source src="Media/Motion/dema/Dema-Lyftet-17s.mp4" type="video/mp4" />
+      </video>
+      <div class="film__meta">
+        <p class="film__label">LYFTET · 17 S · 4:5</p>
+        <p class="film__desc">Daily net gross profit 3 for 16 campaign products against 40 matched controls. The gap after go-live is cut into seventeen columns that become the wordmark. The gap that was already there before go-live is flagged in grey, the way the report flags it.</p>
+        <a class="film__dl" href="Media/Motion/dema/Dema-Lyftet-17s.mp4" download>DOWNLOAD MP4</a>
+      </div>
+    </article>
+
+    <article class="film">
+      <video class="film__video" controls playsinline preload="metadata" poster="Media/posters/dema-cellerna.jpg">
+        <source src="Media/Motion/dema/Dema-Cellerna-13s.mp4" type="video/mp4" />
+      </video>
+      <div class="film__meta">
+        <p class="film__label">CELLERNA · 13 S · 4:5</p>
+        <p class="film__desc">Sixteen discounted products and the control group as seventeen bars. The two biggest losers fall out, the rest settle into DEMA, and the losses come back to complete it. A mark that is only whole when the bad results are counted too.</p>
+        <a class="film__dl" href="Media/Motion/dema/Dema-Cellerna-13s.mp4" download>DOWNLOAD MP4</a>
+      </div>
+    </article>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/create">CREATE</a>
+        <a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">LINKEDIN</a>
+      </nav>
+      <div class="footer-copy">© Robin Karl Wilhelm Enqvist</div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
