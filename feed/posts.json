@@ -1,0 +1,111 @@
+[
+  {
+    "id": "creative-is-the-targeting",
+    "type": "text",
+    "date": "2026-10-04",
+    "title": "Creative is the targeting now",
+    "body": "PLACEHOLDER. Meta's delivery system decides who sees an ad by reading the ad itself. Which means the brief is the media plan. Ten variations of one idea is one ad. Three genuinely different ideas is three audiences. I've stopped asking how many versions we need and started asking how many different people we are talking to.",
+    "draft": true
+  },
+  {
+    "id": "dema-hook",
+    "type": "video",
+    "date": "2026-09-27",
+    "title": "Dema — the hook",
+    "body": "Spec work. Reported CPA versus incremental CPA, told in under twenty seconds.",
+    "src": "/Media/Motion/Dema-RKW.mp4",
+    "poster": "/Media/posters/dema.jpg",
+    "duration": 18.6
+  },
+  {
+    "id": "made-with",
+    "type": "text",
+    "date": "2026-09-25",
+    "title": "How the Dema film was made",
+    "body": "PLACEHOLDER. Three sessions. Script and structure with Claude, motion built as code in HyperFrames, plates generated in Seedance, captions synced to the voice word by word. No After Effects project file exists for this film. The interesting part isn't speed. It's that every frame can be re-rendered when the message changes.",
+    "draft": true
+  },
+  {
+    "id": "dema-lyftet",
+    "type": "video",
+    "date": "2026-09-22",
+    "title": "The lift becomes the market",
+    "body": "Motion test from the Dema series.",
+    "src": "/Media/Motion/dema/Dema-Lyftet-17s.mp4",
+    "poster": "/Media/posters/dema-lyftet.jpg",
+    "duration": 17.4
+  },
+  {
+    "id": "dema-cellerna",
+    "type": "video",
+    "date": "2026-09-18",
+    "title": "Cells",
+    "body": "Motion test from the Dema series.",
+    "src": "/Media/Motion/dema/Dema-Cellerna-13s.mp4",
+    "poster": "/Media/posters/dema-cellerna.jpg",
+    "duration": 13.6
+  },
+  {
+    "id": "workspace",
+    "type": "image",
+    "date": "2026-09-10",
+    "title": "Light study",
+    "body": "PLACEHOLDER caption.",
+    "draft": true,
+    "src": "/feed/media/rkw-bg.jpg"
+  },
+  {
+    "id": "reading-list",
+    "type": "text",
+    "date": "2026-09-02",
+    "title": "Three things I'm watching",
+    "body": "PLACEHOLDER. 1 — Video models that take a style key and hold it across shots. 2 — Agents that open the ad account, read the numbers and write the brief. 3 — Brands publishing their design system as something a model can read.",
+    "draft": true
+  },
+  {
+    "id": "scania-venture",
+    "type": "image",
+    "date": "2026-06-14",
+    "title": "Scania Venture",
+    "body": "Web concept.",
+    "src": "/feed/media/scania-juna.jpg"
+  },
+  {
+    "id": "zlideon",
+    "type": "video",
+    "date": "2026-02-18",
+    "title": "ZlideOn",
+    "body": "Product film.",
+    "src": "/Media/Motion/ZlideOn-RKW-web.mp4",
+    "poster": "/feed/media/zlideon.jpg",
+    "duration": 30
+  },
+  {
+    "id": "visplan",
+    "type": "video",
+    "date": "2021-08-05",
+    "title": "VisPlan",
+    "body": "Explainer, short cut.",
+    "src": "/Media/Motion/Visplan-short-RKW.mp4",
+    "poster": "/Media/posters/visplan.jpg",
+    "duration": 10
+  },
+  {
+    "id": "dtae-film",
+    "type": "video",
+    "date": "2021-05-11",
+    "title": "DTAE Bygg",
+    "body": "Brand film.",
+    "src": "/Media/Motion/DTAE.BYGG.FILM.mp4",
+    "poster": "/feed/media/dtae-film.jpg",
+    "duration": 10
+  },
+  {
+    "id": "dtae-logo",
+    "type": "image",
+    "date": "2021-05-02",
+    "title": "DTAE logo animation",
+    "body": "Identity in motion.",
+    "src": "/Media/Motion/dtae.logo.gif"
+  }
+]
