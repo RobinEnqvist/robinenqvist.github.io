@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Robin x Growth Agency</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .ga-hero {
+      padding: 140px 0 48px;
+    }
+
+    .ga-hero__label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .ga-hero__title {
+      font-size: clamp(40px, 8vw, 96px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -2px;
+    }
+
+    .film {
+      padding-bottom: 120px;
+    }
+
+    .film__video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0a0a0a;
+      object-fit: contain;
+    }
+
+    .film__meta {
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    .film__label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .film__desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 56ch;
+    }
+
+    @media (max-width: 800px) {
+      .ga-hero {
+        padding: 110px 0 36px;
+      }
+      .film {
+        padding-bottom: 80px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="ga-hero">
+    <div class="container">
+      <span class="ga-hero__label">ROBIN X GROWTH AGENCY</span>
+      <h1 class="ga-hero__title">Mätbar effekt<span class="dot">.</span></h1>
+    </div>
+  </section>
+
+  <main class="container film">
+    <video class="film__video" controls autoplay muted loop playsinline preload="auto" poster="Media/posters/growth-agency.jpg">
+      <source src="Media/Motion/growth-agency/Growth-Agency-10s.mp4" type="video/mp4" />
+    </video>
+    <div class="film__meta">
+      <p class="film__label">LOGO-ANIMATION · 10 S · 16:9</p>
+      <p class="film__desc">Er egen mening, "en modern kommunikationsbyrå med fokus på mätbar effekt", som landar i loggan. Byggd i kod av Robin Enqvist.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/create">CREATE</a>
+        <a href="https://www.linkedin.com/in/robin-enqvist-2a80b366/" target="_blank" rel="noopener">LINKEDIN</a>
+      </nav>
+      <div class="footer-copy">© Robin Karl Wilhelm Enqvist</div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
